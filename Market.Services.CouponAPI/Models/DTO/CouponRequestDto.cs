@@ -1,4 +1,4 @@
-﻿namespace Market.Services.CouponAPI.Models.DTO
+﻿namespace Market.Services.CouponAPI.Models.Dto
 {
     public class CouponRequestDto
     {

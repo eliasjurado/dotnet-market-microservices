@@ -1,7 +1,7 @@
 ﻿using Market.Services.CouponAPI.Utility;
 using System.Net;
 
-namespace Market.Services.CouponAPI.Models.DTO
+namespace Market.Services.CouponAPI.Models.Dto
 {
     public class ResponseDto<T>
     {
