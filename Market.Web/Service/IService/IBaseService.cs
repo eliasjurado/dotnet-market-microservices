@@ -2,9 +2,8 @@
 
 namespace Market.Web.Service.IService
 {
-    public interface IBaseService<T> where T : class
+    public interface IBaseService
     {
-        Task<ResponseDto<T?>> SendAsync(RequestDto<T> request);
-
+        Task<ResponseDto> SendAsync(RequestDto request);
     }
 }

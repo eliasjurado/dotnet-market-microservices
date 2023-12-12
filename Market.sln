@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Services.CouponAPI", "Market.Services.CouponAPI\Market.Services.CouponAPI.csproj", "{FC13B581-A97D-4EAB-886B-56475131E1AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Web", "Market.Web\Market.Web.csproj", "{8CCF7E77-D9C0-4B64-850E-56003BE30910}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC13B581-A97D-4EAB-886B-56475131E1AB} = {FC13B581-A97D-4EAB-886B-56475131E1AB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

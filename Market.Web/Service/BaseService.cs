@@ -7,7 +7,7 @@ using static Market.Web.Utility.Constants;
 
 namespace Market.Web.Service
 {
-    public class BaseService : IBaseService<object>
+    public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -15,7 +15,7 @@ namespace Market.Web.Service
         {
             _httpClientFactory = httpClientFactory;
         }
-        public async Task<ResponseDto<object?>> SendAsync(RequestDto<object> request)
+        public async Task<ResponseDto> SendAsync(RequestDto request)
         {
             try
             {
@@ -61,19 +61,21 @@ namespace Market.Web.Service
                         return new() { IsSuccess = false, Errors = new List<string> { "Internal Server Error" } };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto<object?>>(apiContent);
+                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
                         return apiResponseDto;
                 }
             }
             catch (Exception ex)
             {
 
-                return new ResponseDto<object?>
+                return new ResponseDto
                 {
                     IsSuccess = false,
                     Errors = Format.GetInnerExceptionMessage(ex)
                 };
             }
         }
+
+
     }
 }

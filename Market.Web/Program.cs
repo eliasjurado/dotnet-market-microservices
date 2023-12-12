@@ -1,4 +1,3 @@
-using Market.Web.Models.Dto;
 using Market.Web.Service;
 using Market.Web.Service.IService;
 using Market.Web.Utility;
@@ -10,10 +9,12 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<IService<CouponDto>, CouponService>();
+builder.Services.AddHttpClient<ICouponService, CouponService>();
+
 Constants.CouponAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:CouponAPI");
-builder.Services.AddScoped<IBaseService<object>, BaseService>();
-builder.Services.AddScoped<IService<CouponDto>, CouponService>();
+
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IBaseService, BaseService>();
 
 var app = builder.Build();
 
