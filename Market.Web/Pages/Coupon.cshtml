@@ -1,0 +1,54 @@
+﻿@page "/Coupon"
+@model Market.Web.Pages.Coupon
+@{
+    ViewBag.Title = "Coupon";
+}
+
+<div class="card p-4 mb-3">
+    <h2 class="mb-3">
+        <img src="~/img/joystick.svg" alt="joystick" style="height: 2rem">
+        Retro Games
+        <img id="loading" class="htmx-indicator" src="~/img/pacman.gif" alt="search" width="16"/>
+    </h2>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="search-addon">
+            <img id="search-icon" src="~/img/search.svg" alt="search" width="16"/>
+        </span>
+        <input type="text"
+               asp-for="Query"
+               id="query"
+               autocomplete="off"
+               hx-get="@Url.Page("Coupon")"
+               hx-target="#results"
+               hx-trigger="keyup changed delay:250ms"
+               hx-indicator="#loading"
+               placeholder="Search"
+               class="form-control"
+               aria-label="Username"
+               aria-describedby="search-addon">
+    </div>
+
+    <table class="table table-borderless table-striped">
+        <thead class="table-dark"> 
+        <tr>
+            <th>Year</th>
+            <th>Publisher</th>
+            <th>Console</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody id="results">
+        @await Html.PartialAsync("_Results")
+        </tbody>
+    </table>
+</div>
+
+@section head {
+    <style>
+        /* change focus color */
+        .form-control:focus {
+            border-color: #ff80ff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 100, 255, 0.5);
+        }
+    </style>
+}
