@@ -15,4 +15,8 @@
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.15.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

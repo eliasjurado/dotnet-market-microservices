@@ -1,0 +1,42 @@
+﻿@model Market.Web.Models.Dto.CouponDto
+
+<div id="itemModalBackdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="itemModal" class="modal fade show" tabindex="-1" style="display:block;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Genre Details</h5>
+                <button type="button" class="close" onclick="AppLib.closeItemModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>@Html.DisplayNameFor(m => m.CouponId)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponId)</dd>
+
+                    <dt>@Html.DisplayNameFor(m => m.CouponCode)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponCode)</dd>
+
+                    <dt>@Html.DisplayNameFor(m => m.CouponName)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponName)</dd>
+
+                    <dt>@Html.DisplayNameFor(m => m.CouponDisccountAmount)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponDisccountAmount)</dd>
+
+                    <dt>@Html.DisplayNameFor(m => m.CouponMinAmmount)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponMinAmmount)</dd>
+
+                    <dt>@Html.DisplayNameFor(m => m.CouponStartDate)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponStartDate)</dd>
+
+                    <dt>@Html.DisplayNameFor(m => m.CouponEndDate)</dt>
+                    <dd>@Html.DisplayFor(m => m.CouponEndDate)</dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="AppLib.closeItemModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

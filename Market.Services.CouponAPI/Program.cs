@@ -4,6 +4,7 @@ using Market.Services.CouponAPI.Data;
 using Market.Services.CouponAPI.Endpoints;
 using Market.Services.CouponAPI.Repository;
 using Market.Services.CouponAPI.Repository.IRepository;
+using Market.Services.CouponAPI.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -93,14 +94,21 @@ app.Run();
 
 async void ApplyPendingMigration()
 {
-    using (var scope = app.Services.CreateScope())
+    try
     {
-        var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        if ((await _db.Database.GetPendingMigrationsAsync()).Any())
+        using (var scope = app.Services.CreateScope())
         {
-            _db.Database.Migrate();
-        }
+            var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+            if ((await _db.Database.GetPendingMigrationsAsync()).Any())
+            {
+                _db.Database.Migrate();
+            }
+
+        }
+    }
+    catch (Exception ex)
+    {
+        Format.GetInnerExceptionMessage(ex).ToList().ForEach(Console.WriteLine);
     }
 }

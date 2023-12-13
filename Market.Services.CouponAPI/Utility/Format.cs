@@ -11,5 +11,22 @@ namespace Market.Services.CouponAPI.Utility
             name.Substring(1).ToList().ForEach(x => sb.Append(char.IsUpper(x) ? $" {x}" : x.ToString()));
             return sb.ToString();
         }
+
+        public static ICollection<string> GetInnerExceptionMessage(Exception exception)
+        {
+            List<string> messages = new();
+
+            if (exception.InnerException == null)
+                messages.Add(exception.Message);
+
+            while (exception.InnerException != null)
+            {
+                messages.Add(exception.InnerException.Message);
+                exception = exception.InnerException;
+            }
+
+            return messages;
+        }
+
     }
 }

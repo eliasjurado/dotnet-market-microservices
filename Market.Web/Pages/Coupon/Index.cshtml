@@ -1,0 +1,121 @@
+﻿@page "/coupon"
+@model Market.Web.Pages.Coupon.IndexModel
+@{
+    ViewBag.Title = "Coupon";
+}
+
+<div class="card p-4 mb-3">
+    <h2 class="mb-3">
+        <img src="~/img/coupon.svg" alt="coupon" style="height: 2rem">
+        Coupon
+        <img id="loading" class="htmx-indicator" src="~/img/pacman.gif" alt="search" width="16" />
+    </h2>
+
+    <div class="input-group mb-3">
+        <form id="newsletter"
+              hx-post="@Url.Page("Index", "IndexModel")"
+              hx-target="#modals-here"
+              hx-trigger="submit">
+
+            <button type="submit" class="btn btn-outline-secondary btn-lg float-end" style="font-size:1.1rem">
+                <img src="~/img/plus.svg" alt="search" width="16" /> New
+            </button>
+            <div id="modals-here"></div>
+        </form>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="search-addon">
+            <img id="search-icon" src="~/img/search.svg" alt="search" width="16" />
+        </span>
+        <input type="text"
+               asp-for="Query"
+               id="query"
+               autocomplete="off"
+               hx-get="@Url.Page("Index")"
+               hx-target="#results"
+               hx-trigger="keyup changed delay:250ms"
+               hx-indicator="#loading"
+               placeholder="Search"
+               class="form-control"
+               aria-label="Username"
+               aria-describedby="search-addon">
+    </div>
+
+    <table class="table table-borderless table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-sm-center">Id</th>
+                <th class="text-sm-center">Code</th>
+                <th class="text-sm-center">Disccount Name</th>
+                <th class="text-sm-center">Disccount (%)</th>
+                <th class="text-sm-center">MinAmmount ($)</th>
+                <th class="text-sm-center">StartDate</th>
+                <th class="text-sm-center">EndDate</th>
+                <th class="text-sm-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="results">
+            @await Html.PartialAsync("_Results")
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+
+
+@section head {
+    <style>
+        /* change focus color */
+        .form-control:focus {
+            border-color: #ff80ff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 100, 255, 0.5);
+        }
+    </style>
+}
+
+@section end
+{
+    <script type="text/javascript">
+
+        let newsletter = document.getElementById('newsletter');
+        newsletter.addEventListener('htmx:afterOnLoad', () => {
+            const backdrop = document.getElementById("modal-backdrop");
+            const modal = document.getElementById("modal");
+
+            setTimeout(() => {
+                modal.classList.toggle("show")
+                backdrop.classList.toggle("show")
+            }, 10);
+        });
+
+        let inputs = newsletter.querySelectorAll('input');
+        inputs.forEach((e) => {
+            e.oninvalid = () => e.classList.add('is-invalid');
+            e.onchange = () => {
+                if (e.validity.valid) {
+                    e.classList.remove('is-invalid');
+                } else {
+                    e.classList.add('is-invalid');
+                }
+            }
+        });
+
+        function closeModal() {
+            const container = document.getElementById("modals-here");
+            const backdrop = document.getElementById("modal-backdrop");
+            const modal = document.getElementById("modal");
+
+            modal.classList.toggle("show")
+            backdrop.classList.toggle("show")
+
+            setTimeout(function () {
+                container.removeChild(backdrop)
+                container.removeChild(modal)
+            }, 200)
+        }
+    </script>
+}
