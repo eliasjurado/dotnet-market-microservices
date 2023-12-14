@@ -85,7 +85,9 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<IEnumerable<CouponDto>> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
@@ -107,7 +109,9 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
@@ -142,7 +146,9 @@ namespace Market.Services.CouponAPI.Endpoints
             var date = DateTime.Now;
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
@@ -188,7 +194,9 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
@@ -249,7 +257,9 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
