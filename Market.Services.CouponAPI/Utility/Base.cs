@@ -1,6 +1,6 @@
 ﻿namespace Market.Services.CouponAPI.Utility
 {
-    public class Constants
+    public class Base
     {
         public enum ByteType
         {

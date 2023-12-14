@@ -28,6 +28,8 @@ namespace Market.Web.Pages.Coupon
                 JObject coupon = (JObject)item;
                 Results.Add(JsonConvert.DeserializeObject<CouponViewModel>(coupon.ToString()));
             }
+
+            RequestDto = new CouponDto();
         }
 
         [BindProperty(SupportsGet = true)]
@@ -50,6 +52,25 @@ namespace Market.Web.Pages.Coupon
             });
 
             return Partial("_Results", this);
+        }
+
+        public IActionResult OnGetModal()
+        {
+            //Results = string.IsNullOrEmpty(Query)
+            //    ? Results
+            //    : Results.Where(g => g.ToString().Contains(Query, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (!Request.IsHtmx())
+                return Page();
+
+            Response.Htmx(h =>
+            {
+                // we want to push the current url 
+                // into the history
+                h.PushUrl(Request.GetEncodedUrl());
+            });
+
+            return Partial("_Modal", this);
         }
 
         public IActionResult OnPost()//[FromForm] NewsletterSignup signup)

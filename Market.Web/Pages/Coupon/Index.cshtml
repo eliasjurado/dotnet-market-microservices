@@ -5,6 +5,7 @@
 }
 
 <div class="card p-4 mb-3">
+
     <h2 class="mb-3">
         <img src="~/img/coupon.svg" alt="coupon" style="height: 2rem">
         Coupon
@@ -12,16 +13,16 @@
     </h2>
 
     <div class="input-group mb-3">
-        <form id="newsletter"
-              hx-post="@Url.Page("Index", "IndexModel")"
-              hx-target="#modals-here"
-              hx-trigger="submit">
-
-            <button type="submit" class="btn btn-outline-secondary btn-lg float-end" style="font-size:1.1rem">
-                <img src="~/img/plus.svg" alt="search" width="16" /> New
-            </button>
-            <div id="modals-here"></div>
-        </form>
+        <a href="#"
+           id="newsletter"
+           hx-get="@Url.Page("Index", "Modal")"
+           hx-trigger="click"
+           hx-target="#modals-here"
+           class="btn btn-outline-secondary mb-2"
+           style="font-size:1.1rem">
+            <img src="~/img/plus.svg" alt="plus" width="16" />
+            New
+        </a>
     </div>
 
     <div class="input-group mb-3">
@@ -59,13 +60,9 @@
             @await Html.PartialAsync("_Results")
         </tbody>
     </table>
-
-
 </div>
 
-
-
-
+<div id="modals-here"></div>
 
 @section head {
     <style>

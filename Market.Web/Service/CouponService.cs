@@ -63,12 +63,12 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto?> UpdateAsync(CouponDto requestDto)
+        public async Task<ResponseDto?> UpdateAsync(CouponDto requestDto, int id)
         {
             var request = new RequestDto
             {
                 ApiType = ApiType.PUT,
-                Url = CouponAPIBase + "/api/coupon/" + requestDto.CouponId,
+                Url = CouponAPIBase + "/api/coupon/" + id,
                 Data = requestDto
             };
             return await _baseService.SendAsync(request);

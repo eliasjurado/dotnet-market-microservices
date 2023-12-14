@@ -1,0 +1,42 @@
+﻿@page
+@model Market.Web.Pages.Coupon.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@* <div id="itemModalBackdrop" class="modal-backdrop fade show" style="display:none;"></div>
+<div id="itemModal" class="modal fade show" tabindex="-1" style="display:none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div asp-validation-summary="All"></div>
+            <form method="POST">
+                <div>Name: <input asp-for="RequestDto.CouponName" /></div>
+                <input type="submit" />
+            </form>
+        </div>
+    </div>
+</div> *@
+
+<div id="modal-backdrop"
+	 class="modal-backdrop fade"
+	 style="display:block;"></div>
+<div id="modal" class="modal fade" tabindex="-1" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Hello From The Server</h5>
+			</div>
+			<div class="modal-body">
+				<p>Thanks for subscribing to our AMAZING NEWSLETTER!</p>
+				<hr />
+				<p>
+					Expect amazing things to appear in your inbox at
+					@* <code>@Model.RequestDto.CouponName</code>. *@
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" onclick="closeModal()">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
