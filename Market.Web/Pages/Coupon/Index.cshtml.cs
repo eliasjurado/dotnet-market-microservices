@@ -14,7 +14,9 @@ namespace Market.Web.Pages.Coupon
     {
         private readonly ICouponService _couponService;
         public ICollection<CouponViewModel> Results { get; set; }
+        [BindProperty(SupportsGet = true)]
         public CouponDto RequestDto { get; set; }
+        public ResponseDto ResponseDto { get; set; }
         public IndexModel(ICouponService couponService)
         {
             _couponService = couponService;
@@ -28,12 +30,13 @@ namespace Market.Web.Pages.Coupon
                 JObject coupon = (JObject)item;
                 Results.Add(JsonConvert.DeserializeObject<CouponViewModel>(coupon.ToString()));
             }
-
-            RequestDto = new CouponDto();
         }
 
         [BindProperty(SupportsGet = true)]
-        public string? Query { get; set; }
+        public string UpsertModalTitle { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Query { get; set; }
 
         public IActionResult OnGet()
         {
@@ -48,43 +51,37 @@ namespace Market.Web.Pages.Coupon
             {
                 // we want to push the current url 
                 // into the history
-                h.Push(Request.GetEncodedUrl());
+                h.PushUrl(Request.GetEncodedUrl());
             });
 
             return Partial("_Results", this);
         }
 
-        public IActionResult OnGetModal()
+        public IActionResult OnGetCreateModal()
         {
-            //Results = string.IsNullOrEmpty(Query)
-            //    ? Results
-            //    : Results.Where(g => g.ToString().Contains(Query, StringComparison.OrdinalIgnoreCase)).ToList();
+            UpsertModalTitle = "Create";
 
             if (!Request.IsHtmx())
                 return Page();
 
             Response.Htmx(h =>
             {
-                // we want to push the current url 
-                // into the history
                 h.PushUrl(Request.GetEncodedUrl());
             });
 
-            return Partial("_Modal", this);
+            return Partial("_UpsertModal", this);
         }
 
-        public IActionResult OnPost()//[FromForm] NewsletterSignup signup)
+        public async Task<IActionResult> OnPost()
         {
-            // Note: You might want more validation
-            //if (!ModelState.IsValid)
-            //{
-            // oh no, refresh the page
-            //Response.Htmx(h => h.Refresh());
-            //return Content("", "text/html");
-            //}
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-            return Partial("_Modal");//, signup);
+            await _couponService.CreateAsync(RequestDto);
+
+            return RedirectToPage("Index");
         }
-
     }
 }

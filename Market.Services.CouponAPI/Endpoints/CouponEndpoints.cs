@@ -52,8 +52,8 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces<ResponseDto<CouponDto>>(201)
                 .Produces(400)
                 .Produces(401)
-                .Produces(403)
-                .RequireAuthorization();
+                .Produces(403);
+            //.RequireAuthorization();
 
             app.MapPut("/api/coupon/{id}", UpdateCoupon)
                 .WithName("UpdateCoupon")
