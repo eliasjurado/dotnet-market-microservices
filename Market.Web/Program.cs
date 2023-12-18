@@ -35,7 +35,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.MapHtmxAntiforgeryScript();
 app.MapRazorPages();
 
 app.Run();

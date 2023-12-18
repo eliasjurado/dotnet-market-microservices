@@ -233,7 +233,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            coupon.CouponCode = coupon.CouponCode;
+            coupon.CouponCode = couponRequestDto.CouponCode;
             coupon.CouponName = couponRequestDto.CouponName;
             coupon.CouponDisccountAmount = couponRequestDto.CouponDisccountAmount;
             coupon.CouponMinAmmount = couponRequestDto.CouponMinAmmount;

@@ -1,30 +1,51 @@
-﻿document.body.addEventListener('htmx:configRequest', function (evt) {
-    // not needed for GET requests
-    if (evt.detail.verb === 'GET') {
-        return;
-    }
+﻿if (!document.body.attributes.__htmx_antiforgery) {
+    document.addEventListener("htmx:configRequest", evt => {
+        let httpVerb = evt.detail.verb.toUpperCase();
+        if (httpVerb === 'GET') return;
+        let antiForgery = htmx.config.antiForgery;
+        if (antiForgery) {
+            // already specified on form, short circuit
+            if (evt.detail.parameters[antiForgery.formFieldName])
+                return;
 
-    let antiForgeryRequestToken = document.querySelector('input[name="__RequestVerificationToken"]')[0];
-    if (antiForgeryRequestToken) {
-        evt.detail.parameters['__RequestVerificationToken'] = antiForgeryRequestToken.value;
-        console.log(antiForgeryRequestToken);
-    }
-});
+            if (antiForgery.headerName) {
+                evt.detail.headers[antiForgery.headerName]
+                    = antiForgery.requestToken;
+            } else {
+                evt.detail.parameters[antiForgery.formFieldName]
+                    = antiForgery.requestToken;
+            }
+        }
+    });
+    document.addEventListener("htmx:afterOnLoad", evt => {
+        if (evt.detail.boosted) {
+            const parser = new DOMParser();
+            const html = parser.parseFromString(evt.detail.xhr.responseText, 'text/html');
+            const selector = 'meta[name=htmx-config]';
+            const config = html.querySelector(selector);
+            if (config) {
+                const current = document.querySelector(selector);
+                // only change the anti-forgery token
+                const key = 'antiForgery';
+                htmx.config[key] = JSON.parse(config.attributes['content'].value)[key];
+                // update DOM, probably not necessary, but for sanity's sake
+                current.replaceWith(config);
+            }
+        }
+    });
+    document.body.attributes.__htmx_antiforgery = true;
+}
+
 
 function showModal() {
-    const backdrop = document.getElementById("modal-backdrop");
-    const modal = document.getElementById("modal");
-
-    setTimeout(() => {
-        modal.classList.add("show")
-        backdrop.classList.add("show")
-    }, 10);
+    const modal = new bootstrap.Modal('#my-modal');
+    modal.show();
 }
 
 function closeModal() {
-    const container = document.getElementById("product-modal-container");
+    const container = document.getElementById("modal-container");
     const backdrop = document.getElementById("modal-backdrop");
-    const modal = document.getElementById("modal");
+    const modal = document.getElementById("my-modal");
 
     modal.classList.remove("show")
     backdrop.classList.remove("show")
@@ -35,91 +56,17 @@ function closeModal() {
     }, 200)
 }
 
-function closeItemModal(callback) {
-    const container = document.getElementById("itemModalContainer");
-    const modal = document.getElementById("itemModal");
-    const backdrop = document.getElementById("itemModalBackdrop");
-    if (modal)
-        modal.classList.remove("show");
-    if (backdrop)
-        backdrop.classList.remove("show");
-    setTimeout(function () {
-        if (backdrop)
-            container.removeChild(backdrop);
-        if (modal)
-            container.removeChild(modal);
-        if (callback)
-            callback();
-    }, 200);
-}
+//function closeConfirmDeleteModal(callback) {
+//    document.getElementById("confirmDeleteModal").modal("hide");
+//    if (callback) {
+//        setTimeout(function () {
+//            callback();
+//        }, 200);
+//    }
+//}
 
-function closeConfirmDeleteModal(callback) {
-    document.getElementById("confirmDeleteModal").modal("hide");
-    if (callback) {
-        setTimeout(function () {
-            callback();
-        }, 200);
-    }
-}
-
-function errorRefresh(details) {
-    alert("Sorry, an error occurred. The page will now refresh. Please try again.");
-    location.reload();
-}
-
-document.body.addEventListener("htmx:responseError", function (e) {
-    errorRefresh(e.details);
-});
-
-document.body.addEventListener("htmx:onLoadError", function (e) {
-    errorRefresh(e.details);
-});
-
-document.body.addEventListener('htmx:configRequest', function (e) {
-    if (e.detail.verb === "delete") {
-        if (e.detail.parameters.deleteItemId) {
-            let deleteUrl = new URL(e.detail.path, location.origin);
-            if (!deleteUrl.searchParams.get('id')) {
-                deleteUrl.searchParams.set('id', e.detail.parameters.deleteItemId);
-            }
-            e.detail.path = deleteUrl.pathname + deleteUrl.search;
-        }
-    }
-});
-
-document.body.addEventListener("gridItemEdit", function () {
-    closeItemModal(() => htmx.ajax("GET", document.location.href));
-});
-
-document.body.addEventListener("gridItemDelete", function () {
-    closeConfirmDeleteModal(() => htmx.ajax("GET", document.location.href));
-});
-
-function isFormValid(submitter) {
-    const form = document.getElementsById(submitter).closest("form");
-    if (document.getElementsById(form).data("submitted")) {
-        return false;
-    }
-    else {
-        const isValid = form.valid();
-        if (isValid)
-            document.getElementsById(form).data("submitted", true);
-        return isValid;
-    }
-}
-
-function preventMultiSubmit(form) {
-    if (document.getElementsById(form).data("submitted")) {
-        return false;
-    }
-    else {
-        document.getElementsById(form).data("submitted", true);
-        return true;
-    }
-}
-
-function confirmDelete(id, itemName) {
-    document.getElementsById("deleteItemName").text(itemName);
-    document.getElementsById("deleteItemId").attr("value", id);
-    document.getElementsById("confirmDeleteModal").modal();
-}
+//function confirmDelete(id, itemName) {
+//    document.getElementsById("deleteItemName").text(itemName);
+//    document.getElementsById("deleteItemId").attr("value", id);
+//    document.getElementsById("confirmDeleteModal").modal();
+//}

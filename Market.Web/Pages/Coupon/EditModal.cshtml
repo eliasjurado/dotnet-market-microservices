@@ -1,0 +1,65 @@
+﻿@model IndexModel
+<div id="modal-backdrop" class="modal-backdrop fade show"></div>
+<div id="my-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div id="modal-body" class="modal-content">
+            <div class="modal-header text-bg-dark p-3">
+                <h5 class="modal-title">Update Coupon</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close" onclick="closeModal()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="post" asp-page-handler="Save" asp-route-id=@Model.RequestDto.CouponId>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CouponId">Id</label>
+                        <div><input class="form-control" asp-for="RequestDto.CouponId" required="required" disabled="disabled" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CouponCode">Code</label>
+                        <div><input class="form-control" asp-for="RequestDto.CouponCode" required="required" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CouponName">Name</label>
+                        <div><input class="form-control" asp-for="RequestDto.CouponName" required="required" /></div>
+                    </div>
+                    <div class="mb-3 ">
+                        <label class="form-label" asp-for="RequestDto.CouponDisccountAmount">Disccount (%)</label>
+                        <div><input type="number" step='0.01' min="0" max="100" class="input-group-sm form-control text-sm-end" asp-for="RequestDto.CouponDisccountAmount" value='@Model.RequestDto.CouponDisccountAmount.ToString("0.00")' required="required" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for='RequestDto.CouponMinAmmount'>MinAmmount ($)</label>
+                        <div><input type="number" step='0.01' min="0" class="input-group-sm form-control text-sm-end" asp-for="RequestDto.CouponMinAmmount" required="required" value='@Model.RequestDto.CouponMinAmmount.ToString("0.00")' /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CouponStartDate">Start Date</label>
+                        <div><input type="datetime-local" class="form-control" asp-for="RequestDto.CouponStartDate" required="required" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CouponEndDate">End Date</label>
+                        <div><input type="datetime-local" class="form-control" asp-for="RequestDto.CouponEndDate" required="required" /></div>
+                    </div>
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">
+                    Cancel
+                </button>
+                <button form="myForm"
+                        type="submit"
+                        class="btn btn-dark">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    showModal()
+</script>
+
+

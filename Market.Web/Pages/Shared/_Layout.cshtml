@@ -1,12 +1,19 @@
-﻿<!DOCTYPE html>
+﻿@using Htmx.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="htmx-config"
+          historyCacheSize="20"
+          indicatorClass="htmx-indicator"
+          includeAspNetAntiforgeryToken="true" />
     <title>@ViewData["Title"] - Market.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Market.Web.styles.css" asp-append-version="true" />
+    <script src="https://unpkg.com/htmx.org@@1.9.2" defer></script>
+    <script src="@HtmxAntiforgeryScriptEndpoints.Path" defer></script>
     @await RenderSectionAsync("head", false)
 </head>
 <body>
@@ -43,10 +50,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/htmx.min.js"></script>
-    <script src="~/js/_hyperscript.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/_hyperscript.min.js"></script>    
+    <script src="~/js/site.js" asp-append-version="true"></script>    
 
     @await RenderSectionAsync("Scripts", required: false)
-    @await RenderSectionAsync("end", false)
 </body>
 </html>

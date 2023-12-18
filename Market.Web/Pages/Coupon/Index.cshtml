@@ -13,17 +13,15 @@
     </h2>
 
     <div class="input-group mb-3">
-        <a href="#"
-           id="newsletter"
-           hx-get="@Url.Page("Index", "CreateModal")"
-           hx-trigger="click"
-           hx-target="#modals-here"
-           class="btn btn-outline-secondary mb-2"
-           hx-swap="innerHTML"
-           style="font-size:1.1rem">
+        <button hx-get
+                hx-page="Index"
+                hx-page-handler="CreateModal"
+                hx-target="#modal-container"
+                class="btn btn-outline-secondary mb-2"
+                style="font-size:1.1rem">
             <img src="~/img/plus.svg" alt="plus" width="16" />
             New
-        </a>
+        </button>
     </div>
 
     <div class="input-group mb-3">
@@ -57,13 +55,15 @@
                 <th class="text-sm-center">Actions</th>
             </tr>
         </thead>
-        <tbody id="results">
-            @await Html.PartialAsync("_Results")
+        <tbody id="results" class="align-middle">
+            @await Html.PartialAsync("Results")
+       
+         
         </tbody>
     </table>
 </div>
 
-<div id="modals-here"></div>
+<div id="modal-container"></div>
 
 @section head {
     <style>
@@ -73,47 +73,4 @@
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 100, 255, 0.5);
         }
     </style>
-}
-
-@section end
-{
-    <script type="text/javascript">
-
-        let newsletter = document.getElementById('newsletter');
-        newsletter.addEventListener('htmx:afterOnLoad', () => {
-            const backdrop = document.getElementById("modal-backdrop");
-            const modal = document.getElementById("modal");
-
-            setTimeout(() => {
-                modal.classList.toggle("show")
-                backdrop.classList.toggle("show")
-            }, 10);
-        });
-
-        let inputs = newsletter.querySelectorAll('input');
-        inputs.forEach((e) => {
-            e.oninvalid = () => e.classList.add('is-invalid');
-            e.onchange = () => {
-                if (e.validity.valid) {
-                    e.classList.remove('is-invalid');
-                } else {
-                    e.classList.add('is-invalid');
-                }
-            }
-        });
-
-        function closeModal() {
-            const container = document.getElementById("modals-here");
-            const backdrop = document.getElementById("modal-backdrop");
-            const modal = document.getElementById("modal");
-
-            modal.classList.toggle("show")
-            backdrop.classList.toggle("show")
-
-            setTimeout(function () {
-                container.removeChild(backdrop)
-                container.removeChild(modal)
-            }, 200)
-        }
-    </script>
 }

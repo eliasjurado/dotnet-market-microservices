@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-﻿using Htmx;
+using Htmx;
 using Market.Web.Models;
 using Market.Web.Models.Dto;
 using Market.Web.Service.IService;
@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Market.Web.Pages.Coupon
 {
+    [IgnoreAntiforgeryToken]
     public class IndexModel : PageModel
     {
         private readonly ICouponService _couponService;
@@ -38,10 +39,8 @@ namespace Market.Web.Pages.Coupon
         }
 
         [BindProperty(SupportsGet = true)]
-        public string UpsertModalTitle { get; set; }
-
-        [BindProperty(SupportsGet = true)]
         public string Query { get; set; }
+
 
         public IActionResult OnGet()
         {
@@ -54,17 +53,29 @@ namespace Market.Web.Pages.Coupon
 
             Response.Htmx(h =>
             {
-                // we want to push the current url 
-                // into the history
+                //push current url into the history
                 h.PushUrl(Request.GetEncodedUrl());
             });
 
-            return Partial("_Results", this);
+            return Partial("Results", this);
         }
 
         public IActionResult OnGetCreateModal()
         {
-            UpsertModalTitle = "Create";
+            if (!Request.IsHtmx())
+                return Page();
+
+            Response.Htmx(h =>
+            {
+                h.PushUrl(Request.GetEncodedUrl());
+            });
+
+            return Partial("CreateModal", this);
+        }
+
+        public async Task<IActionResult> OnGetUpdateModal(int id)
+        {
+            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)(await _couponService.GetAsync(id)).Data).ToString());
 
             if (!Request.IsHtmx())
                 return Page();
@@ -74,39 +85,24 @@ namespace Market.Web.Pages.Coupon
                 h.PushUrl(Request.GetEncodedUrl());
             });
 
-            return Partial("_UpsertModal", new UpsertModalModel("Create", RequestDto));
+            return Partial("EditModal", this);
         }
 
-        public async Task<IActionResult> OnGetUpdateModal(int id)
-        {
-            UpsertModalTitle = "Update";
-            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)(await _couponService.GetAsync(id)).Data).ToString());
-            //RequestDto = _mapper.Map<CouponDto>(model);
-
-            if (!Request.IsHtmx())
-                return Page();
-
-            CouponDto sd = _mapper.Map<CouponDto>(Results.FirstOrDefault());
-            var s = sd.CouponStartDate;
-
-            //await Task.Delay(TimeSpan.FromSeconds(2));
-            //Response.Htmx(h =>
-            //{
-            //    h.PushUrl(Request.GetEncodedUrl());
-            //});
-            var model = new UpsertModalModel("Update", RequestDto);
-            return Partial("_UpsertModal", model);
-        }
-
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostSave(int id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
-            await _couponService.CreateAsync(RequestDto);
-
+            RequestDto.CouponId = id;
+            if (RequestDto.CouponId != 0)
+            {
+                await _couponService.UpdateAsync(RequestDto);
+            }
+            else
+            {
+                await _couponService.CreateAsync(RequestDto);
+            }
             return RedirectToPage("Index");
         }
     }
