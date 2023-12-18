@@ -1,3 +1,5 @@
+using Htmx.TagHelpers;
+using Market.Web;
 using Market.Web.Service;
 using Market.Web.Service.IService;
 using Market.Web.Utility;
@@ -15,6 +17,7 @@ Constants.CouponAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:Co
 
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 var app = builder.Build();
 

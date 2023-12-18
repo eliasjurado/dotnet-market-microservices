@@ -16,7 +16,14 @@
             <td style="text-align:end">@coupon.CouponStartDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
             <td style="text-align:end">@coupon.CouponEndDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
             <td style="text-align:center">
-                <img style="margin-inline:0.5em" src="~/img/pen.svg" alt="pen" style="height: 1.2rem; mar">
+
+                <a hx-get="@Url.Page("Index", "UpdateModal", new { id = @coupon.CouponId})"
+                   hx-trigger="click"
+                   hx-target="#modals-here"
+                   hx-swap="innerHTML"
+                   hx-tries="3" hx-timeout="60s" type="button">
+                    <img style="margin-inline:0.5em" src="~/img/pen.svg" alt="pen" style="height: 1.2rem; mar">
+                </a>
                 <img style="margin-inline:0.5em" src="~/img/trash.svg" alt="trash" style="height: 1.2rem">
                 <img style="margin-inline:0.5em" src="~/img/circle-info.svg" alt="trash" style="height: 1.2rem">
             </td>

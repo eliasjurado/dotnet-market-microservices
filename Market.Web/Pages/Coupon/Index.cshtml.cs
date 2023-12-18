@@ -1,3 +1,4 @@
+﻿using AutoMapper;
 ﻿using Htmx;
 using Market.Web.Models;
 using Market.Web.Models.Dto;
@@ -13,12 +14,16 @@ namespace Market.Web.Pages.Coupon
     public class IndexModel : PageModel
     {
         private readonly ICouponService _couponService;
+        private readonly IMapper _mapper;
+        [BindProperty(SupportsGet = true)]
+        public CouponViewModel model { get; set; }
         public ICollection<CouponViewModel> Results { get; set; }
         [BindProperty(SupportsGet = true)]
         public CouponDto RequestDto { get; set; }
         public ResponseDto ResponseDto { get; set; }
-        public IndexModel(ICouponService couponService)
+        public IndexModel(ICouponService couponService, IMapper mapper)
         {
+            _mapper = mapper;
             _couponService = couponService;
 
             JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(_couponService.GetAsync().GetAwaiter().GetResult().Data));
@@ -69,7 +74,28 @@ namespace Market.Web.Pages.Coupon
                 h.PushUrl(Request.GetEncodedUrl());
             });
 
-            return Partial("_UpsertModal", this);
+            return Partial("_UpsertModal", new UpsertModalModel("Create", RequestDto));
+        }
+
+        public async Task<IActionResult> OnGetUpdateModal(int id)
+        {
+            UpsertModalTitle = "Update";
+            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)(await _couponService.GetAsync(id)).Data).ToString());
+            //RequestDto = _mapper.Map<CouponDto>(model);
+
+            if (!Request.IsHtmx())
+                return Page();
+
+            CouponDto sd = _mapper.Map<CouponDto>(Results.FirstOrDefault());
+            var s = sd.CouponStartDate;
+
+            //await Task.Delay(TimeSpan.FromSeconds(2));
+            //Response.Htmx(h =>
+            //{
+            //    h.PushUrl(Request.GetEncodedUrl());
+            //});
+            var model = new UpsertModalModel("Update", RequestDto);
+            return Partial("_UpsertModal", model);
         }
 
         public async Task<IActionResult> OnPost()

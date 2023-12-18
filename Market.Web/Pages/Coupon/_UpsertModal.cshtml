@@ -13,6 +13,13 @@
                     <h5 class="modal-title">@Model.UpsertModalTitle Coupon</h5>
                 </div>
                 <div class="modal-body">
+                    @if (@Model.RequestDto.CouponId != 0)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RequestDto.CouponId">Id</label>
+                            <div><input class="form-control" asp-for="RequestDto.CouponId" required="required" /></div>
+                        </div>
+                    }
                     <div class="mb-3">
                         <label class="form-label" asp-for="RequestDto.CouponCode">Code</label>
                         <div><input class="form-control" asp-for="RequestDto.CouponCode" required="required" /></div>
@@ -42,10 +49,9 @@
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">
                         Close
                     </button>
-                    @* <input type="submit" value="Save" class="btn btn-primary" /> *@
-                    <button 
-                            type="submit"
-                            class="btn btn-primary">Save
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save
                     </button>
                 </div>
             </form>
