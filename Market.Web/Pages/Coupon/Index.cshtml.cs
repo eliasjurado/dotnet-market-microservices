@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Htmx;
+﻿using Htmx;
 using Market.Web.Models;
 using Market.Web.Models.Dto;
 using Market.Web.Service.IService;
@@ -15,16 +14,14 @@ namespace Market.Web.Pages.Coupon
     public class IndexModel : PageModel
     {
         private readonly ICouponService _couponService;
-        private readonly IMapper _mapper;
         [BindProperty(SupportsGet = true)]
         public CouponViewModel model { get; set; }
         public ICollection<CouponViewModel> Results { get; set; }
         [BindProperty(SupportsGet = true)]
         public CouponDto RequestDto { get; set; }
         public ResponseDto ResponseDto { get; set; }
-        public IndexModel(ICouponService couponService, IMapper mapper)
+        public IndexModel(ICouponService couponService)
         {
-            _mapper = mapper;
             _couponService = couponService;
 
             JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(_couponService.GetAsync().GetAwaiter().GetResult().Data));

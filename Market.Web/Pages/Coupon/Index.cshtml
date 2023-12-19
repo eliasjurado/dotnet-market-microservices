@@ -42,7 +42,7 @@
                aria-describedby="search-addon">
     </div>
 
-    <table class="table table-borderless table-striped">
+    <table class="table table-borderless table-striped table-responsive table-hover">
         <thead class="table-dark">
             <tr>
                 <th class="text-sm-center">Id</th>
@@ -57,8 +57,6 @@
         </thead>
         <tbody id="results" class="align-middle">
             @await Html.PartialAsync("Results")
-       
-         
         </tbody>
     </table>
 </div>
