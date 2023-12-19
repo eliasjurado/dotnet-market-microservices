@@ -55,18 +55,3 @@ function closeModal() {
         container.removeChild(modal)
     }, 200)
 }
-
-//function closeConfirmDeleteModal(callback) {
-//    document.getElementById("confirmDeleteModal").modal("hide");
-//    if (callback) {
-//        setTimeout(function () {
-//            callback();
-//        }, 200);
-//    }
-//}
-
-//function confirmDelete(id, itemName) {
-//    document.getElementsById("deleteItemName").text(itemName);
-//    document.getElementsById("deleteItemId").attr("value", id);
-//    document.getElementsById("confirmDeleteModal").modal();
-//}

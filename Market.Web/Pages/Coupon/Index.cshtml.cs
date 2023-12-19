@@ -19,6 +19,7 @@ namespace Market.Web.Pages.Coupon
         public ICollection<CouponViewModel> Results { get; set; }
         [BindProperty(SupportsGet = true)]
         public CouponDto RequestDto { get; set; }
+        public int ResultsCount { get; set; } = 0;
         public ResponseDto ResponseDto { get; set; }
         public IndexModel(ICouponService couponService)
         {
@@ -44,6 +45,8 @@ namespace Market.Web.Pages.Coupon
             Results = string.IsNullOrEmpty(Query)
                 ? Results
                 : Results.Where(g => g.ToString().Contains(Query, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            ResultsCount = Results.Count();
 
             if (!Request.IsHtmx())
                 return Page();
@@ -72,7 +75,10 @@ namespace Market.Web.Pages.Coupon
 
         public async Task<IActionResult> OnGetUpdateModal(int id)
         {
-            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)(await _couponService.GetAsync(id)).Data).ToString());
+            ResponseDto responseDto = await _couponService.GetAsync(id);
+            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)responseDto.Data).ToString());
+            TempData["customErrors"] = null;
+            TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
 
             if (!Request.IsHtmx())
                 return Page();
@@ -102,6 +108,7 @@ namespace Market.Web.Pages.Coupon
 
         public async Task<IActionResult> OnPostSave(int id)
         {
+            TempData["customErrors"] = null;
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -109,26 +116,39 @@ namespace Market.Web.Pages.Coupon
             RequestDto.CouponId = id;
             if (RequestDto.CouponId != 0)
             {
-                await _couponService.UpdateAsync(RequestDto);
+                ResponseDto responseDto = await _couponService.UpdateAsync(RequestDto);
+                if (!responseDto.IsSuccess)
+                {
+                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+                }
             }
             else
             {
-                await _couponService.CreateAsync(RequestDto);
+                ResponseDto responseDto = await _couponService.CreateAsync(RequestDto);
+                if (!responseDto.IsSuccess)
+                {
+                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+                }
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("Index", this);
         }
 
         public async Task<IActionResult> OnPostDelete(int id)
         {
+            TempData["customErrors"] = null;
             if (!ModelState.IsValid)
             {
                 return Page();
             }
             if (id != 0)
             {
-                await _couponService.RemoveAsync(id);
+                ResponseDto responseDto = await _couponService.RemoveAsync(id);
+                if (!responseDto.IsSuccess)
+                {
+                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+                }
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("Index", this);
         }
     }
 }

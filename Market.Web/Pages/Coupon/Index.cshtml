@@ -1,7 +1,7 @@
 ﻿@page "/coupon"
 @model Market.Web.Pages.Coupon.IndexModel
 @{
-    ViewBag.Title = "Coupon";
+    ViewBag.Title = "Coupon";  
 }
 
 <div class="card p-4 mb-3">
@@ -41,10 +41,10 @@
                aria-label="Username"
                aria-describedby="search-addon">
     </div>
-
-    <table class="table table-borderless table-striped table-responsive table-hover">
-        <thead class="table-dark">
-            <tr>
+    <div class="mb-3">
+        <table class="table table-borderless table-striped table-responsive table-hover">
+            <thead class="table-dark">
+                <tr>
                 <th class="text-sm-center">Id</th>
                 <th class="text-sm-center">Code</th>
                 <th class="text-sm-center">Disccount Name</th>
@@ -53,15 +53,25 @@
                 <th class="text-sm-center">StartDate</th>
                 <th class="text-sm-center">EndDate</th>
                 <th class="text-sm-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody id="results" class="align-middle">
-            @await Html.PartialAsync("Results")
-        </tbody>
-    </table>
+                </tr>
+            </thead>
+            <tbody id="results" class="align-middle">
+                @await Html.PartialAsync("Results")
+            </tbody>
+        </table>
+    </div>
+
+    <div style="height:50px">Showing @Model.ResultsCount records</div>
 </div>
 
 <div id="modal-container"></div>
+
+<div id="toast-container">
+    @if (TempData["customErrors"] != null)
+    {
+        @await Html.PartialAsync("Toast")
+    }
+</div>
 
 @section head {
     <style>
