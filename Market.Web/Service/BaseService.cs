@@ -1,9 +1,9 @@
-﻿using Market.Web.Models.Dto;
+﻿using Market.Infrastructure;
+using Market.Web.Models.Dto;
 using Market.Web.Service.IService;
-using Market.Web.Utility;
 using Newtonsoft.Json;
 using System.Text;
-using static Market.Web.Utility.Constants;
+using static Market.Infrastructure.Base;
 
 namespace Market.Web.Service
 {

@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Web", "Market.Web\Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Services.AuthAPI", "Market.Services.AuthAPI\Market.Services.AuthAPI.csproj", "{65042765-440D-4BA8-9E9F-64D279E83590}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{053654B0-C359-4863-8E35-4531E2CB0320}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Infrastructure", "Market.Infrastructure\Market.Infrastructure.csproj", "{81CBC252-0713-4F9F-B0D2-57E7880B0355}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,10 @@ Global
 		{65042765-440D-4BA8-9E9F-64D279E83590}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65042765-440D-4BA8-9E9F-64D279E83590}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65042765-440D-4BA8-9E9F-64D279E83590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81CBC252-0713-4F9F-B0D2-57E7880B0355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81CBC252-0713-4F9F-B0D2-57E7880B0355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81CBC252-0713-4F9F-B0D2-57E7880B0355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81CBC252-0713-4F9F-B0D2-57E7880B0355}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +51,7 @@ Global
 		{FC13B581-A97D-4EAB-886B-56475131E1AB} = {6FDB2629-FEB0-4106-98E9-77B225D075D4}
 		{8CCF7E77-D9C0-4B64-850E-56003BE30910} = {4C5AE788-7E66-4A69-983C-E2390532A803}
 		{65042765-440D-4BA8-9E9F-64D279E83590} = {6FDB2629-FEB0-4106-98E9-77B225D075D4}
+		{81CBC252-0713-4F9F-B0D2-57E7880B0355} = {053654B0-C359-4863-8E35-4531E2CB0320}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0FBDEA7-FA2E-4040-A413-AE744465A3D6}

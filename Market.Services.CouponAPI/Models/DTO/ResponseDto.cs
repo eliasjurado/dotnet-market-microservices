@@ -1,4 +1,4 @@
-﻿using Market.Services.CouponAPI.Utility;
+﻿using Market.Infrastructure;
 using System.Net;
 
 namespace Market.Services.CouponAPI.Models.Dto

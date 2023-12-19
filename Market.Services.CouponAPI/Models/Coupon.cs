@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static Market.Services.CouponAPI.Utility.Base;
+using static Market.Infrastructure.Base;
 
 namespace Market.Services.CouponAPI.Models
 {

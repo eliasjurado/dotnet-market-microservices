@@ -1,6 +1,6 @@
 ﻿using Market.Web.Models.Dto;
 using Market.Web.Service.IService;
-using static Market.Web.Utility.Constants;
+using static Market.Infrastructure.Base;
 
 namespace Market.Web.Service
 {

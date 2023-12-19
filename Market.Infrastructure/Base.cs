@@ -1,8 +1,14 @@
-﻿namespace Market.Web.Utility
+﻿namespace Market.Infrastructure
 {
-    public class Constants
+    public class Base
     {
+        public const string DefaultUser = "SYSTEM";
         public static string CouponAPIBase { get; set; }
+        public enum ByteType
+        {
+            No,
+            Yes
+        }
         public enum ApiType
         {
             GET,

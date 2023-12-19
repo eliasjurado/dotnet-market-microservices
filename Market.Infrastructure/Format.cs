@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Market.Web.Utility
+namespace Market.Infrastructure
 {
     public static class Format
     {

@@ -22,4 +22,8 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Market.Infrastructure\Market.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

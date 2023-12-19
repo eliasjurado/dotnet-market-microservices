@@ -1,10 +1,10 @@
 using FluentValidation;
+using Market.Infrastructure;
 using Market.Services.CouponAPI;
 using Market.Services.CouponAPI.Data;
 using Market.Services.CouponAPI.Endpoints;
 using Market.Services.CouponAPI.Repository;
 using Market.Services.CouponAPI.Repository.IRepository;
-using Market.Services.CouponAPI.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

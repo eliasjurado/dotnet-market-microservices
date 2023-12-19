@@ -1,8 +1,8 @@
 using Htmx.TagHelpers;
+using Market.Infrastructure;
 using Market.Web;
 using Market.Web.Service;
 using Market.Web.Service.IService;
-using Market.Web.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 
-Constants.CouponAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:CouponAPI");
+Base.CouponAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:CouponAPI");
 
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IBaseService, BaseService>();

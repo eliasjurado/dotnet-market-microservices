@@ -1,4 +1,4 @@
-﻿using Market.Web.Utility;
+﻿using Market.Infrastructure;
 using System.Net;
 
 namespace Market.Web.Models.Dto

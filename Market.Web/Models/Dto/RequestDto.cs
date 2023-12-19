@@ -1,4 +1,4 @@
-﻿using static Market.Web.Utility.Constants;
+﻿using static Market.Infrastructure.Base;
 namespace Market.Web.Models.Dto
 {
     public class RequestDto
