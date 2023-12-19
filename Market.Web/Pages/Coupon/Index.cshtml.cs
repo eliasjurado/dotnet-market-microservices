@@ -88,6 +88,21 @@ namespace Market.Web.Pages.Coupon
             return Partial("EditModal", this);
         }
 
+        public async Task<IActionResult> OnGetDeleteModal(int id)
+        {
+            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)(await _couponService.GetAsync(id)).Data).ToString());
+
+            if (!Request.IsHtmx())
+                return Page();
+
+            Response.Htmx(h =>
+            {
+                h.PushUrl(Request.GetEncodedUrl());
+            });
+
+            return Partial("DeleteModal", this);
+        }
+
         public async Task<IActionResult> OnPostSave(int id)
         {
             if (!ModelState.IsValid)
@@ -102,6 +117,19 @@ namespace Market.Web.Pages.Coupon
             else
             {
                 await _couponService.CreateAsync(RequestDto);
+            }
+            return RedirectToPage("Index");
+        }
+
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            if (id != 0)
+            {
+                await _couponService.RemoveAsync(id);
             }
             return RedirectToPage("Index");
         }

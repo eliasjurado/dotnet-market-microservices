@@ -1,0 +1,40 @@
+﻿@model IndexModel
+<div id="modal-backdrop" class="modal-backdrop fade show"></div>
+<div id="my-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div id="modal-body" class="modal-content">
+            <div class="modal-header text-bg-dark p-3">
+                <h5 class="modal-title">Delete Coupon</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close" onclick="closeModal()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="post" asp-page-handler="Delete" asp-route-id=@Model.RequestDto.CouponId>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CouponId">Are you sure to delete Coupon with Id: "@Model.RequestDto.CouponId"?</label>
+                    </div>
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">
+                    Cancel
+                </button>
+                <button form="myForm"
+                        type="submit"
+                        class="btn btn-dark">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    showModal()
+</script>
+
+

@@ -22,35 +22,20 @@
                         style="font-size:1.1rem">
                     <img src="~/img/pen.svg" alt="pen" width="16" />
                 </button>
+                <button hx-get
+                        hx-page="Index"
+                        hx-page-handler="DeleteModal"
+                        hx-route-id=@coupon.CouponId
+                        hx-target="#modal-container"
+                        class="btn-sm border-0 bg-transparent"
+                        style="font-size:1.1rem">
+                    <img src="~/img/trash.svg" alt="trash" width="16" />
+                </button>
             </td>
-
-            @*       <td style="text-align:center">
-
-    <a name="newsletter"
-    hx-get="@Url.Page("./Index", "UpdateModal")"
-    hx-trigger="click"
-    hx-target="#modals-here"
-    hx-swap="innerHTML"
-    hx-timeout="60s" type="button">
-    <img style="margin-inline:0.5em" src="~/img/pen.svg" alt="pen" style="height: 1.2rem; mar">
-    </a>
-    <a href="#"
-    name="newsletter"
-    hx-get="@Url.Page("Index", "CreateModal")"
-    hx-trigger="click"
-    hx-target="#modal-container"
-    class="btn btn-outline-secondary mb-2"
-    style="font-size:1.1rem">
-    <img src="~/img/plus.svg" alt="plus" width="16" />
-    New
-    </a>
-    <img style="margin-inline:0.5em" src="~/img/trash.svg" alt="trash" style="height: 1.2rem">
-    <img style="margin-inline:0.5em" src="~/img/circle-info.svg" alt="trash" style="height: 1.2rem">
-    </td> *@
         </tr>
     }
 }
-else
+@if (!Model.Results.Any())
 {
     <tr>
         <td colspan="8">No Results for "@Model.Query"</td>
