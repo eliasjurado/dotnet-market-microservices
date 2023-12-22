@@ -1,9 +1,11 @@
 ﻿namespace Market.Infrastructure
 {
-    public class Base
+    public static class Base
     {
         public const string DefaultUser = "SYSTEM";
-        public static string CouponAPIBase { get; set; }
+        public const string GlobalSeparator = "\n";
+        public static string CouponAPIBase { get; set; } = string.Empty;
+        public static string AuthAPIBase { get; set; } = string.Empty;
         public enum ByteType
         {
             No,

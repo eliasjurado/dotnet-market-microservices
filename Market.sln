@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Services.AuthAPI", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{053654B0-C359-4863-8E35-4531E2CB0320}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Infrastructure", "Market.Infrastructure\Market.Infrastructure.csproj", "{81CBC252-0713-4F9F-B0D2-57E7880B0355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Infrastructure", "Market.Infrastructure\Market.Infrastructure.csproj", "{81CBC252-0713-4F9F-B0D2-57E7880B0355}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

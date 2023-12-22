@@ -12,10 +12,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>();
 
 Base.CouponAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:CouponAPI");
+Base.AuthAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:AuthAPI");
 
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 

@@ -1,0 +1,27 @@
+﻿@page
+@model Market.Web.Pages.Auth.IndexModel
+@{
+}
+
+<div id="auth-container">
+    <div class="main-auth">
+        <input class="inp-auth" type="checkbox" id="chk-auth" aria-hidden="true">
+        <div class="login">
+            <form>
+                <label class="lbl-auth" for="chk-auth" aria-hidden="true">Login</label>
+                <input class="inp-auth" type="email" name="email" placeholder="Email" required="">
+                <input class="inp-auth" type="password" name="pswd" placeholder="Password" required="">
+                <button class="btn-auth">Login</button>
+            </form>
+        </div>
+        <div class="signup">
+            <form>
+                <label class="lbl-auth" for="chk-auth" aria-hidden="true">Sign up</label>
+                <input class="inp-auth" type="text" name="txt" placeholder="User name" required="">
+                <input class="inp-auth" type="email" name="email" placeholder="Email" required="">
+                <input class="inp-auth" type="password" name="pswd" placeholder="Password" required="">
+                <button class="btn-auth">Sign up</button>
+            </form>
+        </div>        
+    </div>
+</div>
