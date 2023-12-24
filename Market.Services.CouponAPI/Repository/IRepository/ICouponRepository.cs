@@ -1,4 +1,4 @@
-﻿using Market.Services.CouponAPI.Models;
+﻿using Market.Domain.Models;
 using System.Linq.Expressions;
 
 namespace Market.Services.CouponAPI.Repository.IRepository

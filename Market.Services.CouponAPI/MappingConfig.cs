@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Market.Services.CouponAPI.Models;
-using Market.Services.CouponAPI.Models.Dto;
+using Market.Domain.Models;
+using Market.Domain.Models.Dto.Services.Coupon;
 
 namespace Market.Services.CouponAPI
 {

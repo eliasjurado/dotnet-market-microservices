@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Market.Domain.Models;
+using Market.Domain.Models.Dto.Services;
+using Market.Domain.Models.Dto.Services.Coupon;
 using Market.Infrastructure;
-using Market.Services.CouponAPI.Models;
-using Market.Services.CouponAPI.Models.Dto;
+
 using Market.Services.CouponAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

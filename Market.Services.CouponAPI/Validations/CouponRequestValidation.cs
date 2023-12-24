@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Market.Services.CouponAPI.Models.Dto;
+using Market.Domain.Models.Dto.Services.Coupon;
 
 namespace Market.Services.CouponAPI.Validations
 {

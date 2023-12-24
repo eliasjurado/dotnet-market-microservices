@@ -1,4 +1,5 @@
-﻿using Market.Services.CouponAPI.Models;
+﻿
+using Market.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Market.Services.CouponAPI.Data

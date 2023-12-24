@@ -1,5 +1,5 @@
-﻿using Market.Services.CouponAPI.Data;
-using Market.Services.CouponAPI.Models;
+﻿using Market.Domain.Models;
+using Market.Services.CouponAPI.Data;
 using Market.Services.CouponAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
