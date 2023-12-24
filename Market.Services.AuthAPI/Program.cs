@@ -48,12 +48,10 @@ async void ApplyPendingMigration()
         using (var scope = app.Services.CreateScope())
         {
             var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
             if ((await _db.Database.GetPendingMigrationsAsync()).Any())
             {
                 _db.Database.Migrate();
             }
-
         }
     }
     catch (Exception ex)

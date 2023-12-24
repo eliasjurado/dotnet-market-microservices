@@ -85,7 +85,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.ConfigureCouponEndpoints();
-//app.ConfigureAuthEndpoints();
 app.UseHttpsRedirection();
 
 ApplyPendingMigration();
