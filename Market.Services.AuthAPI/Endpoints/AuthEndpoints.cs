@@ -5,6 +5,7 @@ using Market.Services.AuthAPI.Models;
 using Market.Services.AuthAPI.Models.Dto;
 using Market.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 namespace Market.Services.AuthAPI.Endpoints
 {
@@ -24,6 +25,11 @@ namespace Market.Services.AuthAPI.Endpoints
                 .Produces<ResponseDto<object>>(201)
                 .Produces(400);
 
+            app.MapGet("/api/roles", GetRoles)
+                .WithName("GetRoles")
+                .Produces<ResponseDto<ICollection<SelectListItem>>>(200)
+                .Produces(400);
+
             app.MapPost("/api/roles", AssignRole)
                 .WithName("AssignRole")
                 .Accepts<SignUpRequestDto>("application/json")
@@ -35,7 +41,7 @@ namespace Market.Services.AuthAPI.Endpoints
             ResponseDto<SignInResponseDto> response = new();
             try
             {
-                _logger.Log(LogLevel.Information, "Getting user");
+                //_logger.Log(LogLevel.Information, "Getting user");
 
 
                 var signInResponse = await _service.SignInAsync(request);
@@ -113,7 +119,37 @@ namespace Market.Services.AuthAPI.Endpoints
             {
                 response.Errors = Format.GetInnerExceptionMessage(ex);
             }
-            return Results.BadRequest(response); ;
+            return Results.BadRequest(response);
+        }
+
+        private async static Task<IResult> GetRoles(IAuthService _service, IMapper _mapper, ILogger<Program> _logger)
+        {
+            ResponseDto<ICollection<SelectListItem>> response = new();
+            try
+            {
+                _logger.Log(LogLevel.Information, "Getting roles");
+                response.Message = "Roles not retrieved";
+                var roles = await _service.GetRolesAsync();
+
+                if (!roles.Any())
+                {
+                    return Results.BadRequest(response);
+                }
+
+                response.IsSuccess = true;
+                response.Message = "Roles retrieved";
+                response.Data = roles;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Status = nameof(HttpStatusCode.OK);
+
+                IResult result = Results.Ok(response);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                response.Errors = Format.GetInnerExceptionMessage(ex);
+            }
+            return Results.BadRequest(response);
         }
     }
 }

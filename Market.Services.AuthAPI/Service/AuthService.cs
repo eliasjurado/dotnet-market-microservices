@@ -5,6 +5,7 @@ using Market.Services.AuthAPI.Models;
 using Market.Services.AuthAPI.Models.Dto;
 using Market.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Market.Services.AuthAPI.Service
@@ -28,7 +29,8 @@ namespace Market.Services.AuthAPI.Service
 
         public async Task<SignInResponseDto> SignInAsync(SignInRequestDto request)
         {
-            var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == request.UserName.ToLower());
+            //var user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.UserName.ToLower());
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToLower().Equals(request.UserName.ToLower()));
 
             bool isValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
@@ -92,7 +94,7 @@ namespace Market.Services.AuthAPI.Service
 
         public async Task<bool> AssignRoleAsync(RoleRequestDto request)
         {
-            var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == request.Role.ToLower());
+            var user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
 
             if (user == null)
                 return false;
@@ -100,10 +102,15 @@ namespace Market.Services.AuthAPI.Service
             if (!_roleManager.RoleExistsAsync(request.Role).GetAwaiter().GetResult())
             {
                 //create role if it does not exist
-                _roleManager.CreateAsync(new IdentityRole(request.Role)).GetAwaiter().GetResult();
+                await _roleManager.CreateAsync(new IdentityRole(request.Role));
             }
             await _userManager.AddToRoleAsync(user, request.Role);
             return true;
+        }
+
+        public async Task<ICollection<SelectListItem>> GetRolesAsync()
+        {
+            return await Task.Run(() => _db.Roles.Select(x => new SelectListItem { Text = x.NormalizedName, Value = x.NormalizedName }).ToList());
         }
     }
 }
