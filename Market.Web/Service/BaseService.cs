@@ -55,13 +55,13 @@ namespace Market.Web.Service
                 switch (apiResponse.StatusCode)
                 {
                     case HttpStatusCode.NotFound:
-                        return new() { StatusCode = HttpStatusCode.NotFound, Status = Format.GetName(nameof(HttpStatusCode.NotFound)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.NotFound)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.NotFound)) } };
+                        return new() { StatusCode = HttpStatusCode.NotFound, Status = Format.GetName(nameof(HttpStatusCode.NotFound)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.NotFound)), Metadata = new List<string> { Format.GetName(nameof(HttpStatusCode.NotFound)) } };
                     case HttpStatusCode.Unauthorized:
-                        return new() { StatusCode = HttpStatusCode.Unauthorized, Status = Format.GetName(nameof(HttpStatusCode.Unauthorized)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.Unauthorized)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.Unauthorized)) } };
+                        return new() { StatusCode = HttpStatusCode.Unauthorized, Status = Format.GetName(nameof(HttpStatusCode.Unauthorized)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.Unauthorized)), Metadata = new List<string> { Format.GetName(nameof(HttpStatusCode.Unauthorized)) } };
                     case HttpStatusCode.Forbidden:
-                        return new() { StatusCode = HttpStatusCode.Forbidden, Status = Format.GetName(nameof(HttpStatusCode.Forbidden)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.Forbidden)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.Forbidden)) } };
+                        return new() { StatusCode = HttpStatusCode.Forbidden, Status = Format.GetName(nameof(HttpStatusCode.Forbidden)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.Forbidden)), Metadata = new List<string> { Format.GetName(nameof(HttpStatusCode.Forbidden)) } };
                     case HttpStatusCode.InternalServerError:
-                        return new() { StatusCode = HttpStatusCode.InternalServerError, Status = Format.GetName(nameof(HttpStatusCode.InternalServerError)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.InternalServerError)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.InternalServerError)) } };
+                        return new() { StatusCode = HttpStatusCode.InternalServerError, Status = Format.GetName(nameof(HttpStatusCode.InternalServerError)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.InternalServerError)), Metadata = new List<string> { Format.GetName(nameof(HttpStatusCode.InternalServerError)) } };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
@@ -74,7 +74,7 @@ namespace Market.Web.Service
                 return new ResponseDto
                 {
                     IsSuccess = false,
-                    Errors = Format.GetInnerExceptionMessage(ex)
+                    Metadata = Format.GetInnerExceptionMessage(ex)
                 };
             }
         }

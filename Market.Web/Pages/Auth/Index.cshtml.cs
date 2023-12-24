@@ -20,7 +20,7 @@ namespace Market.Web.Pages.Auth
         public SignInRequestDto SignInRequest { get; set; } = new SignInRequestDto();
         [BindProperty(SupportsGet = true)]
         public SignUpRequestDto SignUpRequest { get; set; } = new SignUpRequestDto();
-        public ICollection<SelectListItem> Roles { get; set; }
+        public List<SelectListItem> Roles { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ToastTitle { get; set; } = string.Empty;
         [BindProperty(SupportsGet = true)]
@@ -70,7 +70,7 @@ namespace Market.Web.Pages.Auth
             if (!response.IsSuccess)
             {
                 ToastTitle = "Sign In Failed";
-                response.Errors.ToList().ForEach(x => TempData.Add(x, x));
+                response.Metadata.ToList().ForEach(x => TempData.Add(x, x));
 
                 return RedirectToPage("Index", this);
             }
@@ -93,7 +93,7 @@ namespace Market.Web.Pages.Auth
             if (!response.IsSuccess)
             {
                 ToastTitle = response.Message;
-                response.Errors.ToList().ForEach(x => TempData.Add(x, x));
+                response.Metadata.ToList().ForEach(x => TempData.Add(x, x));
                 return RedirectToPage("Index", this);
             }
             ToastTitle = "Sign Up Successful";

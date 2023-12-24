@@ -78,7 +78,7 @@ namespace Market.Web.Pages.Coupon
             ResponseDto responseDto = await _couponService.GetAsync(id);
             RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)responseDto.Data).ToString());
             TempData["customErrors"] = null;
-            TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+            TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
 
             if (!Request.IsHtmx())
                 return Page();
@@ -119,7 +119,7 @@ namespace Market.Web.Pages.Coupon
                 ResponseDto responseDto = await _couponService.UpdateAsync(RequestDto);
                 if (!responseDto.IsSuccess)
                 {
-                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
                 }
             }
             else
@@ -127,7 +127,7 @@ namespace Market.Web.Pages.Coupon
                 ResponseDto responseDto = await _couponService.CreateAsync(RequestDto);
                 if (!responseDto.IsSuccess)
                 {
-                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
                 }
             }
             return RedirectToPage("Index", this);
@@ -145,7 +145,7 @@ namespace Market.Web.Pages.Coupon
                 ResponseDto responseDto = await _couponService.RemoveAsync(id);
                 if (!responseDto.IsSuccess)
                 {
-                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Errors);
+                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
                 }
             }
             return RedirectToPage("Index", this);

@@ -11,7 +11,7 @@ namespace Market.Web.Models.Dto
         public string Message { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public string Status { get; set; }
-        public ICollection<string> Errors { get; set; }
+        public ICollection<string> Metadata { get; set; }
 
         public ResponseDto()
         {
@@ -20,7 +20,7 @@ namespace Market.Web.Models.Dto
             IsSuccess = false;
             StatusCode = HttpStatusCode.BadRequest;
             Status = Format.GetName(nameof(HttpStatusCode.BadRequest));
-            Errors = new List<string>();
+            Metadata = new List<string>();
         }
     }
 }

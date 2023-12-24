@@ -16,7 +16,7 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             app.MapGet("/api/coupon", GetAllCoupon)
                 .WithName("GetCoupons")
-                .Produces<ResponseDto<IEnumerable<CouponDto>>>(200)
+                .Produces<ResponseDto<List<CouponDto>>>(200)
                 .Produces(401)
                 .Produces(403);
             //.RequireAuthorization("AdminOnly"); //security policy
@@ -30,12 +30,12 @@ namespace Market.Services.CouponAPI.Endpoints
                     int output;
                     if (!int.TryParse(id, out output))
                     {
-                        response.Errors.Add("Invalid Id was received");
+                        response.Metadata.Add("Invalid Id was received");
                         return Results.BadRequest(response);
                     }
                     if (output == 0)
                     {
-                        response.Errors.Add("Id received cannot be zero");
+                        response.Metadata.Add("Id received cannot be zero");
                         return Results.BadRequest(response);
                     }
                     return await next(context);
@@ -83,7 +83,7 @@ namespace Market.Services.CouponAPI.Endpoints
 
         private async static Task<IResult> GetAllCoupon(HttpContext context, IConfiguration _configuration, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger)
         {
-            ResponseDto<IEnumerable<CouponDto>> response = new();
+            ResponseDto<List<CouponDto>> response = new();
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
 
@@ -97,7 +97,7 @@ namespace Market.Services.CouponAPI.Endpoints
 
             _logger.Log(LogLevel.Information, "Getting all Coupons");
             response.IsSuccess = true;
-            response.Data = (await _repository.GetAsync()).Select(_mapper.Map<CouponDto>);
+            response.Data = (await _repository.GetAsync()).Select(_mapper.Map<CouponDto>).ToList();
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
 
@@ -122,14 +122,14 @@ namespace Market.Services.CouponAPI.Endpoints
             int output;
             if (!int.TryParse(id, out output))
             {
-                response.Errors.Add("Invalid Id was received");
+                response.Metadata.Add("Invalid Id was received");
                 return Results.BadRequest(response);
             }
 
             var couponDto = _mapper.Map<CouponDto>(await _repository.GetAsync(output));
             if (couponDto == null)
             {
-                response.Errors.Add($"Coupon with Id {id} not found");
+                response.Metadata.Add($"Coupon with Id {id} not found");
                 return Results.BadRequest(response);
             }
 
@@ -160,13 +160,13 @@ namespace Market.Services.CouponAPI.Endpoints
 
             if (!validationResult.IsValid)
             {
-                validationResult.Errors.ForEach(x => response.Errors.Add(x.ErrorMessage));
+                validationResult.Errors.ForEach(x => response.Metadata.Add(x.ErrorMessage));
                 return Results.BadRequest(response);
             }
 
             if (await _repository.GetAsync(couponRequestDto.CouponName) != null)
             {
-                response.Errors.Add("Coupon Name already exists");
+                response.Metadata.Add("Coupon Name already exists");
                 return Results.BadRequest(response);
             }
 
@@ -207,21 +207,21 @@ namespace Market.Services.CouponAPI.Endpoints
             var validationResult = await _validator.ValidateAsync(couponRequestDto);
             if (!validationResult.IsValid)
             {
-                validationResult.Errors.ForEach(x => response.Errors.Add(x.ErrorMessage));
+                validationResult.Errors.ForEach(x => response.Metadata.Add(x.ErrorMessage));
                 return Results.BadRequest(response);
             }
 
             int output;
             if (!int.TryParse(id, out output))
             {
-                response.Errors.Add("Invalid Id was received");
+                response.Metadata.Add("Invalid Id was received");
                 return Results.BadRequest(response);
             }
 
             var existingCoupon = await _repository.GetAsync(couponRequestDto.CouponName);
             if (existingCoupon != null && existingCoupon.CouponId != output)
             {
-                response.Errors.Add("Coupon Name already exists");
+                response.Metadata.Add("Coupon Name already exists");
                 return Results.BadRequest(response);
             }
 
@@ -229,7 +229,7 @@ namespace Market.Services.CouponAPI.Endpoints
 
             if (coupon == null)
             {
-                response.Errors.Add($"Coupon with Id {id} not found");
+                response.Metadata.Add($"Coupon with Id {id} not found");
                 return Results.BadRequest(response);
             }
 
@@ -270,7 +270,7 @@ namespace Market.Services.CouponAPI.Endpoints
             int output;
             if (!int.TryParse(id, out output))
             {
-                response.Errors.Add("Invalid Id was received");
+                response.Metadata.Add("Invalid Id was received");
                 return Results.BadRequest(response);
             }
 
@@ -278,7 +278,7 @@ namespace Market.Services.CouponAPI.Endpoints
 
             if (coupon == null)
             {
-                response.Errors.Add($"Coupon with Id {id} not found");
+                response.Metadata.Add($"Coupon with Id {id} not found");
                 return Results.BadRequest(response);
             }
 
