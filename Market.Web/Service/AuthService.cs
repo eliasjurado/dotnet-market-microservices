@@ -43,5 +43,15 @@ namespace Market.Web.Service
             };
             return await _baseService.SendAsync(request);
         }
+
+        public async Task<ResponseDto> GetRolesAsync()
+        {
+            var request = new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = AuthAPIBase + "/api/roles",
+            };
+            return await _baseService.SendAsync(request);
+        }
     }
 }

@@ -1,0 +1,29 @@
+﻿@using System.Globalization
+@using Market.Infrastructure
+@using Market.Web.Models.Dto
+@model ToastDto
+
+<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <img src="~/img/circle-info.svg" class="rounded me-2" alt="info">
+        <strong class="me-auto">@Model.Title</strong>
+        <small class="text-muted">
+            @Format.GetPrettyDate(DateTime.Now)
+        </small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        @Model.Body.Value.ToString()
+    </div>
+</div>
+
+<script type="text/javascript">
+    function closeToast() {
+        const container = document.getElementById("auth-toast-container");
+
+        setTimeout(function () {
+            container.innerHTML = "";
+        }, 10000)
+    }
+    closeToast();
+</script>

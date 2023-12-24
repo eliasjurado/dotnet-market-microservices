@@ -2,6 +2,7 @@
 using Market.Web.Models.Dto;
 using Market.Web.Service.IService;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 using static Market.Infrastructure.Base;
 
@@ -53,12 +54,14 @@ namespace Market.Web.Service
 
                 switch (apiResponse.StatusCode)
                 {
-                    case System.Net.HttpStatusCode.NotFound:
-                        return new() { IsSuccess = false, Errors = new List<string> { "Access Denied" } };
-                    case System.Net.HttpStatusCode.Unauthorized:
-                        return new() { IsSuccess = false, Errors = new List<string> { "Unauthorized" } };
-                    case System.Net.HttpStatusCode.InternalServerError:
-                        return new() { IsSuccess = false, Errors = new List<string> { "Internal Server Error" } };
+                    case HttpStatusCode.NotFound:
+                        return new() { StatusCode = HttpStatusCode.NotFound, Status = Format.GetName(nameof(HttpStatusCode.NotFound)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.NotFound)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.NotFound)) } };
+                    case HttpStatusCode.Unauthorized:
+                        return new() { StatusCode = HttpStatusCode.Unauthorized, Status = Format.GetName(nameof(HttpStatusCode.Unauthorized)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.Unauthorized)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.Unauthorized)) } };
+                    case HttpStatusCode.Forbidden:
+                        return new() { StatusCode = HttpStatusCode.Forbidden, Status = Format.GetName(nameof(HttpStatusCode.Forbidden)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.Forbidden)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.Forbidden)) } };
+                    case HttpStatusCode.InternalServerError:
+                        return new() { StatusCode = HttpStatusCode.InternalServerError, Status = Format.GetName(nameof(HttpStatusCode.InternalServerError)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.InternalServerError)), Errors = new List<string> { Format.GetName(nameof(HttpStatusCode.InternalServerError)) } };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);

@@ -1,4 +1,5 @@
-﻿using Market.Web.Models.Dto;
+﻿
+using Market.Web.Models.Dto;
 
 namespace Market.Web.Service.IService
 {

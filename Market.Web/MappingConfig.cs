@@ -9,6 +9,7 @@ namespace Market.Web
         public MappingConfig()
         {
             CreateMap<CouponDto, CouponViewModel>().ReverseMap();
+            CreateMap<RoleRequestDto, SignUpRequestDto>().ReverseMap();
         }
     }
 }

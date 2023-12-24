@@ -32,8 +32,8 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        <li class="nav-item align-middle">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Auth/Index"><img src="~/img/user.svg"/> Mi Account</a>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Auth/Index"><img src="~/img/user.svg" /> Mi Account</a>
                         </li>
                     </ul>
                 </div>
@@ -42,10 +42,9 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+            @RenderBody()            
+        </main>        
+    </div>    
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - Market.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>

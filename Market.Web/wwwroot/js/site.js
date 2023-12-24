@@ -53,5 +53,27 @@ function closeModal() {
     setTimeout(function () {
         container.removeChild(backdrop)
         container.removeChild(modal)
+    }, 200);
+}
+
+function showModalAuth() {
+    const modal = new bootstrap.Modal('#auth-my-modal');
+    modal.show();
+}
+
+function closeModalAuth() {
+    const container = document.getElementById("auth-modal-container");
+    const backdrop = document.getElementById("auth-modal-backdrop");
+    const modal = document.getElementById("auth-my-modal");
+
+    backdrop.classList.remove("show")
+    modal.classList.remove("show")    
+
+    backdrop.classList.remove("fade")
+    modal.classList.remove("fade")   
+
+    setTimeout(function () {
+        container.removeChild(backdrop)
+        container.removeChild(modal)
     }, 200)
 }
