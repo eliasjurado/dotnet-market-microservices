@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Market.Web.Models.Dto
 {
-    public class ResponseDto
+    public class ResponseInterface
     {
         public bool IsSuccess { get; set; }
         public Guid CorrelationId { get; set; }
@@ -13,7 +13,7 @@ namespace Market.Web.Models.Dto
         public string Status { get; set; }
         public ICollection<string> Metadata { get; set; }
 
-        public ResponseDto()
+        public ResponseInterface()
         {
             CorrelationId = Guid.NewGuid();
             Message = string.Empty;

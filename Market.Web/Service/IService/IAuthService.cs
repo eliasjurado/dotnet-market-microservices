@@ -5,9 +5,9 @@ namespace Market.Web.Service.IService
 {
     public interface IAuthService
     {
-        Task<ResponseDto?> SignUpAsync(SignUpRequestDto requestDto);
-        Task<ResponseDto?> SignInAsync(SignInRequestDto requestDto);
-        Task<ResponseDto?> AssignRoleAsync(RoleRequestDto requestDto);
-        Task<ResponseDto?> GetRolesAsync();
+        Task<ResponseInterface?> SignUpAsync(SignUpRequestDto requestDto);
+        Task<ResponseInterface?> SignInAsync(SignInRequestDto requestDto);
+        Task<ResponseInterface?> AssignRoleAsync(RoleRequestDto requestDto);
+        Task<ResponseInterface?> GetRolesAsync();
     }
 }

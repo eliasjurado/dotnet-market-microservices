@@ -11,9 +11,9 @@ namespace Market.Web.Service
         {
             _baseService = baseService;
         }
-        public async Task<ResponseDto> AssignRoleAsync(RoleRequestDto requestDto)
+        public async Task<ResponseInterface> AssignRoleAsync(RoleRequestDto requestDto)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.POST,
                 Url = AuthAPIBase + "/api/roles",
@@ -22,9 +22,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto> SignInAsync(SignInRequestDto requestDto)
+        public async Task<ResponseInterface> SignInAsync(SignInRequestDto requestDto)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.POST,
                 Url = AuthAPIBase + "/api/users/signin",
@@ -33,9 +33,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto> SignUpAsync(SignUpRequestDto requestDto)
+        public async Task<ResponseInterface> SignUpAsync(SignUpRequestDto requestDto)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.POST,
                 Url = AuthAPIBase + "/api/users/signup",
@@ -44,9 +44,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto> GetRolesAsync()
+        public async Task<ResponseInterface> GetRolesAsync()
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.GET,
                 Url = AuthAPIBase + "/api/roles",

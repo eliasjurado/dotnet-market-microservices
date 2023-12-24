@@ -12,9 +12,9 @@ namespace Market.Web.Service
             _baseService = baseService;
         }
 
-        public async Task<ResponseDto?> CreateAsync(CouponDto requestDto)
+        public async Task<ResponseInterface?> CreateAsync(CouponDto requestDto)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.POST,
                 Url = CouponAPIBase + "/api/coupon",
@@ -23,9 +23,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto?> GetAsync()
+        public async Task<ResponseInterface?> GetAsync()
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.GET,
                 Url = CouponAPIBase + "/api/coupon"
@@ -33,9 +33,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto?> GetAsync(int id)
+        public async Task<ResponseInterface?> GetAsync(int id)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.GET,
                 Url = CouponAPIBase + "/api/coupon/" + id
@@ -43,9 +43,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto?> GetAsync(string code)
+        public async Task<ResponseInterface?> GetAsync(string code)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.GET,
                 Url = CouponAPIBase + "/api/coupon/" + code
@@ -53,9 +53,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto?> RemoveAsync(int id)
+        public async Task<ResponseInterface?> RemoveAsync(int id)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.DELETE,
                 Url = CouponAPIBase + "/api/coupon/" + id
@@ -63,9 +63,9 @@ namespace Market.Web.Service
             return await _baseService.SendAsync(request);
         }
 
-        public async Task<ResponseDto?> UpdateAsync(CouponDto requestDto)
+        public async Task<ResponseInterface?> UpdateAsync(CouponDto requestDto)
         {
-            var request = new RequestDto
+            var request = new RequestInterface
             {
                 ApiType = ApiType.PUT,
                 Url = CouponAPIBase + "/api/coupon/" + requestDto.CouponId,

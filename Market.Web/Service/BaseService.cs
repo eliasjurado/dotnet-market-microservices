@@ -16,7 +16,7 @@ namespace Market.Web.Service
         {
             _httpClientFactory = httpClientFactory;
         }
-        public async Task<ResponseDto> SendAsync(RequestDto request)
+        public async Task<ResponseInterface> SendAsync(RequestInterface request)
         {
             try
             {
@@ -64,14 +64,14 @@ namespace Market.Web.Service
                         return new() { StatusCode = HttpStatusCode.InternalServerError, Status = Format.GetName(nameof(HttpStatusCode.InternalServerError)), IsSuccess = false, Message = Format.GetName(nameof(HttpStatusCode.InternalServerError)), Metadata = new List<string> { Format.GetName(nameof(HttpStatusCode.InternalServerError)) } };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseInterface>(apiContent);
                         return apiResponseDto;
                 }
             }
             catch (Exception ex)
             {
 
-                return new ResponseDto
+                return new ResponseInterface
                 {
                     IsSuccess = false,
                     Metadata = Format.GetInnerExceptionMessage(ex)

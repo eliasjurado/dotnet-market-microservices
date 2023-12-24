@@ -20,7 +20,7 @@ namespace Market.Web.Pages.Coupon
         [BindProperty(SupportsGet = true)]
         public CouponDto RequestDto { get; set; }
         public int ResultsCount { get; set; } = 0;
-        public ResponseDto ResponseDto { get; set; }
+        public ResponseInterface ResponseDto { get; set; }
         public IndexModel(ICouponService couponService)
         {
             _couponService = couponService;
@@ -75,7 +75,7 @@ namespace Market.Web.Pages.Coupon
 
         public async Task<IActionResult> OnGetUpdateModal(int id)
         {
-            ResponseDto responseDto = await _couponService.GetAsync(id);
+            ResponseInterface responseDto = await _couponService.GetAsync(id);
             RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)responseDto.Data).ToString());
             TempData["customErrors"] = null;
             TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
@@ -116,7 +116,7 @@ namespace Market.Web.Pages.Coupon
             RequestDto.CouponId = id;
             if (RequestDto.CouponId != 0)
             {
-                ResponseDto responseDto = await _couponService.UpdateAsync(RequestDto);
+                ResponseInterface responseDto = await _couponService.UpdateAsync(RequestDto);
                 if (!responseDto.IsSuccess)
                 {
                     TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
@@ -124,7 +124,7 @@ namespace Market.Web.Pages.Coupon
             }
             else
             {
-                ResponseDto responseDto = await _couponService.CreateAsync(RequestDto);
+                ResponseInterface responseDto = await _couponService.CreateAsync(RequestDto);
                 if (!responseDto.IsSuccess)
                 {
                     TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
@@ -142,7 +142,7 @@ namespace Market.Web.Pages.Coupon
             }
             if (id != 0)
             {
-                ResponseDto responseDto = await _couponService.RemoveAsync(id);
+                ResponseInterface responseDto = await _couponService.RemoveAsync(id);
                 if (!responseDto.IsSuccess)
                 {
                     TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
