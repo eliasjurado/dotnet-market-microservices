@@ -1,4 +1,4 @@
-﻿using Market.Services.AuthAPI.Models;
+﻿using Market.Domain.Models;
 
 namespace Market.Services.AuthAPI.Service.IService
 {

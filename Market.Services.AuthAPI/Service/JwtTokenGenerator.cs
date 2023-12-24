@@ -16,7 +16,7 @@ namespace Mango.Services.AuthAPI.Service
             _jwtOptions = jwtOptions.Value;
         }
 
-        public string GenerateToken(Market.Services.AuthAPI.Models.ApplicationUser applicationUser, IEnumerable<string> roles)
+        public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 

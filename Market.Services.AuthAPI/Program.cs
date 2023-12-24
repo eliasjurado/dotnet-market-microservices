@@ -8,7 +8,7 @@ using Market.Services.AuthAPI.Service.IService;
 using Market.Services.CouponAPI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ApplicationUser = Market.Services.AuthAPI.Models.ApplicationUser;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

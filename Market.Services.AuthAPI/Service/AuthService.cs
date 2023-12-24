@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Market.Domain.Models;
 using Market.Domain.Models.Dto.Services.Auth;
 using Market.Infrastructure;
 using Market.Services.AuthAPI.Data;
-using Market.Services.AuthAPI.Models;
 using Market.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
