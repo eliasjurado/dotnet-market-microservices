@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Market.Domain.Models.Dto.Services.Auth;
 using Market.Infrastructure;
 using Market.Services.AuthAPI.Models;
-using Market.Services.AuthAPI.Models.Dto;
 using Market.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

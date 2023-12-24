@@ -1,4 +1,4 @@
-﻿using Market.Services.AuthAPI.Models.Dto;
+﻿using Market.Domain.Models.Dto.Services.Auth;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Market.Services.AuthAPI.Service.IService
