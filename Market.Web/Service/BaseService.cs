@@ -1,5 +1,5 @@
-﻿using Market.Infrastructure;
-using Market.Web.Models.Dto;
+﻿using Market.Domain.Models.Dto.Web;
+using Market.Infrastructure;
 using Market.Web.Service.IService;
 using Newtonsoft.Json;
 using System.Net;

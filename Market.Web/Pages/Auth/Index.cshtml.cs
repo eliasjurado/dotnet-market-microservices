@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Htmx;
-using Market.Web.Models.Dto;
+using Market.Domain.Models.Dto.Services.Auth;
 using Market.Web.Service.IService;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;

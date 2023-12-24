@@ -1,6 +1,7 @@
 ﻿using Htmx;
-using Market.Web.Models;
-using Market.Web.Models.Dto;
+using Market.Domain.Models.Dto.Services.Coupon;
+using Market.Domain.Models.Dto.Web;
+using Market.Infrastructure;
 using Market.Web.Service.IService;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -119,7 +120,7 @@ namespace Market.Web.Pages.Coupon
                 ResponseInterface responseDto = await _couponService.UpdateAsync(RequestDto);
                 if (!responseDto.IsSuccess)
                 {
-                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
+                    TempData["customErrors"] = string.Join<string>(Base.GlobalSeparator, responseDto.Metadata);
                 }
             }
             else
@@ -127,7 +128,7 @@ namespace Market.Web.Pages.Coupon
                 ResponseInterface responseDto = await _couponService.CreateAsync(RequestDto);
                 if (!responseDto.IsSuccess)
                 {
-                    TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
+                    TempData["customErrors"] = string.Join<string>(Base.GlobalSeparator, responseDto.Metadata);
                 }
             }
             return RedirectToPage("Index", this);

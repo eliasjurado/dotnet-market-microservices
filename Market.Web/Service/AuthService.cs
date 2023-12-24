@@ -1,4 +1,5 @@
-﻿using Market.Web.Models.Dto;
+﻿using Market.Domain.Models.Dto.Services.Auth;
+using Market.Domain.Models.Dto.Web;
 using Market.Web.Service.IService;
 using static Market.Infrastructure.Base;
 
