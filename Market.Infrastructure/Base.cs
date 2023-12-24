@@ -3,7 +3,7 @@
     public static class Base
     {
         public const string DefaultUser = "SYSTEM";
-        public const string GlobalSeparator = "\n";
+        public const string GlobalSeparator = "\r\n";
         public static string CouponAPIBase { get; set; } = string.Empty;
         public static string AuthAPIBase { get; set; } = string.Empty;
         public enum ByteType
