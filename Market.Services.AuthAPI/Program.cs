@@ -1,13 +1,14 @@
 using Mango.Services.AuthAPI.Service;
+using Market.Domain.Models;
 using Market.Infrastructure;
 using Market.Services.AuthAPI.Data;
 using Market.Services.AuthAPI.Endpoints;
-using Market.Services.AuthAPI.Models;
 using Market.Services.AuthAPI.Service;
 using Market.Services.AuthAPI.Service.IService;
 using Market.Services.CouponAPI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ApplicationUser = Market.Services.AuthAPI.Models.ApplicationUser;
 
 var builder = WebApplication.CreateBuilder(args);
 

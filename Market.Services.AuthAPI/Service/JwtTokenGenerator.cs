@@ -1,4 +1,4 @@
-﻿using Market.Services.AuthAPI.Models;
+﻿using Market.Domain.Models;
 using Market.Services.AuthAPI.Service.IService;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +16,7 @@ namespace Mango.Services.AuthAPI.Service
             _jwtOptions = jwtOptions.Value;
         }
 
-        public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
+        public string GenerateToken(Market.Services.AuthAPI.Models.ApplicationUser applicationUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
