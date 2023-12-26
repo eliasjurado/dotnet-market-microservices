@@ -1,13 +1,18 @@
 ﻿using AutoMapper;
 using Htmx;
 using Market.Domain.Models.Dto.Services.Auth;
+using Market.Infrastructure;
 using Market.Web.Service.IService;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Market.Web.Pages.Auth
 {
@@ -70,7 +75,7 @@ namespace Market.Web.Pages.Auth
         {
             TempData.Clear();
             var response = await _authService.SignInAsync(SignInRequest);
-            if (!response.IsSuccess)
+            if (!response.IsSuccess || response.Data == null)
             {
                 ToastTitle = "Sign In Failed";
                 response.Metadata.ToList().ForEach(x => TempData.Add(x, x));
@@ -80,10 +85,12 @@ namespace Market.Web.Pages.Auth
 
             ToastTitle = "Sign In Successful";
             var data = JsonConvert.DeserializeObject<SignInResponseDto>(((JObject)response.Data).ToString());
-            _tokenProvider.SetToken(data.Token);
-            TempData.Add("name", $"Welcome {data.User.Name}");
 
-            return RedirectToPage("Index", this);
+            _tokenProvider.SetToken(data.Token);
+            await SignInUser(data);
+            //TempData.Add("name", $"Welcome {data.User.Name}");
+
+            return RedirectToPage("/Index");
         }
 
         public async Task<IActionResult> OnPostSignUp()
@@ -111,5 +118,26 @@ namespace Market.Web.Pages.Auth
             return RedirectToPage("Index", this);
         }
 
+        private async Task SignInUser(SignInResponseDto model)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(model.Token);
+
+            if (jwt != null)
+            {
+                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimList = new List<Claim>
+                {
+                    new Claim(JwtRegisteredClaimNames.Email,jwt.Claims.FirstOrDefault(x=>x.Type.Equals(JwtRegisteredClaimNames.Email)).Value),
+                    new Claim(JwtRegisteredClaimNames.Sub,jwt.Claims.FirstOrDefault(x=>x.Type.Equals(JwtRegisteredClaimNames.Sub)).Value),
+                    new Claim(JwtRegisteredClaimNames.Name,jwt.Claims.FirstOrDefault(x=>x.Type.Equals(JwtRegisteredClaimNames.Name)).Value),
+                    new Claim(ClaimTypes.Name,jwt.Claims.FirstOrDefault(u => u.Type.Equals(JwtRegisteredClaimNames.Email)).Value),
+                    new Claim(ClaimTypes.Role,jwt.Claims.FirstOrDefault(u => u.Type.Equals(Base.RoleType)).Value),
+                };
+                identity.AddClaims(claimList);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            }
+        }
     }
 }

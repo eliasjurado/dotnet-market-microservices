@@ -3,6 +3,7 @@ using Market.Infrastructure;
 using Market.Web;
 using Market.Web.Service;
 using Market.Web.Service.IService;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,14 @@ builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.ExpireTimeSpan = TimeSpan.FromHours(10);
+            options.LoginPath = "/Auth/Index";
+            options.AccessDeniedPath = "/Auth/AccessDenied";
+        });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,7 +46,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapHtmxAntiforgeryScript();
 app.MapRazorPages();

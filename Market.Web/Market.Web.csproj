@@ -12,6 +12,7 @@
     <PackageReference Include="Htmx" Version="1.6.1" />
     <PackageReference Include="Htmx.TagHelpers" Version="1.6.1" />
     <PackageReference Include="Lib.AspNetCore.ServerSentEvents" Version="8.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
