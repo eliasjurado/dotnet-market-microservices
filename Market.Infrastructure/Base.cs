@@ -4,6 +4,7 @@
     {
         public const string DefaultUser = "SYSTEM";
         public const string GlobalSeparator = "\r\n";
+        public const string TokenCookie = "JWTToken";
         public static string CouponAPIBase { get; set; } = string.Empty;
         public static string AuthAPIBase { get; set; } = string.Empty;
         public enum ByteType

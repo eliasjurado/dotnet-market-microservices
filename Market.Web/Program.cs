@@ -19,6 +19,7 @@ Base.AuthAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:AuthAPI")
 
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 

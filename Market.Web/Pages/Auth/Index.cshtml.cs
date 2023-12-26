@@ -13,6 +13,7 @@ namespace Market.Web.Pages.Auth
 {
     public class IndexModel : PageModel
     {
+        private readonly ITokenProvider _tokenProvider;
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
 
@@ -26,10 +27,12 @@ namespace Market.Web.Pages.Auth
         [BindProperty(SupportsGet = true)]
         public string ToastBody { get; set; }
 
-        public IndexModel(IAuthService authService, IMapper mapper)
+        public IndexModel(IAuthService authService, IMapper mapper, ITokenProvider tokenProvider)
         {
             _mapper = mapper;
             _authService = authService;
+            _tokenProvider = tokenProvider;
+
             var response = _authService.GetRolesAsync().GetAwaiter().GetResult();
             JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(response.Data));
             Roles = new List<SelectListItem>();
@@ -74,13 +77,11 @@ namespace Market.Web.Pages.Auth
 
                 return RedirectToPage("Index", this);
             }
+
             ToastTitle = "Sign In Successful";
             var data = JsonConvert.DeserializeObject<SignInResponseDto>(((JObject)response.Data).ToString());
-
-            if (data != null)
-            {
-                TempData.Add("name", $"Welcome {data.User.Name}");
-            }
+            _tokenProvider.SetToken(data.Token);
+            TempData.Add("name", $"Welcome {data.User.Name}");
 
             return RedirectToPage("Index", this);
         }
