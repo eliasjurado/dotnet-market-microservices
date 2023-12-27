@@ -26,15 +26,20 @@ namespace Market.Web.Pages.Coupon
         {
             _couponService = couponService;
 
-            JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(_couponService.GetAsync().GetAwaiter().GetResult().Data));
-
-            Results = new List<CouponViewModel>();
-
-            foreach (var item in jsonResponse)
+            var response = _couponService.GetAsync().GetAwaiter().GetResult();
+            if (response.IsSuccess)
             {
-                JObject coupon = (JObject)item;
-                Results.Add(JsonConvert.DeserializeObject<CouponViewModel>(coupon.ToString()));
+                JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(response.Data));
+
+                Results = new List<CouponViewModel>();
+
+                foreach (var item in jsonResponse)
+                {
+                    JObject coupon = (JObject)item;
+                    Results.Add(JsonConvert.DeserializeObject<CouponViewModel>(coupon.ToString()));
+                }
             }
+
         }
 
         [BindProperty(SupportsGet = true)]

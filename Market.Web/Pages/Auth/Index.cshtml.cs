@@ -132,8 +132,15 @@ namespace Market.Web.Pages.Auth
                     new Claim(JwtRegisteredClaimNames.Sub,jwt.Claims.FirstOrDefault(x=>x.Type.Equals(JwtRegisteredClaimNames.Sub)).Value),
                     new Claim(JwtRegisteredClaimNames.Name,jwt.Claims.FirstOrDefault(x=>x.Type.Equals(JwtRegisteredClaimNames.Name)).Value),
                     new Claim(ClaimTypes.Name,jwt.Claims.FirstOrDefault(u => u.Type.Equals(JwtRegisteredClaimNames.Email)).Value),
-                    new Claim(ClaimTypes.Role,jwt.Claims.FirstOrDefault(u => u.Type.Equals(Base.RoleType)).Value),
                 };
+
+                var jwtRoleClaims = jwt.Claims.Where(x => x.Type.Equals(Base.RoleType));
+
+                foreach (var claim in jwtRoleClaims)
+                {
+                    claimList.Add(new Claim(ClaimTypes.Role, claim.Value));
+                }
+
                 identity.AddClaims(claimList);
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);

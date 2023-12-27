@@ -31,7 +31,7 @@ namespace Market.Web.Service
                 Url = AuthAPIBase + "/api/users/signin",
                 Data = requestDto
             };
-            return await _baseService.SendAsync(request);
+            return await _baseService.SendAsync(request, false);
         }
 
         public async Task<ResponseInterface> SignUpAsync(SignUpRequestDto requestDto)
@@ -42,7 +42,7 @@ namespace Market.Web.Service
                 Url = AuthAPIBase + "/api/users/signup",
                 Data = requestDto
             };
-            return await _baseService.SendAsync(request);
+            return await _baseService.SendAsync(request, false);
         }
 
         public async Task<ResponseInterface> GetRolesAsync()
@@ -52,7 +52,7 @@ namespace Market.Web.Service
                 ApiType = ApiType.GET,
                 Url = AuthAPIBase + "/api/roles",
             };
-            return await _baseService.SendAsync(request);
+            return await _baseService.SendAsync(request, false);
         }
     }
 }

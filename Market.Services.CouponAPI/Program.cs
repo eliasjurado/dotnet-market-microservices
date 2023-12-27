@@ -1,4 +1,5 @@
 using FluentValidation;
+using Market.Domain.Models;
 using Market.Infrastructure;
 using Market.Services.CouponAPI;
 using Market.Services.CouponAPI.Data;
@@ -20,14 +21,14 @@ builder.Services.AddSwaggerGen(option =>
 {
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description =
-        "<b>JWT Authorization header using the Bearer scheme</b>\n\r\n\r" +
-        "Enter 'Bearer' [space] and then your token in the text input below.\n\r\n\r" +
-        "Example: \"Bearer myB3@r3rT0k3n\"\n\r\n\r",
-        Name = "Authorization",
+        Name = Base.AuthorizationCookie,
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Scheme = Base.BearerReferenceType,
+        Description =
+        "<b>JWT Authorization header using Bearer scheme</b>\n\r\n\r" +
+        "Enter 'Bearer' [space] and then your token in the text input below.\n\r\n\r" +
+        "Example: `Bearer Generated-JWT-Token`\n\r\n\r"
     });
     option.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
@@ -37,10 +38,10 @@ builder.Services.AddSwaggerGen(option =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id = Base.BearerReferenceType
                 },
                 Scheme = "oauth2",
-                Name = "Bearer",
+                Name = Base.BearerReferenceType,
                 In = ParameterLocation.Header
             },
             new List<string>()
@@ -51,6 +52,9 @@ builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+var jwtOptions = builder.Configuration.GetSection("ApiSettings:JwtOptions").Get<JwtOptions>();
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,14 +66,16 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("ApiSettings:Secret"))),
-        ValidateIssuer = false,
-        ValidateAudience = false
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtOptions.Secret)),
+        ValidateIssuer = true,
+        ValidIssuer = jwtOptions.Issuer,
+        ValidateAudience = true,
+        ValidAudience = jwtOptions.Audience,
     };
 });
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
 });
 
 var app = builder.Build();

@@ -4,6 +4,6 @@ namespace Market.Web.Service.IService
 {
     public interface IBaseService
     {
-        Task<ResponseInterface> SendAsync(RequestInterface request);
+        Task<ResponseInterface> SendAsync(RequestInterface request, bool isSecured = true);
     }
 }

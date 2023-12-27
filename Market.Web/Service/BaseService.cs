@@ -11,18 +11,25 @@ namespace Market.Web.Service
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ITokenProvider _tokenProvider;
 
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
             _httpClientFactory = httpClientFactory;
+            _tokenProvider = tokenProvider;
         }
-        public async Task<ResponseInterface> SendAsync(RequestInterface request)
+        public async Task<ResponseInterface> SendAsync(RequestInterface request, bool isSecured = true)
         {
             try
             {
                 HttpClient client = _httpClientFactory.CreateClient("MarketAPI");
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
+
+                if (isSecured)
+                {
+                    message.Headers.Add(AuthorizationCookie, $"{BearerReferenceType} {_tokenProvider.GetToken()}");
+                }
 
                 message.RequestUri = new Uri(request.Url);
 

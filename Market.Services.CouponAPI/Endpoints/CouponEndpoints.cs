@@ -4,7 +4,6 @@ using Market.Domain.Models;
 using Market.Domain.Models.Dto.Services;
 using Market.Domain.Models.Dto.Services.Coupon;
 using Market.Infrastructure;
-
 using Market.Services.CouponAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -20,8 +19,8 @@ namespace Market.Services.CouponAPI.Endpoints
                 .WithName("GetCoupons")
                 .Produces<ResponseDto<List<CouponDto>>>(200)
                 .Produces(401)
-                .Produces(403);
-            //.RequireAuthorization("AdminOnly"); //security policy
+                .Produces(403)
+                .RequireAuthorization("AdminOnly"); //security policy
 
             app.MapGet("/api/coupon/{id}", GetCoupon)
                 .WithName("GetCoupon")
@@ -45,8 +44,8 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces<ResponseDto<CouponDto>>(200)
                 .Produces(400)
                 .Produces(401)
-                .Produces(403);
-            //.RequireAuthorization();
+                .Produces(403)
+                .RequireAuthorization();
 
             app.MapPost("/api/coupon", CreateCoupon)
                 .WithName("CreateCoupon")
@@ -54,8 +53,8 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces<ResponseDto<CouponDto>>(201)
                 .Produces(400)
                 .Produces(401)
-                .Produces(403);
-            //.RequireAuthorization();
+                .Produces(403)
+                .RequireAuthorization();
 
             app.MapPut("/api/coupon/{id}", UpdateCoupon)
                 .WithName("UpdateCoupon")
@@ -63,39 +62,29 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces<ResponseDto<CouponDto>>(200)
                 .Produces(400)
                 .Produces(401)
-                .Produces(403);
-            //.RequireAuthorization();
+                .Produces(403)
+                .RequireAuthorization();
 
             app.MapDelete("/api/coupon/{id}", DeleteCoupon)
                 .WithName("DeleteCoupon")
                 .Produces<ResponseDto<CouponDto>>(200)
                 .Produces(400)
                 .Produces(401)
-                .Produces(403);
-            //.RequireAuthorization();
-
-            //app.MapGet("/api/coupon/search", SearchCoupons)
-            //    .WithName("SearchCoupons")
-            //    .Produces<APIResponse<ICollection<CouponDTO>>>(200)
-            //    .Produces(400)
-            //    .Produces(401)
-            //    .Produces(403)
-            //    .RequireAuthorization();
+                .Produces(403)
+                .RequireAuthorization();
         }
 
         private async static Task<IResult> GetAllCoupon(HttpContext context, IConfiguration _configuration, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger)
         {
             ResponseDto<List<CouponDto>> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
-
-            //if (string.IsNullOrWhiteSpace(userName))
-            //{
-            //    response.Errors.Add("Invalid User Name was received");
-            //    return Results.BadRequest(response);
-            //}
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                response.Metadata.Add("Invalid User Name was received");
+                return Results.BadRequest(response);
+            }
 
             _logger.Log(LogLevel.Information, "Getting all Coupons");
             response.IsSuccess = true;
@@ -111,15 +100,13 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
-
-            //if (string.IsNullOrWhiteSpace(userName))
-            //{
-            //    response.Errors.Add("Invalid User Name was received");
-            //    return Results.BadRequest(response);
-            //}
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                response.Metadata.Add("Invalid User Name was received");
+                return Results.BadRequest(response);
+            }
 
             int output;
             if (!int.TryParse(id, out output))
@@ -148,15 +135,13 @@ namespace Market.Services.CouponAPI.Endpoints
             var date = DateTime.Now;
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
-
-            //if (string.IsNullOrWhiteSpace(userName))
-            //{
-            //    response.Errors.Add("Invalid User Name was received");
-            //    return Results.BadRequest(response);
-            //}
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                response.Metadata.Add("Invalid User Name was received");
+                return Results.BadRequest(response);
+            }
 
             var validationResult = await _validator.ValidateAsync(couponRequestDto);
 
@@ -196,15 +181,13 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
-
-            //if (string.IsNullOrWhiteSpace(userName))
-            //{
-            //    response.Errors.Add("Invalid User Name was received");
-            //    return Results.BadRequest(response);
-            //}
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                response.Metadata.Add("Invalid User Name was received");
+                return Results.BadRequest(response);
+            }
 
             var validationResult = await _validator.ValidateAsync(couponRequestDto);
             if (!validationResult.IsValid)
@@ -259,15 +242,13 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault() ?? Base.DefaultUser;
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
-
-            //if (string.IsNullOrWhiteSpace(userName))
-            //{
-            //    response.Errors.Add("Invalid User Name was received");
-            //    return Results.BadRequest(response);
-            //}
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                response.Metadata.Add("Invalid User Name was received");
+                return Results.BadRequest(response);
+            }
 
             int output;
             if (!int.TryParse(id, out output))
@@ -293,25 +274,5 @@ namespace Market.Services.CouponAPI.Endpoints
 
             return Results.Ok(response);
         }
-
-        //private async static Task<IResult> SearchCoupons(IMapper _mapper, [AsParameters] CouponSearchRequestDTO request, ApplicationDbContext _db)
-        //{
-        //    APIResponse<ICollection<CouponDTO>> response = new();
-
-        //    await Task.Run(() =>
-        //    {
-        //        if (request.CouponName != null)
-        //        {
-        //            response.Result = _db.Coupons.Where(u => u.Name.Contains(request.CouponName)).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).Select(x => _mapper.Map<CouponDTO>(x)).ToList();
-        //        }
-        //        response.Result = _db.Coupons.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).Select(x => _mapper.Map<CouponDTO>(x)).ToList();
-        //    });
-
-        //    response.IsSuccess = true;
-        //    response.StatusCode = HttpStatusCode.OK;
-        //    response.Status = nameof(HttpStatusCode.OK);
-
-        //    return Results.Ok(response);
-        //}
     }
 }
