@@ -19,11 +19,12 @@ namespace Market.Services.CouponAPI.Data
             modelBuilder.Entity<Coupon>().ToTable("Coupon").HasData(
                 new Coupon
                 {
-                    CouponId = 1,
-                    CouponCode = "15OFF",
-                    CouponName = "15% OFF - Christmas Disccount",
-                    CouponDisccountAmount = 15,
-                    CouponMinAmmount = 200,
+                    Id = 1,
+                    Code = "15OFF",
+                    Name = "15% OFF - Christmas Disccount",
+                    Description = "Special Disccount for Christmas",
+                    DisccountAmount = 15,
+                    MinAmmount = 200,
                 });
         }
 

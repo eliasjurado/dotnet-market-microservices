@@ -4,18 +4,18 @@ namespace Market.Domain.Models
 {
     public class Coupon : BaseModel
     {
-        [Key]
-        public int CouponId { get; set; }
-        public string CouponCode { get; set; }
-        public string CouponName { get; set; }
+        [Required]
+        [MinLength(5)]
+        [MaxLength(10)]
+        public string Code { get; set; }
         [Required]
         [Range(0, 100)]
-        public double CouponDisccountAmount { get; set; } = 0;
+        public double DisccountAmount { get; set; } = 0;
         [Required]
-        public double CouponMinAmmount { get; set; } = 0;
+        public double MinAmmount { get; set; } = 0;
         [Required]
-        public DateTime CouponStartDate { get; set; } = DateTime.MinValue;
+        public DateTime StartDate { get; set; } = DateTime.MinValue;
         [Required]
-        public DateTime CouponEndDate { get; set; } = DateTime.MaxValue;
+        public DateTime EndDate { get; set; } = DateTime.MaxValue;
     }
 }

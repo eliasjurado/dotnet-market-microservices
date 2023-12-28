@@ -158,11 +158,11 @@ namespace Market.Services.CouponAPI.Endpoints
             }
 
             var coupon = _mapper.Map<Coupon>(couponRequestDto);
-            coupon.CouponName = couponRequestDto.CouponName;
-            coupon.CouponDisccountAmount = couponRequestDto.CouponDisccountAmount;
-            coupon.CouponMinAmmount = couponRequestDto.CouponMinAmmount;
-            coupon.CouponStartDate = couponRequestDto.CouponStartDate;
-            coupon.CouponEndDate = couponRequestDto.CouponEndDate;
+            coupon.Name = couponRequestDto.CouponName;
+            coupon.DisccountAmount = couponRequestDto.CouponDisccountAmount;
+            coupon.MinAmmount = couponRequestDto.CouponMinAmmount;
+            coupon.StartDate = couponRequestDto.CouponStartDate;
+            coupon.EndDate = couponRequestDto.CouponEndDate;
             coupon.CreatedBy = userName;
             coupon.UpdatedBy = userName;
 
@@ -174,7 +174,7 @@ namespace Market.Services.CouponAPI.Endpoints
             response.StatusCode = HttpStatusCode.Created;
             response.Status = Format.GetName(nameof(HttpStatusCode.Created));
 
-            return Results.CreatedAtRoute("GetCoupon", new { id = coupon.CouponId }, response);
+            return Results.CreatedAtRoute("GetCoupon", new { id = coupon.Id }, response);
         }
 
         private async static Task<IResult> UpdateCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<CouponRequestDto> _validator, [FromBody] CouponRequestDto couponRequestDto, string id)
@@ -204,7 +204,7 @@ namespace Market.Services.CouponAPI.Endpoints
             }
 
             var existingCoupon = await _repository.GetAsync(couponRequestDto.CouponName);
-            if (existingCoupon != null && existingCoupon.CouponId != output)
+            if (existingCoupon != null && existingCoupon.Id != output)
             {
                 response.Metadata.Add("Coupon Name already exists");
                 return Results.BadRequest(response);
@@ -218,12 +218,12 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            coupon.CouponCode = couponRequestDto.CouponCode;
-            coupon.CouponName = couponRequestDto.CouponName;
-            coupon.CouponDisccountAmount = couponRequestDto.CouponDisccountAmount;
-            coupon.CouponMinAmmount = couponRequestDto.CouponMinAmmount;
-            coupon.CouponStartDate = couponRequestDto.CouponStartDate;
-            coupon.CouponEndDate = couponRequestDto.CouponEndDate;
+            coupon.Code = couponRequestDto.CouponCode;
+            coupon.Name = couponRequestDto.CouponName;
+            coupon.DisccountAmount = couponRequestDto.CouponDisccountAmount;
+            coupon.MinAmmount = couponRequestDto.CouponMinAmmount;
+            coupon.StartDate = couponRequestDto.CouponStartDate;
+            coupon.EndDate = couponRequestDto.CouponEndDate;
             coupon.UpdatedBy = userName;
             coupon.UpdatedAt = DateTime.Now;
 
