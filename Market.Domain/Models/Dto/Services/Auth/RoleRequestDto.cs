@@ -2,7 +2,7 @@
 
 namespace Market.Domain.Models.Dto.Services.Auth
 {
-    public class RoleRequestDto
+    public sealed class RoleRequestDto
     {
         [Required]
         public string Email { get; set; }

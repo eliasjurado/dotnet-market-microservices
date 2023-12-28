@@ -2,28 +2,28 @@
 using FluentValidation;
 using Market.Domain.Models;
 using Market.Domain.Models.Dto.Services;
-using Market.Domain.Models.Dto.Services.Coupon;
+using Market.Domain.Models.Dto.Services.Product;
 using Market.Infrastructure;
-using Market.Services.CouponAPI.Repository.IRepository;
+using Market.Services.ProductAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Claims;
 
-namespace Market.Services.CouponAPI.Endpoints
+namespace Market.Services.ProductAPI.Endpoints
 {
-    public static class CouponEndpoints
+    public static class ProductEndpoints
     {
-        public static void ConfigureCouponEndpoints(this WebApplication app)
+        public static void ConfigureProductEndpoints(this WebApplication app)
         {
-            app.MapGet("/api/coupon", GetAllCoupon)
-                .WithName("GetCoupons")
-                .Produces<ResponseDto<List<CouponDto>>>(200)
+            app.MapGet("/api/Product", GetAllProduct)
+                .WithName("GetProducts")
+                .Produces<ResponseDto<List<ProductDto>>>(200)
                 .Produces(401)
                 .Produces(403)
                 .RequireAuthorization(); //security policy
 
-            app.MapGet("/api/coupon/{id}", GetCoupon)
-                .WithName("GetCoupon")
+            app.MapGet("/api/Product/{id}", GetProduct)
+                .WithName("GetProduct")
                 .AddEndpointFilter(async (context, next) =>
                 {
                     ResponseDto<object> response = new();
@@ -41,42 +41,42 @@ namespace Market.Services.CouponAPI.Endpoints
                     }
                     return await next(context);
                 })
-                .Produces<ResponseDto<CouponDto>>(200)
+                .Produces<ResponseDto<ProductDto>>(200)
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
                 .RequireAuthorization();
 
-            app.MapPost("/api/coupon", CreateCoupon)
-                .WithName("CreateCoupon")
-                .Accepts<CouponRequestDto>("application/json")
-                .Produces<ResponseDto<CouponDto>>(201)
+            app.MapPost("/api/Product", CreateProduct)
+                .WithName("CreateProduct")
+                .Accepts<ProductRequestDto>("application/json")
+                .Produces<ResponseDto<ProductDto>>(201)
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
                 .RequireAuthorization("AdminOnly");
 
-            app.MapPut("/api/coupon/{id}", UpdateCoupon)
-                .WithName("UpdateCoupon")
-                .Accepts<CouponRequestDto>("application/json")
-                .Produces<ResponseDto<CouponDto>>(200)
+            app.MapPut("/api/Product/{id}", UpdateProduct)
+                .WithName("UpdateProduct")
+                .Accepts<ProductRequestDto>("application/json")
+                .Produces<ResponseDto<ProductDto>>(200)
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
                 .RequireAuthorization("AdminOnly");
 
-            app.MapDelete("/api/coupon/{id}", DeleteCoupon)
-                .WithName("DeleteCoupon")
-                .Produces<ResponseDto<CouponDto>>(200)
+            app.MapDelete("/api/Product/{id}", DeleteProduct)
+                .WithName("DeleteProduct")
+                .Produces<ResponseDto<ProductDto>>(200)
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
                 .RequireAuthorization("AdminOnly");
         }
 
-        private async static Task<IResult> GetAllCoupon(HttpContext context, IConfiguration _configuration, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger)
+        private async static Task<IResult> GetAllProduct(HttpContext context, IConfiguration _configuration, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger)
         {
-            ResponseDto<List<CouponDto>> response = new();
+            ResponseDto<List<ProductDto>> response = new();
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -86,9 +86,9 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            _logger.Log(LogLevel.Information, "Getting all Coupons");
+            _logger.Log(LogLevel.Information, "Getting all Products");
             response.IsSuccess = true;
-            response.Data = (await _repository.GetAsync()).Select(_mapper.Map<CouponDto>).ToList();
+            response.Data = (await _repository.GetAsync()).Select(_mapper.Map<ProductDto>).ToList();
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
 
@@ -96,9 +96,9 @@ namespace Market.Services.CouponAPI.Endpoints
         }
 
         //[Authorize(Roles = "Admin,Manager")]
-        private async static Task<IResult> GetCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
+        private async static Task<IResult> GetProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
         {
-            ResponseDto<CouponDto> response = new();
+            ResponseDto<ProductDto> response = new();
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -115,25 +115,25 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var couponDto = _mapper.Map<CouponDto>(await _repository.GetAsync(output));
-            if (couponDto == null)
+            var ProductDto = _mapper.Map<ProductDto>(await _repository.GetAsync(output));
+            if (ProductDto == null)
             {
-                response.Metadata.Add($"Coupon with Id {id} not found");
+                response.Metadata.Add($"Product with Id {id} not found");
                 return Results.BadRequest(response);
             }
 
             response.IsSuccess = true;
-            response.Data = couponDto;
+            response.Data = ProductDto;
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
 
             return Results.Ok(response);
         }
 
-        private async static Task<IResult> CreateCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<CouponRequestDto> _validator, [FromBody] CouponRequestDto couponRequestDto)
+        private async static Task<IResult> CreateProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<ProductRequestDto> _validator, [FromBody] ProductRequestDto ProductRequestDto)
         {
             var date = DateTime.Now;
-            ResponseDto<CouponDto> response = new();
+            ResponseDto<ProductDto> response = new();
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -143,7 +143,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var validationResult = await _validator.ValidateAsync(couponRequestDto);
+            var validationResult = await _validator.ValidateAsync(ProductRequestDto);
 
             if (!validationResult.IsValid)
             {
@@ -151,35 +151,35 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            if (await _repository.GetAsync(couponRequestDto.Name) != null)
+            if (await _repository.GetAsync(ProductRequestDto.Name) != null)
             {
-                response.Metadata.Add("Coupon Name already exists");
+                response.Metadata.Add("Product Name already exists");
                 return Results.BadRequest(response);
             }
 
-            var coupon = _mapper.Map<Coupon>(couponRequestDto);
-            coupon.Name = couponRequestDto.Name;
-            coupon.DisccountAmount = couponRequestDto.DisccountAmount;
-            coupon.MinAmmount = couponRequestDto.MinAmmount;
-            coupon.StartDate = couponRequestDto.StartDate;
-            coupon.EndDate = couponRequestDto.EndDate;
-            coupon.CreatedBy = userName;
-            coupon.UpdatedBy = userName;
+            var Product = _mapper.Map<Product>(ProductRequestDto);
+            Product.Name = ProductRequestDto.Name;
+            Product.CategoryName = ProductRequestDto.CategoryName;
+            Product.Description = ProductRequestDto.Description;
+            Product.Price = ProductRequestDto.Price;
+            Product.ImageUrl = ProductRequestDto.ImageUrl;
+            Product.CreatedBy = userName;
+            Product.UpdatedBy = userName;
 
-            await _repository.CreateAsync(coupon);
+            await _repository.CreateAsync(Product);
             await _repository.SaveAsync();
 
             response.IsSuccess = true;
-            response.Data = _mapper.Map<CouponDto>(coupon);
+            response.Data = _mapper.Map<ProductDto>(Product);
             response.StatusCode = HttpStatusCode.Created;
             response.Status = Format.GetName(nameof(HttpStatusCode.Created));
 
-            return Results.CreatedAtRoute("GetCoupon", new { id = coupon.Id }, response);
+            return Results.CreatedAtRoute("GetProduct", new { id = Product.Id }, response);
         }
 
-        private async static Task<IResult> UpdateCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<CouponRequestDto> _validator, [FromBody] CouponRequestDto couponRequestDto, string id)
+        private async static Task<IResult> UpdateProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<ProductRequestDto> _validator, [FromBody] ProductRequestDto ProductRequestDto, string id)
         {
-            ResponseDto<CouponDto> response = new();
+            ResponseDto<ProductDto> response = new();
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -189,7 +189,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var validationResult = await _validator.ValidateAsync(couponRequestDto);
+            var validationResult = await _validator.ValidateAsync(ProductRequestDto);
             if (!validationResult.IsValid)
             {
                 validationResult.Errors.ForEach(x => response.Metadata.Add(x.ErrorMessage));
@@ -203,44 +203,44 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var existingCoupon = await _repository.GetAsync(couponRequestDto.Name);
-            if (existingCoupon != null && existingCoupon.Id != output)
+            var existingProduct = await _repository.GetAsync(ProductRequestDto.ProductName);
+            if (existingProduct != null && existingProduct.Id != output)
             {
-                response.Metadata.Add("Coupon Name already exists");
+                response.Metadata.Add("Product Name already exists");
                 return Results.BadRequest(response);
             }
 
-            var coupon = await _repository.GetAsync(output);
+            var Product = await _repository.GetAsync(output);
 
-            if (coupon == null)
+            if (Product == null)
             {
-                response.Metadata.Add($"Coupon with Id {id} not found");
+                response.Metadata.Add($"Product with Id {id} not found");
                 return Results.BadRequest(response);
             }
 
-            coupon.Code = couponRequestDto.Code;
-            coupon.Name = couponRequestDto.Name;
-            coupon.DisccountAmount = couponRequestDto.DisccountAmount;
-            coupon.MinAmmount = couponRequestDto.MinAmmount;
-            coupon.StartDate = couponRequestDto.StartDate;
-            coupon.EndDate = couponRequestDto.EndDate;
-            coupon.UpdatedBy = userName;
-            coupon.UpdatedAt = DateTime.Now;
+            Product.Code = ProductRequestDto.ProductCode;
+            Product.Name = ProductRequestDto.ProductName;
+            Product.DisccountAmount = ProductRequestDto.ProductDisccountAmount;
+            Product.MinAmmount = ProductRequestDto.ProductMinAmmount;
+            Product.StartDate = ProductRequestDto.ProductStartDate;
+            Product.EndDate = ProductRequestDto.ProductEndDate;
+            Product.UpdatedBy = userName;
+            Product.UpdatedAt = DateTime.Now;
 
-            await _repository.UpdateAsync(coupon);
+            await _repository.UpdateAsync(Product);
             await _repository.SaveAsync();
 
             response.IsSuccess = true;
-            response.Data = _mapper.Map<CouponDto>(coupon);
+            response.Data = _mapper.Map<ProductDto>(Product);
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
 
             return Results.Ok(response);
         }
 
-        private async static Task<IResult> DeleteCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
+        private async static Task<IResult> DeleteProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
         {
-            ResponseDto<CouponDto> response = new();
+            ResponseDto<ProductDto> response = new();
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -257,16 +257,16 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var coupon = await _repository.GetAsync(output);
+            var Product = await _repository.GetAsync(output);
 
-            if (coupon == null)
+            if (Product == null)
             {
-                response.Metadata.Add($"Coupon with Id {id} not found");
+                response.Metadata.Add($"Product with Id {id} not found");
                 return Results.BadRequest(response);
             }
 
-            response.Data = _mapper.Map<CouponDto>(coupon);
-            await _repository.RemoveAsync(coupon);
+            response.Data = _mapper.Map<ProductDto>(Product);
+            await _repository.RemoveAsync(Product);
             await _repository.SaveAsync();
             response.IsSuccess = true;
             response.StatusCode = HttpStatusCode.OK;

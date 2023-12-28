@@ -1,6 +1,6 @@
 ﻿namespace Market.Domain.Models.Dto.Services.Auth
 {
-    public class UserDto
+    public sealed class UserDto
     {
         public string Id { get; set; }
         public string UserName { get; set; }

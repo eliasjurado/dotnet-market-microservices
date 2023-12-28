@@ -1,6 +1,6 @@
 ﻿namespace Market.Domain.Models.Dto.Web
 {
-    public class ToastDto
+    public sealed class ToastDto
     {
         public string Title { get; set; }
         public KeyValuePair<string, object> Body { get; set; }

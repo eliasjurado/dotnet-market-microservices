@@ -2,7 +2,7 @@
 
 namespace Market.Domain.Models
 {
-    public class Coupon : BaseModel
+    public sealed class Coupon : BaseModel
     {
         [Required]
         [MinLength(5)]

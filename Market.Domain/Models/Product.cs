@@ -2,10 +2,10 @@
 
 namespace Market.Domain.Models
 {
-    public class Product : BaseModel
+    public sealed class Product : BaseModel
     {
         [Required]
-        public decimal Price { get; set; } = 0;
+        public double Price { get; set; } = 0;
         [Required]
         public string CategoryName { get; set; }
         [Required]

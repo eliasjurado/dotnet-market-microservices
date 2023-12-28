@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Market.Domain.Models.Dto.Web
 {
-    public class ResponseInterface
+    public sealed class ResponseInterface
     {
         public bool IsSuccess { get; set; }
         public Guid CorrelationId { get; set; }

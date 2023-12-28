@@ -69,7 +69,7 @@ namespace Market.Web.Service
             var request = new RequestInterface
             {
                 ApiType = ApiType.PUT,
-                Url = CouponAPIBase + "/api/coupon/" + requestDto.CouponId,
+                Url = CouponAPIBase + "/api/coupon/" + requestDto.Id,
                 Data = requestDto
             };
             return await _baseService.SendAsync(request);

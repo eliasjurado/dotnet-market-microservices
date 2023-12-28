@@ -119,8 +119,8 @@ namespace Market.Web.Pages.Coupon
             {
                 return Page();
             }
-            RequestDto.CouponId = id;
-            if (RequestDto.CouponId != 0)
+            RequestDto.Id = id;
+            if (RequestDto.Id != 0)
             {
                 ResponseInterface responseDto = await _couponService.UpdateAsync(RequestDto);
                 if (!responseDto.IsSuccess)

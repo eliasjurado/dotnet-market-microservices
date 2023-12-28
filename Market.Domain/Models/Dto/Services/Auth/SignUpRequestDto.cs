@@ -2,7 +2,7 @@
 
 namespace Market.Domain.Models.Dto.Services.Auth
 {
-    public class SignUpRequestDto
+    public sealed class SignUpRequestDto
     {
         [Required]
         public string UserName { get; set; }

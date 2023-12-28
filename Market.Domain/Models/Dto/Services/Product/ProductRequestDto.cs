@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Market.Domain.Models.Dto.Services.Coupon
+namespace Market.Domain.Models.Dto.Services.Product
 {
-    public class CouponRequestDto : CouponDto
+    public sealed class ProductRequestDto : ProductDto
     {
         [JsonIgnore]
         public override long Id { get; set; }
