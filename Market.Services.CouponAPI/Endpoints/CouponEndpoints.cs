@@ -20,7 +20,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces<ResponseDto<List<CouponDto>>>(200)
                 .Produces(401)
                 .Produces(403)
-                .RequireAuthorization("AdminOnly"); //security policy
+                .RequireAuthorization(); //security policy
 
             app.MapGet("/api/coupon/{id}", GetCoupon)
                 .WithName("GetCoupon")
@@ -54,7 +54,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
-                .RequireAuthorization();
+                .RequireAuthorization("AdminOnly");
 
             app.MapPut("/api/coupon/{id}", UpdateCoupon)
                 .WithName("UpdateCoupon")
@@ -63,7 +63,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
-                .RequireAuthorization();
+                .RequireAuthorization("AdminOnly");
 
             app.MapDelete("/api/coupon/{id}", DeleteCoupon)
                 .WithName("DeleteCoupon")
@@ -71,14 +71,14 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces(400)
                 .Produces(401)
                 .Produces(403)
-                .RequireAuthorization();
+                .RequireAuthorization("AdminOnly");
         }
 
         private async static Task<IResult> GetAllCoupon(HttpContext context, IConfiguration _configuration, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger)
         {
             ResponseDto<List<CouponDto>> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -100,7 +100,7 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -135,7 +135,7 @@ namespace Market.Services.CouponAPI.Endpoints
             var date = DateTime.Now;
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -181,7 +181,7 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -242,7 +242,7 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             ResponseDto<CouponDto> response = new();
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).Select(c => c.Value).SingleOrDefault();
+            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(userName))
             {
