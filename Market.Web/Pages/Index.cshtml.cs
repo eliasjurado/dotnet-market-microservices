@@ -1,3 +1,4 @@
+using AutoMapper;
 using Htmx;
 using Market.Domain.Models.Dto.Services.Product;
 using Market.Domain.Models.Dto.Web;
@@ -12,16 +13,16 @@ namespace Market.Web.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly IMapper _mapper;
         private readonly IProductService _productService;
-        public ProductViewModel model { get; set; }
         public ICollection<ProductViewModel> Results { get; set; }
-        public int ResultsCount { get; set; } = 0;
         [BindProperty(SupportsGet = true)]
         public string ToastTitle { get; set; } = string.Empty;
         [BindProperty(SupportsGet = true)]
         public ProductDto RequestDto { get; set; }
-        public IndexModel(IProductService productService)
+        public IndexModel(IProductService productService, IMapper mapper)
         {
+            _mapper = mapper;
             _productService = productService;
             Results = new List<ProductViewModel>();
             OnGetProducts();
@@ -42,6 +43,7 @@ namespace Market.Web.Pages
                 }
             }
         }
+
         public async Task<IActionResult> OnGetProductDetails(int id)
         {
             TempData.Clear();
@@ -53,6 +55,15 @@ namespace Market.Web.Pages
                 return RedirectToPage("Index", this);
             }
             RequestDto = JsonConvert.DeserializeObject<ProductDto>(((JObject)responseDto.Data).ToString());
+            var viewModel = new ProductViewModel
+            {
+                Id = RequestDto.Id,
+                Name = RequestDto.Name,
+                CategoryName = RequestDto.CategoryName,
+                Description = RequestDto.Description,
+                ImageUrl = RequestDto.ImageUrl,
+                Price = RequestDto.Price
+            };
 
             if (!Request.IsHtmx())
                 return Page();
@@ -62,7 +73,7 @@ namespace Market.Web.Pages
                 h.PushUrl(Request.GetEncodedUrl());
             });
 
-            return Partial("./Product/EditModal", new Product.IndexModel(_productService) { RequestDto = RequestDto });
+            return RedirectToPage("./Shop/ProductDetails", viewModel);
         }
     }
 }
