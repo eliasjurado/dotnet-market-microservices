@@ -10,7 +10,7 @@
             <td class="text-start w-25">@product.Description</td>
             <td class="text-start">@product.CategoryName</td>
             <td class="text-end">@Convert.ToDecimal(string.Format("{0:0.00}", product.Price))</td>
-            <td class="text-center w-25"><img src="@product.ImageUrl" alt="pen" class="w-100" /></td>
+            <td class="text-center w-25 h-25"><img src="@product.ImageUrl" alt="pen" class="img-fluid img-thumbnail" /></td>
             <td class="text-center">
                 <button hx-get
                         hx-page="Index"

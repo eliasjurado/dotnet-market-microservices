@@ -21,6 +21,8 @@ namespace Market.Web.Pages.Shop
         [BindProperty(SupportsGet = true)]
         public ProductDto RequestDto { get; set; }
         [BindProperty(SupportsGet = true)]
+        public int ShopQuantity { get; set; } = 1;
+        [BindProperty(SupportsGet = true)]
         public int Id { get; set; } = 0;
         public IndexModel(IProductService productService, IMapper mapper)
         {

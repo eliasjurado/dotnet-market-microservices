@@ -10,19 +10,19 @@
             @foreach (var product in Model)
             {
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="p-0 my-3 border rounded">
+                    <div class="p-0 my-3 border-1 rounded">
                         <div class="card">
-                            <h3 class="card-title bg-success text-white text-center py-2">@product.Name</h3>
-                            <img src="@product.ImageUrl" class="card-img-top">
+                            <h3 class="card-title bg-secondary text-white text-center py-2">@product.Name</h3>
+                            <img src="@product.ImageUrl" class="img-fluid img-thumbnail">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between py-2">
-                                    <span class="text-danger" style="font-size:20px;">@string.Format("{0:c}", product.Price)</span>
-                                    <span class="badge bg-warning text-white p-2">@product.CategoryName</span>
+                                    <span class="text-black fw-bold" style="font-size:20px;">@string.Format("{0:c}", product.Price)</span>
+                                    <span class="badge bg-dark bg-opacity-75 text-white p-2">@product.CategoryName</span>
                                 </div>
-                                <p class="card-text">@Html.Raw(product.Description)</p>
+                                <p class="card-text">@Html.Raw(product.Description.Substring(0,185))...</p>
                                 <div class="row">
                                     <div class="col">
-                                        <a class="btn btn-success form-control" asp-page="/Shop/ProductDetails" asp-route-id="@product.Id">Details</a>
+                                        <a class="btn btn-secondary form-control" asp-page="/Shop/ProductDetails" asp-route-id="@product.Id">Details</a>
                                     </div>
                                 </div>
                             </div>
