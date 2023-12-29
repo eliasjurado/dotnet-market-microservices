@@ -2,7 +2,7 @@
 {
     public sealed record CouponViewModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public double DisccountAmount { get; set; }

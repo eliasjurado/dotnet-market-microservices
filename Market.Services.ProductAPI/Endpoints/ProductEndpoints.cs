@@ -18,9 +18,10 @@ namespace Market.Services.ProductAPI.Endpoints
             app.MapGet("/api/Product", GetAllProduct)
                 .WithName("GetProducts")
                 .Produces<ResponseDto<List<ProductDto>>>(200)
-                .Produces(401)
-                .Produces(403)
-                .RequireAuthorization(); //security policy
+                .Produces(400);
+            //.Produces(401)
+            //.Produces(403)
+            //.RequireAuthorization();
 
             app.MapGet("/api/Product/{id}", GetProduct)
                 .WithName("GetProduct")
@@ -31,21 +32,23 @@ namespace Market.Services.ProductAPI.Endpoints
                     int output;
                     if (!int.TryParse(id, out output))
                     {
+                        response.Message = "Get Product Failed";
                         response.Metadata.Add("Invalid Id was received");
                         return Results.BadRequest(response);
                     }
                     if (output == 0)
                     {
+                        response.Message = "Get Product Failed";
                         response.Metadata.Add("Id received cannot be zero");
                         return Results.BadRequest(response);
                     }
                     return await next(context);
                 })
                 .Produces<ResponseDto<ProductDto>>(200)
-                .Produces(400)
-                .Produces(401)
-                .Produces(403)
-                .RequireAuthorization();
+                .Produces(400);
+            //.Produces(401)
+            //.Produces(403)
+            //.RequireAuthorization()
 
             app.MapPost("/api/Product", CreateProduct)
                 .WithName("CreateProduct")
@@ -77,17 +80,20 @@ namespace Market.Services.ProductAPI.Endpoints
         private async static Task<IResult> GetAllProduct(HttpContext context, IConfiguration _configuration, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger)
         {
             ResponseDto<List<ProductDto>> response = new();
+            //response.Message = "Get All Products Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                response.Metadata.Add("Invalid User Name was received");
-                return Results.BadRequest(response);
-            }
+            //if (string.IsNullOrWhiteSpace(userName))
+            //{
+            //    response.Metadata.Add("Invalid User Name was received");
+            //    return Results.BadRequest(response);
+            //}
 
             _logger.Log(LogLevel.Information, "Getting all Products");
             response.IsSuccess = true;
+            response.Message = "Get All Products Succedeed";
+            response.Metadata.Add("Products were retrieved successfully");
             response.Data = (await _repository.GetAsync()).Select(_mapper.Map<ProductDto>).ToList();
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
@@ -99,14 +105,15 @@ namespace Market.Services.ProductAPI.Endpoints
         private async static Task<IResult> GetProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
         {
             ResponseDto<ProductDto> response = new();
+            response.Message = "Get Product Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                response.Metadata.Add("Invalid User Name was received");
-                return Results.BadRequest(response);
-            }
+            //if (string.IsNullOrWhiteSpace(userName))
+            //{
+            //    response.Metadata.Add("Invalid User Name was received");
+            //    return Results.BadRequest(response);
+            //}
 
             int output;
             if (!int.TryParse(id, out output))
@@ -123,6 +130,8 @@ namespace Market.Services.ProductAPI.Endpoints
             }
 
             response.IsSuccess = true;
+            response.Message = "Get Product Succeeded";
+            response.Metadata.Add($"Product {ProductDto.Name} was retrieved successfully");
             response.Data = ProductDto;
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
@@ -134,6 +143,7 @@ namespace Market.Services.ProductAPI.Endpoints
         {
             var date = DateTime.Now;
             ResponseDto<ProductDto> response = new();
+            response.Message = "Product Creation Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -153,6 +163,7 @@ namespace Market.Services.ProductAPI.Endpoints
 
             if (await _repository.GetAsync(ProductRequestDto.Name) != null)
             {
+
                 response.Metadata.Add("Product Name already exists");
                 return Results.BadRequest(response);
             }
@@ -170,6 +181,8 @@ namespace Market.Services.ProductAPI.Endpoints
             await _repository.SaveAsync();
 
             response.IsSuccess = true;
+            response.Message = "Product Creation Succeeded";
+            response.Metadata.Add($"Product {Product.Name} was created successfully");
             response.Data = _mapper.Map<ProductDto>(Product);
             response.StatusCode = HttpStatusCode.Created;
             response.Status = Format.GetName(nameof(HttpStatusCode.Created));
@@ -180,6 +193,7 @@ namespace Market.Services.ProductAPI.Endpoints
         private async static Task<IResult> UpdateProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<ProductRequestDto> _validator, [FromBody] ProductRequestDto ProductRequestDto, string id)
         {
             ResponseDto<ProductDto> response = new();
+            response.Message = "Update Product Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -203,7 +217,7 @@ namespace Market.Services.ProductAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var existingProduct = await _repository.GetAsync(ProductRequestDto.ProductName);
+            var existingProduct = await _repository.GetAsync(ProductRequestDto.Name);
             if (existingProduct != null && existingProduct.Id != output)
             {
                 response.Metadata.Add("Product Name already exists");
@@ -218,12 +232,11 @@ namespace Market.Services.ProductAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            Product.Code = ProductRequestDto.ProductCode;
-            Product.Name = ProductRequestDto.ProductName;
-            Product.DisccountAmount = ProductRequestDto.ProductDisccountAmount;
-            Product.MinAmmount = ProductRequestDto.ProductMinAmmount;
-            Product.StartDate = ProductRequestDto.ProductStartDate;
-            Product.EndDate = ProductRequestDto.ProductEndDate;
+            Product.Name = ProductRequestDto.Name;
+            Product.CategoryName = ProductRequestDto.CategoryName;
+            Product.Description = ProductRequestDto.Description;
+            Product.Price = ProductRequestDto.Price;
+            Product.ImageUrl = ProductRequestDto.ImageUrl;
             Product.UpdatedBy = userName;
             Product.UpdatedAt = DateTime.Now;
 
@@ -231,6 +244,8 @@ namespace Market.Services.ProductAPI.Endpoints
             await _repository.SaveAsync();
 
             response.IsSuccess = true;
+            response.Message = "Update Product Succeeded";
+            response.Metadata.Add($"Product {Product.Name} was updated successfully");
             response.Data = _mapper.Map<ProductDto>(Product);
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
@@ -241,6 +256,7 @@ namespace Market.Services.ProductAPI.Endpoints
         private async static Task<IResult> DeleteProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
         {
             ResponseDto<ProductDto> response = new();
+            response.Message = "Delete Product Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -269,6 +285,8 @@ namespace Market.Services.ProductAPI.Endpoints
             await _repository.RemoveAsync(Product);
             await _repository.SaveAsync();
             response.IsSuccess = true;
+            response.Message = "Delete Product Succeeded";
+            response.Metadata.Add($"Product {Product.Name} was deleted successfully");
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
 

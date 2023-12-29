@@ -21,6 +21,12 @@ body {
     margin-bottom: 60px;
 }
 
+/* change focus color */
+.form-control:focus {
+    border-color: #ff80ff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 100, 255, 0.5);
+}
+
 /* Auth Page Styles*/
 #auth-container {
     width: 100%;

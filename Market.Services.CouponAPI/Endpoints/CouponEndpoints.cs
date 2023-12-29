@@ -20,7 +20,7 @@ namespace Market.Services.CouponAPI.Endpoints
                 .Produces<ResponseDto<List<CouponDto>>>(200)
                 .Produces(401)
                 .Produces(403)
-                .RequireAuthorization(); //security policy
+                .RequireAuthorization();
 
             app.MapGet("/api/coupon/{id}", GetCoupon)
                 .WithName("GetCoupon")
@@ -31,11 +31,13 @@ namespace Market.Services.CouponAPI.Endpoints
                     int output;
                     if (!int.TryParse(id, out output))
                     {
+                        response.Message = "Get Coupon Failed";
                         response.Metadata.Add("Invalid Id was received");
                         return Results.BadRequest(response);
                     }
                     if (output == 0)
                     {
+                        response.Message = "Get Coupon Failed";
                         response.Metadata.Add("Id received cannot be zero");
                         return Results.BadRequest(response);
                     }
@@ -77,6 +79,7 @@ namespace Market.Services.CouponAPI.Endpoints
         private async static Task<IResult> GetAllCoupon(HttpContext context, IConfiguration _configuration, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger)
         {
             ResponseDto<List<CouponDto>> response = new();
+            response.Message = "Get All Coupons Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -88,6 +91,8 @@ namespace Market.Services.CouponAPI.Endpoints
 
             _logger.Log(LogLevel.Information, "Getting all Coupons");
             response.IsSuccess = true;
+            response.Message = "Get All Coupons Succedeed";
+            response.Metadata.Add("Coupons were retrieved successfully");
             response.Data = (await _repository.GetAsync()).Select(_mapper.Map<CouponDto>).ToList();
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
@@ -99,6 +104,7 @@ namespace Market.Services.CouponAPI.Endpoints
         private async static Task<IResult> GetCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
         {
             ResponseDto<CouponDto> response = new();
+            response.Message = "Get Coupon Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -123,6 +129,8 @@ namespace Market.Services.CouponAPI.Endpoints
             }
 
             response.IsSuccess = true;
+            response.Message = "Get Coupon Succeeded";
+            response.Metadata.Add($"Coupon {couponDto.Name} was retrieved successfully");
             response.Data = couponDto;
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
@@ -134,6 +142,7 @@ namespace Market.Services.CouponAPI.Endpoints
         {
             var date = DateTime.Now;
             ResponseDto<CouponDto> response = new();
+            response.Message = "Coupon Creation Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -170,6 +179,8 @@ namespace Market.Services.CouponAPI.Endpoints
             await _repository.SaveAsync();
 
             response.IsSuccess = true;
+            response.Message = "Coupon Creation Succeeded";
+            response.Metadata.Add($"Coupon {coupon.Name} was created successfully");
             response.Data = _mapper.Map<CouponDto>(coupon);
             response.StatusCode = HttpStatusCode.Created;
             response.Status = Format.GetName(nameof(HttpStatusCode.Created));
@@ -180,6 +191,7 @@ namespace Market.Services.CouponAPI.Endpoints
         private async static Task<IResult> UpdateCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<CouponRequestDto> _validator, [FromBody] CouponRequestDto couponRequestDto, string id)
         {
             ResponseDto<CouponDto> response = new();
+            response.Message = "Update Coupon Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -231,6 +243,8 @@ namespace Market.Services.CouponAPI.Endpoints
             await _repository.SaveAsync();
 
             response.IsSuccess = true;
+            response.Message = "Update Product Succeeded";
+            response.Metadata.Add($"Product {coupon.Name} was updated successfully");
             response.Data = _mapper.Map<CouponDto>(coupon);
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
@@ -241,6 +255,7 @@ namespace Market.Services.CouponAPI.Endpoints
         private async static Task<IResult> DeleteCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, string id)
         {
             ResponseDto<CouponDto> response = new();
+            response.Message = "Delete Coupon Failed";
 
             var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
@@ -269,6 +284,8 @@ namespace Market.Services.CouponAPI.Endpoints
             await _repository.RemoveAsync(coupon);
             await _repository.SaveAsync();
             response.IsSuccess = true;
+            response.Message = "Delete Coupon Succeeded";
+            response.Metadata.Add($"Coupon {coupon.Name} was deleted successfully");
             response.StatusCode = HttpStatusCode.OK;
             response.Status = nameof(HttpStatusCode.OK);
 

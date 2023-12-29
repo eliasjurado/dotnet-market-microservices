@@ -9,12 +9,28 @@ namespace Market.Services.ProductAPI.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 1,
+                Name = "Appetizer"
+            });
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 2,
+                Name = "Dessert"
+            });
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 3,
+                Name = "Entree"
+            });
 
             modelBuilder.Entity<Product>().HasData(new Product
             {

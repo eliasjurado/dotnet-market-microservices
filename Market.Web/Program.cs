@@ -13,12 +13,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
+builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
+Base.ProductAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:ProductAPI");
 Base.CouponAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:CouponAPI");
 Base.AuthAPIBase = builder.Configuration.GetValue<string>("ServiceUrls:AuthAPI");
 
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();

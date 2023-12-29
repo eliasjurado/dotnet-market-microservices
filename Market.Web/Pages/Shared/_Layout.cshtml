@@ -1,4 +1,5 @@
 ﻿@using Htmx.TagHelpers
+@using Market.Domain.Models.Dto.Web
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,8 +30,14 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Coupon/Index">Coupon</a>
+                            <li class="nav-item dropdown text-dark">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-page="/Product/Index">Products</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Coupon/Index">Coupons</a></li>
+                                </ul>
                             </li>
                         }
                     </ul>
@@ -59,6 +66,19 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+        <div aria-live="polite" aria-atomic="true" class="position-relative">
+            <div id="main-toast-container" class="toast-container position-relative top-0 start-50 translate-middle-x">
+                @if (TempData.Any())
+                {
+                    foreach (var item in TempData)
+                    {
+                        <div class="mb-4">
+                            @await Html.PartialAsync("_Toast", new ToastDto { Title = @Model.ToastTitle, Body = item })
+                        </div>
+                    }
+                }
+            </div>
+        </div>
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">

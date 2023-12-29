@@ -1,53 +1,40 @@
-﻿using Htmx;
-using Market.Domain.Models.Dto.Services.Coupon;
+using Htmx;
+using Market.Domain.Models.Dto.Services.Product;
 using Market.Domain.Models.Dto.Web;
 using Market.Web.Service.IService;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Data;
 
-namespace Market.Web.Pages.Coupon
+namespace Market.Web.Pages.Product
 {
-    [IgnoreAntiforgeryToken]
     public class IndexModel : PageModel
     {
-        private readonly ICouponService _couponService;
+        private readonly IProductService _productService;
         [BindProperty(SupportsGet = true)]
-        public CouponViewModel model { get; set; }
-        public ICollection<CouponViewModel> Results { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public CouponDto RequestDto { get; set; }
+        public ProductDto RequestDto { get; set; }
+        public List<SelectListItem> Categories { get; set; }
+        public ProductViewModel model { get; set; }
+        public ICollection<ProductViewModel> Results { get; set; }
         public int ResultsCount { get; set; } = 0;
-        public ResponseInterface ResponseDto { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Query { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ToastTitle { get; set; } = string.Empty;
         [BindProperty(SupportsGet = true)]
         public string ToastBody { get; set; }
-        public IndexModel(ICouponService couponService)
+        public IndexModel(IProductService productService)
         {
-            _couponService = couponService;
-
-            var response = _couponService.GetAsync().GetAwaiter().GetResult();
-            if (response.IsSuccess)
-            {
-                JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(response.Data));
-
-                Results = new List<CouponViewModel>();
-
-                foreach (var item in jsonResponse)
-                {
-                    JObject coupon = (JObject)item;
-                    Results.Add(JsonConvert.DeserializeObject<CouponViewModel>(coupon.ToString()));
-                }
-            }
-
+            _productService = productService;
+            Categories = new List<SelectListItem>();
+            Results = new List<ProductViewModel>();
+            OnGetCategories();
+            OnGetProducts();
         }
-
-        [BindProperty(SupportsGet = true)]
-        public string Query { get; set; }
-
 
         public IActionResult OnGet()
         {
@@ -85,16 +72,14 @@ namespace Market.Web.Pages.Coupon
         public async Task<IActionResult> OnGetUpdateModal(int id)
         {
             TempData.Clear();
-            ResponseInterface responseDto = await _couponService.GetAsync(id);
+            var responseDto = await _productService.GetAsync(id);
             if (!responseDto.IsSuccess || responseDto.Data == null)
             {
                 ToastTitle = responseDto.Message;
                 responseDto.Metadata.ToList().ForEach(x => TempData.Add(x, x));
                 return RedirectToPage("Index", this);
             }
-            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)responseDto.Data).ToString());
-            TempData["customErrors"] = null;
-            TempData["customErrors"] = string.Join<string>("\n", responseDto.Metadata);
+            RequestDto = JsonConvert.DeserializeObject<ProductDto>(((JObject)responseDto.Data).ToString());
 
             if (!Request.IsHtmx())
                 return Page();
@@ -110,14 +95,14 @@ namespace Market.Web.Pages.Coupon
         public async Task<IActionResult> OnGetDeleteModal(int id)
         {
             TempData.Clear();
-            var responseDto = await _couponService.GetAsync(id);
+            var responseDto = await _productService.GetAsync(id);
             if (!responseDto.IsSuccess || responseDto.Data == null)
             {
                 ToastTitle = responseDto.Message;
                 responseDto.Metadata.ToList().ForEach(x => TempData.Add(x, x));
                 return RedirectToPage("Index", this);
             }
-            RequestDto = JsonConvert.DeserializeObject<CouponDto>(((JObject)responseDto.Data).ToString());
+            RequestDto = JsonConvert.DeserializeObject<ProductDto>(((JObject)responseDto.Data).ToString());
 
             if (!Request.IsHtmx())
                 return Page();
@@ -140,13 +125,13 @@ namespace Market.Web.Pages.Coupon
             RequestDto.Id = id;
             if (RequestDto.Id != 0)
             {
-                ResponseInterface responseDto = await _couponService.UpdateAsync(RequestDto);
+                ResponseInterface responseDto = await _productService.UpdateAsync(RequestDto);
                 ToastTitle = responseDto.Message;
                 responseDto.Metadata.ToList().ForEach(x => TempData.Add(x, x));
             }
             else
             {
-                ResponseInterface responseDto = await _couponService.CreateAsync(RequestDto);
+                ResponseInterface responseDto = await _productService.CreateAsync(RequestDto);
                 ToastTitle = responseDto.Message;
                 responseDto.Metadata.ToList().ForEach(x => TempData.Add(x, x));
             }
@@ -162,11 +147,42 @@ namespace Market.Web.Pages.Coupon
             }
             if (id != 0)
             {
-                ResponseInterface responseDto = await _couponService.RemoveAsync(id);
+                ResponseInterface responseDto = await _productService.RemoveAsync(id);
                 ToastTitle = responseDto.Message;
                 responseDto.Metadata.ToList().ForEach(x => TempData.Add(x, x));
             }
             return RedirectToPage("Index", this);
         }
+
+        public void OnGetCategories()
+        {
+            var response = _productService.GetCategoriesAsync().GetAwaiter().GetResult();
+            if (response.IsSuccess)
+            {
+                JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(response.Data));
+                Categories = new List<SelectListItem>();
+
+                foreach (var item in jsonResponse)
+                {
+                    JObject role = (JObject)item;
+                    Categories.Add(JsonConvert.DeserializeObject<SelectListItem>(role.ToString()));
+                }
+            }
+        }
+
+        public void OnGetProducts()
+        {
+            var response = _productService.GetAsync().GetAwaiter().GetResult();
+            if (response.IsSuccess)
+            {
+                JArray jsonResponse = JArray.Parse(JsonConvert.SerializeObject(response.Data));
+                foreach (var item in jsonResponse)
+                {
+                    JObject coupon = (JObject)item;
+                    Results.Add(JsonConvert.DeserializeObject<ProductViewModel>(coupon.ToString()));
+                }
+            }
+        }
+
     }
 }

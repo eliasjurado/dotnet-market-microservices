@@ -77,3 +77,10 @@ function closeModalAuth() {
         container.removeChild(modal)
     }, 200)
 }
+
+function closeToast() {
+    const container = document.getElementById("main-toast-container");
+    setTimeout(function () {
+        container.innerHTML = "";
+    }, 10000)
+}

@@ -1,0 +1,70 @@
+﻿@model IndexModel
+<div id="modal-backdrop" class="modal-backdrop fade show"></div>
+<div id="my-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div id="modal-body" class="modal-content">
+            <div class="modal-header text-bg-dark p-3">
+                <h5 class="modal-title">Update Product</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close" onclick="closeModal()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="post" asp-page-handler="Save" asp-route-id=@Model.RequestDto.Id>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.Id">Id</label>
+                        <div><input class="form-control" asp-for="RequestDto.Id" required="required" disabled="disabled" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.Name">Name</label>
+                        <div><input class="form-control" asp-for="RequestDto.Name" required="required" /></div>
+                    </div>
+                    <div class="mb-3 ">
+                        <label class="form-label" asp-for="RequestDto.Price">Price ($)</label>
+                        <div><input type="number" step='0.01' min="0" class="input-group-sm form-control text-sm-end" asp-for="RequestDto.Price" required="required" value='@Model.RequestDto.Price.ToString("0.00")' /></div>                        
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.Description">Description</label>
+                        <div><input class="form-control" asp-for="RequestDto.Description" required="required" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.CategoryName">Category</label>
+                        <select asp-for="RequestDto.CategoryName" class="form-select mb-4" placeholder="Select an option..." required="">
+                            <option selected="selected" value="">Select an option...</option>
+                            @foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RequestDto.ImageUrl">ImageUrl</label>
+                        <div><input class="form-control" asp-for="RequestDto.ImageUrl" required="required" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <div><img src="@Model.RequestDto.ImageUrl" alt="ImageUrl" class="w-100" /></div>
+                    </div>
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">
+                    Cancel
+                </button>
+                <button form="myForm"
+                        type="submit"
+                        class="btn btn-dark">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    showModal()
+</script>
+
+

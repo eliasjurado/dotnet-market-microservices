@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{7AA210
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Domain", "Market.Domain\Market.Domain.csproj", "{9893E5C6-17CE-47BA-B7D5-D2ADF3E026A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Services.ProductAPI", "Market.Services.ProductAPI\Market.Services.ProductAPI.csproj", "{E72FE17A-B85D-4A10-8FE6-EB0AB016825E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Services.ProductAPI", "Market.Services.ProductAPI\Market.Services.ProductAPI.csproj", "{E72FE17A-B85D-4A10-8FE6-EB0AB016825E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

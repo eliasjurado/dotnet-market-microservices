@@ -35,18 +35,3 @@
         </div>
     </div>
 </div>
-<div id="auth-toast-container">
-    <div aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container position-relative top-0 start-50 translate-middle-x">
-            @if (TempData.Any())
-            {
-                foreach (var item in TempData)
-                {
-                    <div class="mb-4">
-                        @await Html.PartialAsync("Toast", new ToastDto { Title = @Model.ToastTitle, Body = item })
-                    </div>
-                }
-            }
-        </div>
-    </div>
-</div>

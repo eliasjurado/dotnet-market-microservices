@@ -88,7 +88,6 @@ namespace Market.Web.Pages.Auth
 
             _tokenProvider.SetToken(data.Token);
             await SignInUser(data);
-            //TempData.Add("name", $"Welcome {data.User.Name}");
 
             return RedirectToPage("/Index");
         }

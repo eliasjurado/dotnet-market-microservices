@@ -1,14 +1,14 @@
-﻿@page "/coupon"
-@model Market.Web.Pages.Coupon.IndexModel
+﻿@page "/product"
+@model Market.Web.Pages.Product.IndexModel
 @{
-    ViewBag.Title = "Coupon";  
 }
+
 
 <div class="card p-4 mb-3">
 
     <h2 class="mb-3">
-        <img src="~/img/coupon.svg" alt="coupon" style="height: 2rem">
-        Coupon
+        <img src="~/img/box.svg" alt="box" style="height: 2rem">
+        Product
         <img id="loading" class="htmx-indicator" src="~/img/pacman.gif" alt="search" width="16" />
     </h2>
 
@@ -45,14 +45,13 @@
         <table class="table table-borderless table-striped table-responsive table-hover">
             <thead class="table-dark">
                 <tr>
-                <th class="text-sm-center">Id</th>
-                <th class="text-sm-center">Code</th>
-                <th class="text-sm-center">Disccount Name</th>
-                <th class="text-sm-center">Disccount (%)</th>
-                <th class="text-sm-center">MinAmmount ($)</th>
-                <th class="text-sm-center">StartDate</th>
-                <th class="text-sm-center">EndDate</th>
-                <th colspan="2" class="text-sm-center">Actions</th>
+                    <th class="text-sm-center">Id</th>
+                    <th class="text-sm-center">Name</th>
+                    <th class="text-sm-center">Description</th>
+                    <th class="text-sm-center">Category</th>
+                    <th class="text-sm-center">Price ($)</th>
+                    <th class="text-sm-center">Image</th>
+                    <th colspan="2" class="text-sm-center">Actions</th>
                 </tr>
             </thead>
             <tbody id="results" class="align-middle">
@@ -65,10 +64,3 @@
 </div>
 
 <div id="modal-container"></div>
-
-<div id="toast-container">
-    @if (TempData["customErrors"] != null)
-    {
-        @await Html.PartialAsync("Toast")
-    }
-</div>
