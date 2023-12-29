@@ -22,7 +22,7 @@ namespace Market.Services.ProductAPI.Repository
 
         public async Task<Product> GetAsync(int id)
         {
-            return await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Products.FirstOrDefaultAsync(x => x.ProductId == id);
         }
 
         public async Task<Product> GetAsync(string name)

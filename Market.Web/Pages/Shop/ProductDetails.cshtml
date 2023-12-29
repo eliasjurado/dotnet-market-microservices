@@ -1,8 +1,11 @@
 ﻿@page "/shop/{id:int}"
 @model IndexModel
+@{
+    ViewData["Title"] = @Model.Product.Name;
+}
 
 <form method="post">
-    <input asp-for="@Model.Product.Id" hidden />
+    <input asp-for="@Model.Product.ProductId" hidden />
     <div class=" pt-4">
         <div class="card container" style="border:1px solid #808080;">
             <div class="card-header bg-secondary text-light row" style="border-radius: 0px;">
@@ -10,19 +13,19 @@
                     <h1 class="text-white">@Model.Product.Name</h1>
                 </div>
                 <div class="col-12 col-md-6 text-end">
-                    <h1 class="text-white"> @string.Format("{0:c}", Model.Product.Price)</h1>
+                    <h1 class="text-white"> @string.Format("{0:c}", Model.Product.ProductPrice)</h1>
                 </div>
             </div>
             <div class="card-body">
                 <div class="container rounded p-2">
                     <div class="row">
                         <div class="col-12 col-lg-4 p-1 text-center">
-                            <img src="@Model.Product.ImageUrl" class="rounded img-fluid img-thumbnail" />
+                            <img src="@Model.Product.ProductImageUrl" class="rounded img-fluid img-thumbnail" />
                         </div>
                         <div class="col-12 col-lg-8">
                             <div class="row pl-3">
                                 <div class="col-12">
-                                    <span class="badge bg-dark bg-opacity-75 text-white p-3 border">@Model.Product.CategoryName</span>
+                                    <span class="badge bg-dark bg-opacity-75 text-white p-3 border">@Model.Product.ProductCategoryName</span>
                                     <p class="text-secondary pt-3">@Html.Raw(Model.Product.Description)</p>
                                 </div>
                                 <div class="row flex-wrap align-items-center">

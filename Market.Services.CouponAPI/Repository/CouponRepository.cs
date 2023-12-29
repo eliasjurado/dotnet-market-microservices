@@ -22,7 +22,7 @@ namespace Market.Services.CouponAPI.Repository
 
         public async Task<Coupon> GetAsync(int id)
         {
-            return await _db.Coupons.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Coupons.FirstOrDefaultAsync(x => x.CouponId == id);
         }
 
         public async Task<Coupon> GetAsync(string name)

@@ -4,11 +4,13 @@ namespace Market.Domain.Models
 {
     public sealed class Product : BaseModel
     {
+        [Key]
+        public long ProductId { get; set; }
         [Required]
-        public double Price { get; set; } = 0;
+        public double ProductPrice { get; set; } = 0;
         [Required]
-        public string CategoryName { get; set; }
+        public string ProductCategoryName { get; set; }
         [Required]
-        public string ImageUrl { get; set; }
+        public string ProductImageUrl { get; set; }
     }
 }

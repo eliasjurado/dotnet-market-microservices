@@ -12,26 +12,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="myForm" method="post" asp-page-handler="Save" asp-route-id=@Model.RequestDto.Id>
+                <form id="myForm" method="post" asp-page-handler="Save" asp-route-id=@Model.RequestDto.ProductId>
                     <div class="mb-3">
-                        <label class="form-label" asp-for="RequestDto.Id">Id</label>
-                        <div><input class="form-control" asp-for="RequestDto.Id" required="required" disabled="disabled" /></div>
+                        <label class="form-label" asp-for="RequestDto.ProductId">Id</label>
+                        <div><input class="form-control" asp-for="RequestDto.ProductId" required="required" disabled="disabled" /></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" asp-for="RequestDto.Name">Name</label>
                         <div><input class="form-control" asp-for="RequestDto.Name" required="required" /></div>
                     </div>
                     <div class="mb-3 ">
-                        <label class="form-label" asp-for="RequestDto.Price">Price ($)</label>
-                        <div><input type="number" step='0.01' min="0" class="input-group-sm form-control text-sm-end" asp-for="RequestDto.Price" required="required" value='@Model.RequestDto.Price.ToString("0.00")' /></div>                        
+                        <label class="form-label" asp-for="RequestDto.ProductPrice">Price ($)</label>
+                        <div><input type="number" step='0.01' min="0" class="input-group-sm form-control text-sm-end" asp-for="RequestDto.ProductPrice" required="required" value='@Model.RequestDto.ProductPrice.ToString("0.00")' /></div>                        
                     </div>
                     <div class="mb-3">
                         <label class="form-label" asp-for="RequestDto.Description">Description</label>
                         <div><input class="form-control" asp-for="RequestDto.Description" required="required" /></div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" asp-for="RequestDto.CategoryName">Category</label>
-                        <select asp-for="RequestDto.CategoryName" class="form-select mb-4" placeholder="Select an option..." required="">
+                        <label class="form-label" asp-for="RequestDto.ProductCategoryName">Category</label>
+                        <select asp-for="RequestDto.ProductCategoryName" class="form-select mb-4" placeholder="Select an option..." required="">
                             <option selected="selected" value="">Select an option...</option>
                             @foreach (var item in Model.Categories)
                             {
@@ -40,11 +40,11 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" asp-for="RequestDto.ImageUrl">ImageUrl</label>
-                        <div><input class="form-control" asp-for="RequestDto.ImageUrl" required="required" /></div>
+                        <label class="form-label" asp-for="RequestDto.ProductImageUrl">ImageUrl</label>
+                        <div><input class="form-control" asp-for="RequestDto.ProductImageUrl" required="required" /></div>
                     </div>
                     <div class="mb-3">
-                        <div><img src="@Model.RequestDto.ImageUrl" alt="ImageUrl" class="w-100" /></div>
+                        <div><img src="@Model.RequestDto.ProductImageUrl" alt="ImageUrl" class="w-100" /></div>
                     </div>
                     @Html.AntiForgeryToken()
                 </form>

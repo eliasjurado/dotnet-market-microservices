@@ -168,10 +168,10 @@ namespace Market.Services.CouponAPI.Endpoints
 
             var coupon = _mapper.Map<Coupon>(couponRequestDto);
             coupon.Name = couponRequestDto.Name;
-            coupon.DisccountAmount = couponRequestDto.DisccountAmount;
-            coupon.MinAmmount = couponRequestDto.MinAmmount;
-            coupon.StartDate = couponRequestDto.StartDate;
-            coupon.EndDate = couponRequestDto.EndDate;
+            coupon.CouponDisccountAmount = couponRequestDto.CouponDisccountAmount;
+            coupon.CouponMinAmmount = couponRequestDto.CouponMinAmmount;
+            coupon.CouponStartDate = couponRequestDto.CouponStartDate;
+            coupon.CouponEndDate = couponRequestDto.CouponEndDate;
             coupon.CreatedBy = userName;
             coupon.UpdatedBy = userName;
 
@@ -185,7 +185,7 @@ namespace Market.Services.CouponAPI.Endpoints
             response.StatusCode = HttpStatusCode.Created;
             response.Status = Format.GetName(nameof(HttpStatusCode.Created));
 
-            return Results.CreatedAtRoute("GetCoupon", new { id = coupon.Id }, response);
+            return Results.CreatedAtRoute("GetCoupon", new { id = coupon.CouponId }, response);
         }
 
         private async static Task<IResult> UpdateCoupon(HttpContext context, ICouponRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<CouponRequestDto> _validator, [FromBody] CouponRequestDto couponRequestDto, string id)
@@ -216,7 +216,7 @@ namespace Market.Services.CouponAPI.Endpoints
             }
 
             var existingCoupon = await _repository.GetAsync(couponRequestDto.Name);
-            if (existingCoupon != null && existingCoupon.Id != output)
+            if (existingCoupon != null && existingCoupon.CouponId != output)
             {
                 response.Metadata.Add("Coupon Name already exists");
                 return Results.BadRequest(response);
@@ -230,12 +230,12 @@ namespace Market.Services.CouponAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            coupon.Code = couponRequestDto.Code;
+            coupon.CouponCode = couponRequestDto.CouponCode;
             coupon.Name = couponRequestDto.Name;
-            coupon.DisccountAmount = couponRequestDto.DisccountAmount;
-            coupon.MinAmmount = couponRequestDto.MinAmmount;
-            coupon.StartDate = couponRequestDto.StartDate;
-            coupon.EndDate = couponRequestDto.EndDate;
+            coupon.CouponDisccountAmount = couponRequestDto.CouponDisccountAmount;
+            coupon.CouponMinAmmount = couponRequestDto.CouponMinAmmount;
+            coupon.CouponStartDate = couponRequestDto.CouponStartDate;
+            coupon.CouponEndDate = couponRequestDto.CouponEndDate;
             coupon.UpdatedBy = userName;
             coupon.UpdatedAt = DateTime.Now;
 

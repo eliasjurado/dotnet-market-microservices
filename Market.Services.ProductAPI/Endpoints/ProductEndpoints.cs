@@ -170,10 +170,10 @@ namespace Market.Services.ProductAPI.Endpoints
 
             var Product = _mapper.Map<Product>(ProductRequestDto);
             Product.Name = ProductRequestDto.Name;
-            Product.CategoryName = ProductRequestDto.CategoryName;
+            Product.ProductCategoryName = ProductRequestDto.ProductCategoryName;
             Product.Description = ProductRequestDto.Description;
-            Product.Price = ProductRequestDto.Price;
-            Product.ImageUrl = ProductRequestDto.ImageUrl;
+            Product.ProductPrice = ProductRequestDto.ProductPrice;
+            Product.ProductImageUrl = ProductRequestDto.ProductImageUrl;
             Product.CreatedBy = userName;
             Product.UpdatedBy = userName;
 
@@ -187,7 +187,7 @@ namespace Market.Services.ProductAPI.Endpoints
             response.StatusCode = HttpStatusCode.Created;
             response.Status = Format.GetName(nameof(HttpStatusCode.Created));
 
-            return Results.CreatedAtRoute("GetProduct", new { id = Product.Id }, response);
+            return Results.CreatedAtRoute("GetProduct", new { id = Product.ProductId }, response);
         }
 
         private async static Task<IResult> UpdateProduct(HttpContext context, IProductRepository _repository, IMapper _mapper, ILogger<Program> _logger, IValidator<ProductRequestDto> _validator, [FromBody] ProductRequestDto ProductRequestDto, string id)
@@ -218,7 +218,7 @@ namespace Market.Services.ProductAPI.Endpoints
             }
 
             var existingProduct = await _repository.GetAsync(ProductRequestDto.Name);
-            if (existingProduct != null && existingProduct.Id != output)
+            if (existingProduct != null && existingProduct.ProductId != output)
             {
                 response.Metadata.Add("Product Name already exists");
                 return Results.BadRequest(response);
@@ -233,10 +233,10 @@ namespace Market.Services.ProductAPI.Endpoints
             }
 
             Product.Name = ProductRequestDto.Name;
-            Product.CategoryName = ProductRequestDto.CategoryName;
+            Product.ProductCategoryName = ProductRequestDto.ProductCategoryName;
             Product.Description = ProductRequestDto.Description;
-            Product.Price = ProductRequestDto.Price;
-            Product.ImageUrl = ProductRequestDto.ImageUrl;
+            Product.ProductPrice = ProductRequestDto.ProductPrice;
+            Product.ProductImageUrl = ProductRequestDto.ProductImageUrl;
             Product.UpdatedBy = userName;
             Product.UpdatedAt = DateTime.Now;
 

@@ -57,12 +57,12 @@ namespace Market.Web.Pages
             RequestDto = JsonConvert.DeserializeObject<ProductDto>(((JObject)responseDto.Data).ToString());
             var viewModel = new ProductViewModel
             {
-                Id = RequestDto.Id,
+                ProductId = RequestDto.ProductId,
                 Name = RequestDto.Name,
-                CategoryName = RequestDto.CategoryName,
+                ProductCategoryName = RequestDto.ProductCategoryName,
                 Description = RequestDto.Description,
-                ImageUrl = RequestDto.ImageUrl,
-                Price = RequestDto.Price
+                ProductImageUrl = RequestDto.ProductImageUrl,
+                ProductPrice = RequestDto.ProductPrice
             };
 
             if (!Request.IsHtmx())

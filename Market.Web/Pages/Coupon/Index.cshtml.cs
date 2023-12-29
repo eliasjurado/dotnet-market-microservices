@@ -137,8 +137,8 @@ namespace Market.Web.Pages.Coupon
             {
                 return Page();
             }
-            RequestDto.Id = id;
-            if (RequestDto.Id != 0)
+            RequestDto.CouponId = id;
+            if (RequestDto.CouponId != 0)
             {
                 ResponseInterface responseDto = await _couponService.UpdateAsync(RequestDto);
                 ToastTitle = responseDto.Message;

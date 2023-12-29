@@ -12,9 +12,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="myForm" method="post" asp-page-handler="Delete" asp-route-id=@Model.RequestDto.Id>
+                <form id="myForm" method="post" asp-page-handler="Delete" asp-route-id=@Model.RequestDto.ProductId>
                     <div class="mb-3">
-                        <label class="form-label" asp-for="RequestDto.Id">Are you sure to delete Product with Id: "@Model.RequestDto.Id"?</label>
+                        <label class="form-label" asp-for="RequestDto.ProductId">Are you sure to delete Product with Id: "@Model.RequestDto.ProductId"?</label>
                     </div>
                     @Html.AntiForgeryToken()
                 </form>

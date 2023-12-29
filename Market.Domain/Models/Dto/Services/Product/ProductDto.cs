@@ -2,11 +2,11 @@
 {
     public class ProductDto
     {
-        public virtual long Id { get; set; }
+        public virtual long ProductId { get; set; }
         public string Name { get; set; }
-        public double Price { get; set; }
+        public double ProductPrice { get; set; }
         public string Description { get; set; }
-        public string CategoryName { get; set; }
-        public string ImageUrl { get; set; }
+        public string ProductCategoryName { get; set; }
+        public string ProductImageUrl { get; set; }
     }
 }

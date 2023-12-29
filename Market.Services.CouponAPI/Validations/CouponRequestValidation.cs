@@ -7,10 +7,10 @@ namespace Market.Services.CouponAPI.Validations
     {
         public CouponRequestValidation()
         {
-            RuleFor(model => model.Code).NotEmpty();
+            RuleFor(model => model.CouponCode).NotEmpty();
             RuleFor(model => model.Name).NotEmpty();
-            RuleFor(model => model.DisccountAmount).ExclusiveBetween(0, 100);
-            RuleFor(model => model.MinAmmount).GreaterThanOrEqualTo(0);
+            RuleFor(model => model.CouponDisccountAmount).ExclusiveBetween(0, 100);
+            RuleFor(model => model.CouponMinAmmount).GreaterThanOrEqualTo(0);
         }
     }
 }

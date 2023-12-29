@@ -1,18 +1,18 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Welcome";
     RedirectToPage("./Shop/Index");
 }
 <div class="text-center">
-    <h1 class="display-4">
+    <h1 class="display-6">
         Welcome
         @if (User.Identity.IsAuthenticated)
         {
             @User.Identity.Name
         }
+        to Market
     </h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 @if (Model.Results.Any())
 {

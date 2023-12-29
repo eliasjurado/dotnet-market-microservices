@@ -122,8 +122,8 @@ namespace Market.Web.Pages.Product
             {
                 return Page();
             }
-            RequestDto.Id = id;
-            if (RequestDto.Id != 0)
+            RequestDto.ProductId = id;
+            if (RequestDto.ProductId != 0)
             {
                 ResponseInterface responseDto = await _productService.UpdateAsync(RequestDto);
                 ToastTitle = responseDto.Message;

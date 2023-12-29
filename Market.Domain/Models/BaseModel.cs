@@ -5,8 +5,6 @@ namespace Market.Domain.Models
 {
     public class BaseModel
     {
-        [Key]
-        public long Id { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
         [Required]
