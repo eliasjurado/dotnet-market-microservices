@@ -102,6 +102,9 @@ namespace Market.Services.CartAPI.Migrations
 
                     b.HasKey("CreatedBy", "CartHeaderId");
 
+                    b.HasIndex("CreatedBy")
+                        .IsUnique();
+
                     b.ToTable("CartHeader", (string)null);
                 });
 

@@ -141,8 +141,9 @@ namespace Market.Services.CartAPI.Endpoints
 
         private async static Task<IResult> CreateCart(HttpContext context, ICartHeaderRepository _headerRepository, ICartDetailRepository _detailRepository, IMapper _mapper, ILogger<Program> _logger, IValidator<CartDto> _validator, [FromBody] CartDto request)
         {
+            var userName = string.Empty;
             CartHeader header = new();
-            Guid userName;
+            Guid userId;
             ResponseDto<CartDto> response = new();
             response.Message = "Cart Creation Failed";
             try
@@ -152,11 +153,13 @@ namespace Market.Services.CartAPI.Endpoints
                 if (string.IsNullOrWhiteSpace(user))
                 {
                     response.Metadata.Add("To complete your purchase signin in Market or signup if you are not registered yet");
-                    userName = Guid.NewGuid();
+                    userId = Guid.NewGuid();
+                    userName = "Visitor";
                 }
                 else
                 {
-                    userName = new Guid(user);
+                    userId = new Guid(user);
+                    userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
                 }
 
                 var existingCartHeader = await _headerRepository.GetAsync(request.CartHeader.CreatedBy);
@@ -164,23 +167,23 @@ namespace Market.Services.CartAPI.Endpoints
                 {
                     //create header and details
                     header = _mapper.Map<CartHeader>(request.CartHeader);
-                    header.CreatedBy = userName;
-                    header.UpdatedBy = userName;
+                    header.CreatedBy = userId;
+                    header.UpdatedBy = userId;
                     await _headerRepository.CreateAsync(header);
                     await _headerRepository.SaveAsync();
 
                     var details = _mapper.Map<ICollection<CartDetail>>(request.CartDetails);
                     foreach (var detail in details)
                     {
-                        detail.CreatedBy = userName;
-                        detail.UpdatedBy = userName;
+                        detail.CreatedBy = userId;
+                        detail.UpdatedBy = userId;
                         await _detailRepository.CreateAsync(detail);
                     }
                     await _detailRepository.SaveAsync();
 
                     response.IsSuccess = true;
                     response.Message = "Cart Creation Succeeded";
-                    response.Metadata.Add($"Cart was created by user \"{header.CreatedBy}\" successfully");
+                    response.Metadata.Add($"Cart was created by user \"{userName}\" successfully");
                     response.StatusCode = HttpStatusCode.Created;
                     response.Status = Format.GetName(nameof(HttpStatusCode.Created));
                 }

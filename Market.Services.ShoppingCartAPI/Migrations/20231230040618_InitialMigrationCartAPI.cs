@@ -56,6 +56,12 @@ namespace Market.Services.CartAPI.Migrations
                         principalColumns: new[] { "CreatedBy", "CartHeaderId" },
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartHeader_CreatedBy",
+                table: "CartHeader",
+                column: "CreatedBy",
+                unique: true);
         }
 
         /// <inheritdoc />

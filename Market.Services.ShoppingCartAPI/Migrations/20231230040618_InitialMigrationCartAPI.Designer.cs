@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Services.CartAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231230035123_InitialMigrationCartAPI")]
+    [Migration("20231230040618_InitialMigrationCartAPI")]
     partial class InitialMigrationCartAPI
     {
         /// <inheritdoc />
@@ -104,6 +104,9 @@ namespace Market.Services.CartAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CreatedBy", "CartHeaderId");
+
+                    b.HasIndex("CreatedBy")
+                        .IsUnique();
 
                     b.ToTable("CartHeader", (string)null);
                 });
