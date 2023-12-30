@@ -5,7 +5,9 @@ namespace Market.Domain.Models
 {
     public class CartHeader : BaseModel
     {
-        [Key]
+        [Key, Column(Order = 0)]
+        public new Guid CreatedBy { get; set; } = Guid.NewGuid();
+        [Key, Column(Order = 1)]
         public long CartHeaderId { get; set; }
         public long CouponId { get; set; }
         [NotMapped]
@@ -18,5 +20,7 @@ namespace Market.Domain.Models
         public DateTime CouponStartDate { get; set; }
         [NotMapped]
         public DateTime CouponEndDate { get; set; }
+
+
     }
 }

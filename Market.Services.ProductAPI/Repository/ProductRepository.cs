@@ -25,6 +25,11 @@ namespace Market.Services.ProductAPI.Repository
             return await _db.Products.FirstOrDefaultAsync(x => x.ProductId == productId);
         }
 
+        public async Task<Product> GetAsync(string productName)
+        {
+            return await _db.Products.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(productName.ToLower()));
+        }
+
         public async Task<ICollection<Product>> GetAsync(Expression<Func<Product, bool>> expression)
         {
             return await _db.Products.Where(expression).ToListAsync();

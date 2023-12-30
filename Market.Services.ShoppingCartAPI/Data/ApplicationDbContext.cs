@@ -14,8 +14,8 @@ namespace Market.Services.CartAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CartHeader>().ToTable("CartHeader");
-            modelBuilder.Entity<CartDetail>().ToTable("CartDetail").HasKey(x => new { x.CartHeaderId, x.CartDetailId }); ;
+            modelBuilder.Entity<CartHeader>().ToTable("CartHeader").HasKey(x => new { x.CreatedBy, x.CartHeaderId });
+            modelBuilder.Entity<CartDetail>().ToTable("CartDetail").HasKey(x => new { x.CreatedBy, x.CartHeaderId, x.CartDetailId });
         }
     }
 }

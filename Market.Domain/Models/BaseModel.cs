@@ -6,30 +6,18 @@ namespace Market.Domain.Models
     public class BaseModel
     {
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         [Required]
-        public ByteType IsDeleted { get; set; }
+        public ByteType IsDeleted { get; set; } = ByteType.No;
         [Required]
-        public Guid CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; } = Guid.NewGuid();
         [Required]
-        public Guid UpdatedBy { get; set; }
+        public Guid UpdatedBy { get; set; } = Guid.NewGuid();
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Required]
-        public DateTime UpdatedAt { get; set; }
-        public BaseModel()
-        {
-            var dtNow = DateTime.Now;
-            var anonymousUser = new Guid();
-            Name = string.Empty;
-            Description = string.Empty;
-            IsDeleted = ByteType.No;
-            CreatedBy = anonymousUser;
-            UpdatedBy = anonymousUser;
-            CreatedAt = dtNow;
-            UpdatedAt = dtNow;
-        }
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }

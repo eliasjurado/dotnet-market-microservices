@@ -24,19 +24,20 @@ namespace Market.Services.CartAPI.Migrations
 
             modelBuilder.Entity("Market.Domain.Models.CartDetail", b =>
                 {
-                    b.Property<long>("CartHeaderId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(0);
 
-                    b.Property<long>("CartDetailId")
+                    b.Property<long>("CartHeaderId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<long>("CartDetailId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(2);
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -61,27 +62,26 @@ namespace Market.Services.CartAPI.Migrations
                     b.Property<Guid>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CartHeaderId", "CartDetailId");
+                    b.HasKey("CreatedBy", "CartHeaderId", "CartDetailId");
 
                     b.ToTable("CartDetail", (string)null);
                 });
 
             modelBuilder.Entity("Market.Domain.Models.CartHeader", b =>
                 {
-                    b.Property<long>("CartHeaderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CartHeaderId"));
+                    b.Property<long>("CartHeaderId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<long>("CouponId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -100,7 +100,7 @@ namespace Market.Services.CartAPI.Migrations
                     b.Property<Guid>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CartHeaderId");
+                    b.HasKey("CreatedBy", "CartHeaderId");
 
                     b.ToTable("CartHeader", (string)null);
                 });
@@ -109,7 +109,7 @@ namespace Market.Services.CartAPI.Migrations
                 {
                     b.HasOne("Market.Domain.Models.CartHeader", "CartHeader")
                         .WithMany()
-                        .HasForeignKey("CartHeaderId")
+                        .HasForeignKey("CreatedBy", "CartHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

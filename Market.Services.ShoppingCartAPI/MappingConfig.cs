@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Market.Domain.Models;
+using Market.Domain.Models.Dto.Services.Cart;
 
 namespace Market.Services.CouponAPI
 {
@@ -6,8 +8,8 @@ namespace Market.Services.CouponAPI
     {
         public MappingConfig()
         {
-            //CreateMap<Coupon, CouponRequestDto>().ReverseMap();
-            //CreateMap<Coupon, CouponDto>().ReverseMap();
+            CreateMap<CartHeader, CartHeaderDto>().ReverseMap();
+            CreateMap<CartDetail, CartDetailDto>().ReverseMap();
         }
     }
 }

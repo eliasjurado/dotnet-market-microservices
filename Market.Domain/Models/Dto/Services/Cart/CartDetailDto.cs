@@ -1,6 +1,6 @@
 ﻿using Market.Domain.Models.Dto.Services.Product;
 
-namespace Market.Domain.Models
+namespace Market.Domain.Models.Dto.Services.Cart
 {
     public class CartDetailDto
     {

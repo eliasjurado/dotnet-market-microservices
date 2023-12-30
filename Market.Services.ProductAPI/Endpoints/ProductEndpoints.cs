@@ -82,7 +82,7 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<List<ProductDto>> response = new();
             //response.Message = "Get All Products Failed";
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            //var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
@@ -107,7 +107,7 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<ProductDto> response = new();
             response.Message = "Get Product Failed";
 
-            //var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            //var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
             //if (string.IsNullOrWhiteSpace(userName))
             //{
@@ -145,7 +145,7 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<ProductDto> response = new();
             response.Message = "Product Creation Failed";
 
-            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(user))
             {
@@ -163,12 +163,11 @@ namespace Market.Services.ProductAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            //if (await _repository.GetAsync(ProductRequestDto.Name) != null)
-            //{
-
-            //    response.Metadata.Add("Product Name already exists");
-            //    return Results.BadRequest(response);
-            //}
+            if (await _repository.GetAsync(ProductRequestDto.Name) != null)
+            {
+                response.Metadata.Add("Product Name already exists");
+                return Results.BadRequest(response);
+            }
 
             var Product = _mapper.Map<Product>(ProductRequestDto);
             Product.Name = ProductRequestDto.Name;
@@ -197,7 +196,7 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<ProductDto> response = new();
             response.Message = "Update Product Failed";
 
-            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
             if (string.IsNullOrWhiteSpace(user))
             {
@@ -219,12 +218,12 @@ namespace Market.Services.ProductAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            //var existingProduct = await _repository.GetAsync(ProductRequestDto.Name);
-            //if (existingProduct != null && existingProduct.ProductId != output)
-            //{
-            //    response.Metadata.Add("Product Name already exists");
-            //    return Results.BadRequest(response);
-            //}
+            var existingProduct = await _repository.GetAsync(ProductRequestDto.Name);
+            if (existingProduct != null && existingProduct.ProductId != output)
+            {
+                response.Metadata.Add("Product Name already exists");
+                return Results.BadRequest(response);
+            }
 
             var Product = await _repository.GetAsync(output);
 
@@ -260,14 +259,14 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<ProductDto> response = new();
             response.Message = "Delete Product Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(user))
             {
                 response.Metadata.Add("Invalid User Name was received");
                 return Results.BadRequest(response);
             }
-
+            var userName = new Guid(user);
             int output;
             if (!int.TryParse(id, out output))
             {
@@ -284,7 +283,7 @@ namespace Market.Services.ProductAPI.Endpoints
             }
 
             response.Data = _mapper.Map<ProductDto>(Product);
-            //await _repository.RemoveAsync(Product);
+            await _repository.RemoveAsync(output);
             await _repository.SaveAsync();
             response.IsSuccess = true;
             response.Message = "Delete Product Succeeded";

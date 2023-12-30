@@ -1,4 +1,4 @@
-﻿namespace Market.Domain.Models
+﻿namespace Market.Domain.Models.Dto.Services.Cart
 {
     public class CartHeaderDto
     {

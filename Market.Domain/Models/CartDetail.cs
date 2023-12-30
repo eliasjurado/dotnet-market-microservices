@@ -6,12 +6,13 @@ namespace Market.Domain.Models
 {
     public class CartDetail : BaseModel
     {
-
         [Key, Column(Order = 0)]
-        public long CartHeaderId { get; set; }
+        public new Guid CreatedBy { get; set; } = Guid.NewGuid();
         [Key, Column(Order = 1)]
+        public long CartHeaderId { get; set; }
+        [Key, Column(Order = 2)]
         public long CartDetailId { get; set; }
-        [ForeignKey("CartHeaderId")]
+        [ForeignKey("CreatedBy,CartHeaderId")]
         public CartHeader CartHeader { get; set; }
         public long ProductId { get; set; }
         [NotMapped]
