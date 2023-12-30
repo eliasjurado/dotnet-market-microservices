@@ -7,7 +7,9 @@ namespace Market.Services.CartAPI.Repository.IRepository
     {
         Task<ICollection<CartHeader>> GetAsync(Expression<Func<CartHeader, bool>> expression);
         Task<ICollection<CartHeader>> GetAsync();
+        Task<ICollection<CartHeader>> GetAsync(Guid userId);
         Task<CartHeader> GetAsync(long headerId);
+        Task<CartHeader> GetAsync(Guid userId, long headerId);
         Task CreateAsync(CartHeader header);
         Task UpdateAsync(CartHeader header);
         Task RemoveAsync(long headerId);

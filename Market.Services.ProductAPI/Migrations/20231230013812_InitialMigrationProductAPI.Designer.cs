@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Services.ProductAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231229201958_InitialMigrationProductAPI")]
+    [Migration("20231230013812_InitialMigrationProductAPI")]
     partial class InitialMigrationProductAPI
     {
         /// <inheritdoc />
@@ -36,9 +36,8 @@ namespace Market.Services.ProductAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -54,9 +53,8 @@ namespace Market.Services.ProductAPI.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CategoryId");
 
@@ -66,35 +64,35 @@ namespace Market.Services.ProductAPI.Migrations
                         new
                         {
                             CategoryId = 1L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7550),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1157),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "",
                             IsDeleted = 0,
                             Name = "Appetizer",
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7565),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1157),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             CategoryId = 2L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7606),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1209),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "",
                             IsDeleted = 0,
                             Name = "Dessert",
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7606),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1209),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             CategoryId = 3L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7618),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1222),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "",
                             IsDeleted = 0,
                             Name = "Entree",
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7618),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1222),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
 
@@ -109,9 +107,8 @@ namespace Market.Services.ProductAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -138,9 +135,8 @@ namespace Market.Services.ProductAPI.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ProductId");
 
@@ -150,58 +146,58 @@ namespace Market.Services.ProductAPI.Migrations
                         new
                         {
                             ProductId = 1L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7726),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1326),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "El Pisco Sour es la bebida nacional peruana y un símbolo como tal del estilo de vida sudamericano. El “Pisco Sour” es un cóctel de Perú hecho a base de Pisco, que se sirve como aperitivo. Por la acidez característica de su limón es refrescante y vigorizante, y alegra cualquier reunión.",
                             IsDeleted = 0,
                             Name = "Pisco Sour",
                             ProductCategoryName = "Appetizer",
                             ProductImageUrl = "https://elcomercio.pe/resizer/_qzltzlrDcohFgUmpZ4DCbGX0Ss=/1200x800/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/66DKHZCFLVBE3EY2IYWUGLEOIE.png",
                             ProductPrice = 25.0,
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7726),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1326),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ProductId = 2L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7748),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1344),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "El anticucho es un tipo de brocheta de origen peruano,​ que posteriormente se volvió popular en algunos países sudamericanos con diferentes variaciones. Consiste en carne y otros alimentos que se asan ensartados en un pincho.",
                             IsDeleted = 0,
                             Name = "Anticuchos",
                             ProductCategoryName = "Appetizer",
                             ProductImageUrl = "https://www.comedera.com/wp-content/uploads/2022/03/Anticucho-shutterstock_185287433.jpg",
                             ProductPrice = 20.989999999999998,
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7749),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1344),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ProductId = 3L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7763),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1358),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "El suspiro limeño, suspiro de limeña o suspiro a la limeña es un postre tradicional peruano cuyo nombre hace referencia a su capital, Lima: “suspiro de Lima”. El lento proceso de cocción de esta receta da como resultado una base de natillas doradas, suave y sedosa, similar al caramelo, que luego se corona con un merengue de licor cremoso y ligero.",
                             IsDeleted = 0,
                             Name = "Suspiro a la Limeña",
                             ProductCategoryName = "Dessert",
                             ProductImageUrl = "https://assets.elgourmet.com/wp-content/uploads/2023/03/cover_siu6kem1v7_eg-lidg-platos-suspiro-limeno-hi-02-1024x683.jpg",
                             ProductPrice = 12.99,
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7763),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1358),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ProductId = 4L,
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7776),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1370),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "La causa es uno de los platos más famosos de la comida peruana. Y esta causa limeña con pulpo al olivo es de las más coloridas y deliciosas. Las causas puedes rellenarlas de pollo, atún o camarones mezclados simplemente con mayonesa.",
                             IsDeleted = 0,
                             Name = "Causa al Olivo",
                             ProductCategoryName = "Entree",
                             ProductImageUrl = "https://media-cdn.tripadvisor.com/media/photo-s/1d/6b/de/5a/causa-peruana-con-pulpo.jpg",
                             ProductPrice = 35.0,
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 19, 58, 554, DateTimeKind.Local).AddTicks(7776),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 38, 11, 799, DateTimeKind.Local).AddTicks(1370),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
 #pragma warning restore 612, 618

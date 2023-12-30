@@ -144,14 +144,14 @@ namespace Market.Services.CouponAPI.Endpoints
             ResponseDto<CouponDto> response = new();
             response.Message = "Coupon Creation Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(user))
             {
                 response.Metadata.Add("Invalid User Name was received");
                 return Results.BadRequest(response);
             }
-
+            var userName = new Guid(user);
             var validationResult = await _validator.ValidateAsync(couponRequestDto);
 
             if (!validationResult.IsValid)
@@ -193,14 +193,14 @@ namespace Market.Services.CouponAPI.Endpoints
             ResponseDto<CouponDto> response = new();
             response.Message = "Update Coupon Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(user))
             {
                 response.Metadata.Add("Invalid User Name was received");
                 return Results.BadRequest(response);
             }
-
+            var userName = new Guid(user);
             var validationResult = await _validator.ValidateAsync(couponRequestDto);
             if (!validationResult.IsValid)
             {

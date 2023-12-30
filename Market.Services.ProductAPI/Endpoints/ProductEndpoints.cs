@@ -145,13 +145,15 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<ProductDto> response = new();
             response.Message = "Product Creation Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(user))
             {
                 response.Metadata.Add("Invalid User Name was received");
                 return Results.BadRequest(response);
             }
+
+            var userName = new Guid(user);
 
             var validationResult = await _validator.ValidateAsync(ProductRequestDto);
 
@@ -195,14 +197,14 @@ namespace Market.Services.ProductAPI.Endpoints
             ResponseDto<ProductDto> response = new();
             response.Message = "Update Product Failed";
 
-            var userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+            var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name) || c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
 
-            if (string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(user))
             {
                 response.Metadata.Add("Invalid User Name was received");
                 return Results.BadRequest(response);
             }
-
+            var userName = new Guid(user);
             var validationResult = await _validator.ValidateAsync(ProductRequestDto);
             if (!validationResult.IsValid)
             {

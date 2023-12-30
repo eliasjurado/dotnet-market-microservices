@@ -50,9 +50,8 @@ namespace Market.Services.CouponAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -68,9 +67,8 @@ namespace Market.Services.CouponAPI.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CouponId");
 
@@ -85,13 +83,13 @@ namespace Market.Services.CouponAPI.Migrations
                             CouponEndDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CouponMinAmmount = 1200.0,
                             CouponStartDate = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 20, 33, 908, DateTimeKind.Local).AddTicks(5405),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 37, 16, 679, DateTimeKind.Local).AddTicks(3300),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Special Disccount for New Year",
                             IsDeleted = 0,
                             Name = "50% OFF - New Year Disccount",
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 20, 33, 908, DateTimeKind.Local).AddTicks(5419),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 37, 16, 679, DateTimeKind.Local).AddTicks(3300),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
@@ -101,13 +99,13 @@ namespace Market.Services.CouponAPI.Migrations
                             CouponEndDate = new DateTime(2024, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CouponMinAmmount = 200.0,
                             CouponStartDate = new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2023, 12, 29, 15, 20, 33, 908, DateTimeKind.Local).AddTicks(5459),
-                            CreatedBy = "SYSTEM",
+                            CreatedAt = new DateTime(2023, 12, 29, 20, 37, 16, 679, DateTimeKind.Local).AddTicks(3349),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Special Disccount for Carnival",
                             IsDeleted = 0,
                             Name = "15% OFF - Carnival Disccount",
-                            UpdatedAt = new DateTime(2023, 12, 29, 15, 20, 33, 908, DateTimeKind.Local).AddTicks(5459),
-                            UpdatedBy = "SYSTEM"
+                            UpdatedAt = new DateTime(2023, 12, 29, 20, 37, 16, 679, DateTimeKind.Local).AddTicks(3349),
+                            UpdatedBy = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
 #pragma warning restore 612, 618
