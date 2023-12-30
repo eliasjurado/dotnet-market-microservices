@@ -15,19 +15,14 @@ namespace Market.Services.ProductAPI.Repository
             _db = db;
         }
 
-        public async Task CreateAsync(Product Product)
+        public async Task CreateAsync(Product product)
         {
-            await Task.Run(() => _db.Add(Product));
+            await Task.Run(() => _db.Add(product));
         }
 
-        public async Task<Product> GetAsync(int id)
+        public async Task<Product> GetAsync(long productId)
         {
-            return await _db.Products.FirstOrDefaultAsync(x => x.ProductId == id);
-        }
-
-        public async Task<Product> GetAsync(string name)
-        {
-            return await _db.Products.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+            return await _db.Products.FirstOrDefaultAsync(x => x.ProductId == productId);
         }
 
         public async Task<ICollection<Product>> GetAsync(Expression<Func<Product, bool>> expression)
@@ -40,9 +35,9 @@ namespace Market.Services.ProductAPI.Repository
             return await _db.Products.ToListAsync();
         }
 
-        public async Task RemoveAsync(Product Product)
+        public async Task RemoveAsync(long productId)
         {
-            await Task.Run(() => _db.Remove(Product));
+            await Task.Run(async () => _db.Remove(await GetAsync(productId)));
         }
 
         public async Task SaveAsync()
@@ -50,9 +45,9 @@ namespace Market.Services.ProductAPI.Repository
             await _db.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Product Product)
+        public async Task UpdateAsync(Product product)
         {
-            await Task.Run(() => _db.Products.Update(Product));
+            await Task.Run(() => _db.Products.Update(product));
         }
     }
 }

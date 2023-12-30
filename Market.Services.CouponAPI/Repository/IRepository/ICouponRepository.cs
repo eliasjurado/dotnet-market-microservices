@@ -7,11 +7,11 @@ namespace Market.Services.CouponAPI.Repository.IRepository
     {
         Task<ICollection<Coupon>> GetAsync(Expression<Func<Coupon, bool>> expression);
         Task<ICollection<Coupon>> GetAsync();
-        Task<Coupon> GetAsync(int id);
-        Task<Coupon> GetAsync(string name);
+        Task<Coupon> GetAsync(long couponId);
+        Task<Coupon> GetAsync(string couponName);
         Task CreateAsync(Coupon coupon);
         Task UpdateAsync(Coupon coupon);
-        Task RemoveAsync(Coupon coupon);
+        Task RemoveAsync(long couponId);
         Task SaveAsync();
     }
 }

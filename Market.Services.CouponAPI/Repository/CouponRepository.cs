@@ -20,14 +20,14 @@ namespace Market.Services.CouponAPI.Repository
             await Task.Run(() => _db.Add(coupon));
         }
 
-        public async Task<Coupon> GetAsync(int id)
+        public async Task<Coupon> GetAsync(long couponId)
         {
-            return await _db.Coupons.FirstOrDefaultAsync(x => x.CouponId == id);
+            return await _db.Coupons.FirstOrDefaultAsync(x => x.CouponId == couponId);
         }
 
-        public async Task<Coupon> GetAsync(string name)
+        public async Task<Coupon> GetAsync(string couponName)
         {
-            return await _db.Coupons.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+            return await _db.Coupons.FirstOrDefaultAsync(x => x.Name.ToLower() == couponName.ToLower());
         }
 
         public async Task<ICollection<Coupon>> GetAsync(Expression<Func<Coupon, bool>> expression)
@@ -40,9 +40,9 @@ namespace Market.Services.CouponAPI.Repository
             return await _db.Coupons.ToListAsync();
         }
 
-        public async Task RemoveAsync(Coupon coupon)
+        public async Task RemoveAsync(long couponId)
         {
-            await Task.Run(() => _db.Remove(coupon));
+            await Task.Run(async () => _db.Remove(await GetAsync(couponId)));
         }
 
         public async Task SaveAsync()

@@ -161,12 +161,12 @@ namespace Market.Services.ProductAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            if (await _repository.GetAsync(ProductRequestDto.Name) != null)
-            {
+            //if (await _repository.GetAsync(ProductRequestDto.Name) != null)
+            //{
 
-                response.Metadata.Add("Product Name already exists");
-                return Results.BadRequest(response);
-            }
+            //    response.Metadata.Add("Product Name already exists");
+            //    return Results.BadRequest(response);
+            //}
 
             var Product = _mapper.Map<Product>(ProductRequestDto);
             Product.Name = ProductRequestDto.Name;
@@ -217,12 +217,12 @@ namespace Market.Services.ProductAPI.Endpoints
                 return Results.BadRequest(response);
             }
 
-            var existingProduct = await _repository.GetAsync(ProductRequestDto.Name);
-            if (existingProduct != null && existingProduct.ProductId != output)
-            {
-                response.Metadata.Add("Product Name already exists");
-                return Results.BadRequest(response);
-            }
+            //var existingProduct = await _repository.GetAsync(ProductRequestDto.Name);
+            //if (existingProduct != null && existingProduct.ProductId != output)
+            //{
+            //    response.Metadata.Add("Product Name already exists");
+            //    return Results.BadRequest(response);
+            //}
 
             var Product = await _repository.GetAsync(output);
 
@@ -282,7 +282,7 @@ namespace Market.Services.ProductAPI.Endpoints
             }
 
             response.Data = _mapper.Map<ProductDto>(Product);
-            await _repository.RemoveAsync(Product);
+            //await _repository.RemoveAsync(Product);
             await _repository.SaveAsync();
             response.IsSuccess = true;
             response.Message = "Delete Product Succeeded";

@@ -1,5 +1,4 @@
-﻿
-using Market.Domain.Models;
+﻿using Market.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Market.Services.CartAPI.Data
@@ -16,7 +15,7 @@ namespace Market.Services.CartAPI.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CartHeader>().ToTable("CartHeader");
-            modelBuilder.Entity<CartDetail>().ToTable("CartDetail");
+            modelBuilder.Entity<CartDetail>().ToTable("CartDetail").HasKey(x => new { x.CartHeaderId, x.CartDetailId }); ;
         }
     }
 }
