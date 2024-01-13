@@ -41,6 +41,11 @@ namespace Market.Services.CartAPI.Repository
             return await _db.CartDetails.Where(x => x.CreatedBy.Equals(userId) && x.CartHeaderId == headerId).ToListAsync();
         }
 
+        public async Task<ICollection<CartDetail>> GetAsync(long headerId)
+        {
+            return await _db.CartDetails.Where(x => x.CartHeaderId == headerId).ToListAsync();
+        }
+
         public async Task<CartDetail> GetAsync(Guid userId, long headerId, long detailId)
         {
             return await _db.CartDetails.FirstOrDefaultAsync(x => x.CreatedBy.Equals(userId) && x.CartHeaderId == headerId && x.CartDetailId == detailId);

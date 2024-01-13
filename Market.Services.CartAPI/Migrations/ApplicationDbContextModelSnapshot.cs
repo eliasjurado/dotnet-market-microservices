@@ -29,12 +29,16 @@ namespace Market.Services.CartAPI.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<long>("CartHeaderId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
                     b.Property<long>("CartDetailId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CartDetailId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -74,8 +78,11 @@ namespace Market.Services.CartAPI.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<long>("CartHeaderId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CartHeaderId"));
 
                     b.Property<long>("CouponId")
                         .HasColumnType("bigint");
@@ -101,6 +108,9 @@ namespace Market.Services.CartAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CreatedBy", "CartHeaderId");
+
+                    b.HasIndex("CartHeaderId")
+                        .IsUnique();
 
                     b.HasIndex("CreatedBy")
                         .IsUnique();

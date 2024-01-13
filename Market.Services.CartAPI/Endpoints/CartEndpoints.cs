@@ -22,37 +22,19 @@ namespace Market.Services.CartAPI.Endpoints
             //    .Produces(403)
             //    .RequireAuthorization();
 
-            //app.MapGet("/api/Cart/{id}", GetCart)
-            //    .WithName("GetCart")
-            //    .AddEndpointFilter(async (context, next) =>
-            //    {
-            //        ResponseDto<object> response = new();
-            //        var id = context.GetArgument<string>(4);
-            //        int output;
-            //        if (!int.TryParse(id, out output))
-            //        {
-            //            response.Message = "Get Cart Failed";
-            //            response.Metadata.Add("Invalid Id was received");
-            //            return Results.BadRequest(response);
-            //        }
-            //        if (output == 0)
-            //        {
-            //            response.Message = "Get Cart Failed";
-            //            response.Metadata.Add("Id received cannot be zero");
-            //            return Results.BadRequest(response);
-            //        }
-            //        return await next(context);
-            //    })
-            //    .Produces<ResponseDto<CartDto>>(200)
-            //    .Produces(400)
-            //    .Produces(401)
-            //    .Produces(403)
-            //    .RequireAuthorization();
+            app.MapGet("/api/Cart/{id}", GetCart)
+                .WithName("GetCart")
+                .Produces<ResponseDto<CartDto>>(200)
+                .Produces(400);
+            //.Produces(401)
+            //.Produces(403)
+            //.RequireAuthorization()
 
             app.MapPost("/api/Cart", SaveCart)
                 .WithName("SaveCart")
                 .Accepts<CartDto>("application/json")
                 .Produces<ResponseDto<CartDto>>(201)
+                .Produces<ResponseDto<CartDto>>(200)
                 .Produces(400);
             //.Produces(401)
             //.Produces(403)
@@ -67,13 +49,13 @@ namespace Market.Services.CartAPI.Endpoints
             //    .Produces(403)
             //    .RequireAuthorization("AdminOnly");
 
-            //app.MapDelete("/api/Cart/{id}", DeleteCart)
-            //    .WithName("DeleteCart")
-            //    .Produces<ResponseDto<CartDto>>(200)
-            //    .Produces(400)
-            //    .Produces(401)
-            //    .Produces(403)
-            //    .RequireAuthorization("AdminOnly");
+            app.MapDelete("/api/Cart/", DeleteCart)
+                .WithName("DeleteCart")
+                .Produces<ResponseDto<CartDetail>>(200)
+                .Produces(400);
+            //.Produces(401)
+            //.Produces(403)
+            //.RequireAuthorization("AdminOnly");
         }
         /*
                 private async static Task<IResult> GetAllCart(HttpContext context, IConfiguration _configuration, ICartHeaderRepository _headerRepository, ICartDetailRepository _detailRepository, IMapper _mapper, ILogger<Program> _logger)
@@ -138,7 +120,51 @@ namespace Market.Services.CartAPI.Endpoints
 
                     return Results.Ok(response);
                 }*/
+        private async static Task<IResult> GetCart(HttpContext context, ICartHeaderRepository _headerRepository, ICartDetailRepository _detailRepository, IMapper _mapper, ILogger<Program> _logger, string id)
+        {
+            var userName = string.Empty;
+            Guid userId;
+            ResponseDto<CartDto> response = new();
+            response.Message = "Get Cart Failed";
+            try
+            {
+                var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
+                if (string.IsNullOrWhiteSpace(user))
+                {
+                    userId = Guid.NewGuid();
+                    userName = "Visitor";
+                }
+                else
+                {
+                    userId = new Guid(user);
+                    userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+                }
+
+                int output;
+                if (!int.TryParse(id, out output))
+                {
+                    response.Metadata.Add("Invalid Id was received");
+                    return Results.BadRequest(response);
+                }
+
+                var header = await _headerRepository.GetAsync(output);
+                var details = await _detailRepository.GetAsync(output);
+
+                response.Message = "Delete Cart Detail Succeeded";
+                response.Data.CartHeader = _mapper.Map<CartHeaderDto>(header);
+                response.Data.CartDetails = _mapper.Map<List<CartDetailDto>>(details);
+                response.Metadata.Add($"Cart was deleted by user \"{userName}\" successfully");
+                response.StatusCode = HttpStatusCode.OK;
+                response.Status = nameof(HttpStatusCode.OK);
+                return Results.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Metadata = Format.GetInnerExceptionMessage(ex);
+                return Results.BadRequest(response);
+            }
+        }
         private async static Task<IResult> SaveCart(HttpContext context, ICartHeaderRepository _headerRepository, ICartDetailRepository _detailRepository, IMapper _mapper, ILogger<Program> _logger, IValidator<CartDto> _validator, [FromBody] CartDto request)
         {
             var userName = string.Empty;
@@ -169,7 +195,7 @@ namespace Market.Services.CartAPI.Endpoints
                 details.ForEach(x => { x.CreatedBy = userId; x.UpdatedBy = userId; });
 
                 var existingCartHeader = await _headerRepository.GetAsync(request.CartHeader.CreatedBy);
-                if (existingCartHeader == null)
+                if (existingCartHeader == null || request.CartHeader.CartHeaderId == 0)
                 {
                     await _headerRepository.CreateAsync(header);
                     await _headerRepository.SaveAsync();
@@ -219,6 +245,52 @@ namespace Market.Services.CartAPI.Endpoints
                     response.Status = nameof(HttpStatusCode.OK);
                     return Results.Ok(response);
                 }
+            }
+            catch (Exception ex)
+            {
+                response.Metadata = Format.GetInnerExceptionMessage(ex);
+                return Results.BadRequest(response);
+            }
+        }
+
+        private async static Task<IResult> DeleteCart(HttpContext context, ICartDetailRepository _detailRepository, IMapper _mapper, ILogger<Program> _logger, IValidator<CartDto> _validator, [FromBody] CartDetailDto request)
+        {
+            var userName = string.Empty;
+            Guid userId;
+            ResponseDto<CartDetailDto> response = new();
+            response.Message = "Delete Cart Detail Failed";
+            try
+            {
+                var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
+
+                if (string.IsNullOrWhiteSpace(user))
+                {
+                    response.Metadata.Add("To complete your purchase signin in Market or signup if you are not registered yet");
+                    userId = Guid.NewGuid();
+                    userName = "Visitor";
+                }
+                else
+                {
+                    userId = new Guid(user);
+                    userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+                }
+
+                var existingDetail = await _detailRepository.GetAsync(request.CartHeaderId, request.CartDetailId);
+                if (existingDetail == null)
+                {
+                    response.Metadata.Add("Cart Detail was already deleted");
+                    return Results.BadRequest(response);
+                }
+
+                await _detailRepository.RemoveAsync(request.CartHeaderId, request.CartDetailId);
+                await _detailRepository.SaveAsync();
+
+                response.Message = "Delete Cart Detail Succeeded";
+                response.Data = _mapper.Map<CartDetailDto>(existingDetail);
+                response.Metadata.Add($"Cart was deleted by user \"{userName}\" successfully");
+                response.StatusCode = HttpStatusCode.OK;
+                response.Status = nameof(HttpStatusCode.OK);
+                return Results.Ok(response);
             }
             catch (Exception ex)
             {

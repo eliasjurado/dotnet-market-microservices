@@ -16,6 +16,7 @@ namespace Market.Services.CartAPI.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CartHeader>().ToTable("CartHeader").HasKey(x => new { x.CreatedBy, x.CartHeaderId });
             modelBuilder.Entity<CartHeader>().HasIndex(x => x.CreatedBy).IsUnique();
+            modelBuilder.Entity<CartHeader>().HasIndex(x => x.CartHeaderId).IsUnique();
             modelBuilder.Entity<CartDetail>().ToTable("CartDetail").HasKey(x => new { x.CreatedBy, x.CartHeaderId, x.CartDetailId });
         }
     }

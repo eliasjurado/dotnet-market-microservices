@@ -16,7 +16,8 @@ namespace Market.Services.CartAPI.Migrations
                 columns: table => new
                 {
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CartHeaderId = table.Column<long>(type: "bigint", nullable: false),
+                    CartHeaderId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CouponId = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -36,7 +37,8 @@ namespace Market.Services.CartAPI.Migrations
                 {
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CartHeaderId = table.Column<long>(type: "bigint", nullable: false),
-                    CartDetailId = table.Column<long>(type: "bigint", nullable: false),
+                    CartDetailId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -56,6 +58,12 @@ namespace Market.Services.CartAPI.Migrations
                         principalColumns: new[] { "CreatedBy", "CartHeaderId" },
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartHeader_CartHeaderId",
+                table: "CartHeader",
+                column: "CartHeaderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartHeader_CreatedBy",
