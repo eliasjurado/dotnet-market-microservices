@@ -2,7 +2,8 @@
 {
     public static class Base
     {
-        public const string DefaultUser = "SYSTEM";
+        public const string SystemUser = "SYSTEM";
+        public const string AnonymousUser = "Visitor";
         public const string GlobalSeparator = "\r\n";
         public const string TokenCookie = "JWTToken";
         public const string AuthorizationCookie = "Authorization";

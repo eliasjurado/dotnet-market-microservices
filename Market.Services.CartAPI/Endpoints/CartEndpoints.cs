@@ -133,7 +133,7 @@ namespace Market.Services.CartAPI.Endpoints
                 if (string.IsNullOrWhiteSpace(user))
                 {
                     userId = Guid.NewGuid();
-                    userName = "Visitor";
+                    userName = Base.AnonymousUser;
                 }
                 else
                 {
@@ -181,7 +181,7 @@ namespace Market.Services.CartAPI.Endpoints
                 {
                     response.Metadata.Add("To complete your purchase signin in Market or signup if you are not registered yet");
                     userId = Guid.NewGuid();
-                    userName = "Visitor";
+                    userName = Base.AnonymousUser;
                 }
                 else
                 {
@@ -267,7 +267,7 @@ namespace Market.Services.CartAPI.Endpoints
                 {
                     response.Metadata.Add("To complete your purchase signin in Market or signup if you are not registered yet");
                     userId = Guid.NewGuid();
-                    userName = "Visitor";
+                    userName = Base.AnonymousUser;
                 }
                 else
                 {
