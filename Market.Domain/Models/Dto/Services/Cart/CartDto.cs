@@ -2,11 +2,11 @@
 {
     public class CartDto
     {
-        public CartHeader CartHeader { get; set; }
+        public CartHeaderDto CartHeader { get; set; }
         public ICollection<CartDetailDto> CartDetails { get; set; }
         public CartDto()
         {
-            CartHeader = new CartHeader();
+            CartHeader = new CartHeaderDto();
             CartDetails = new List<CartDetailDto>();
         }
     }

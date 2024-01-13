@@ -30,14 +30,39 @@ namespace Market.Services.CartAPI.Repository
             return await _db.CartDetails.ToListAsync();
         }
 
+
         public async Task<CartDetail> GetAsync(long headerId, long detailId)
         {
             return await _db.CartDetails.FirstOrDefaultAsync(x => x.CartHeaderId == headerId && x.CartDetailId == detailId);
         }
 
+        public async Task<ICollection<CartDetail>> GetAsync(Guid userId, long headerId)
+        {
+            return await _db.CartDetails.Where(x => x.CreatedBy.Equals(userId) && x.CartHeaderId == headerId).ToListAsync();
+        }
+
+        public async Task<CartDetail> GetAsync(Guid userId, long headerId, long detailId)
+        {
+            return await _db.CartDetails.FirstOrDefaultAsync(x => x.CreatedBy.Equals(userId) && x.CartHeaderId == headerId && x.CartDetailId == detailId);
+        }
+
+        public async Task RemoveAsync(Guid userId, long headerId)
+        {
+            var collection = await GetAsync(userId, headerId);
+            foreach (var item in collection)
+            {
+                await Task.Run(() => Task.FromResult(_db.Remove(item)));
+            }
+        }
+
         public async Task RemoveAsync(long headerId, long detailId)
         {
             await Task.Run(async () => _db.Remove(await GetAsync(headerId, detailId)));
+        }
+
+        public async Task RemoveAsync(Guid userId, long headerId, long detailId)
+        {
+            await Task.Run(async () => _db.Remove(await GetAsync(userId, headerId, detailId)));
         }
 
         public async Task SaveAsync()

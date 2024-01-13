@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Domain", "Market.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Services.ProductAPI", "Market.Services.ProductAPI\Market.Services.ProductAPI.csproj", "{E72FE17A-B85D-4A10-8FE6-EB0AB016825E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Services.CartAPI", "Market.Services.ShoppingCartAPI\Market.Services.CartAPI.csproj", "{0A3ADD8B-FC55-4E36-BD28-410837DAEA65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Services.CartAPI", "Market.Services.CartAPI\Market.Services.CartAPI.csproj", "{0A3ADD8B-FC55-4E36-BD28-410837DAEA65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

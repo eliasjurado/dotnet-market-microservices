@@ -30,9 +30,9 @@ namespace Market.Services.CartAPI.Repository
             return await _db.CartHeaders.ToListAsync();
         }
 
-        public async Task<ICollection<CartHeader>> GetAsync(Guid userId)
+        public async Task<CartHeader> GetAsync(Guid userId)
         {
-            return await _db.CartHeaders.Where(x => x.CreatedBy.Equals(userId)).ToListAsync();
+            return await _db.CartHeaders.FirstOrDefaultAsync(x => x.CreatedBy.Equals(userId));
         }
 
         public async Task<CartHeader> GetAsync(Guid userId, long headerId)
@@ -48,6 +48,11 @@ namespace Market.Services.CartAPI.Repository
         public async Task RemoveAsync(long headerId)
         {
             await Task.Run(async () => _db.Remove(await GetAsync(headerId)));
+        }
+
+        public async Task RemoveAsync(Guid userId, long headerId)
+        {
+            await Task.Run(async () => _db.Remove(await GetAsync(userId, headerId)));
         }
 
         public async Task SaveAsync()

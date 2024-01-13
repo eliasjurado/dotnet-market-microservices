@@ -12,9 +12,9 @@ namespace Market.Domain.Models
         [Required]
         public ByteType IsDeleted { get; set; } = ByteType.No;
         [Required]
-        public Guid CreatedBy { get; set; } = Guid.NewGuid();
+        public Guid CreatedBy { get; set; } = new Guid();
         [Required]
-        public Guid UpdatedBy { get; set; } = Guid.NewGuid();
+        public Guid UpdatedBy { get; set; } = new Guid();
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Required]

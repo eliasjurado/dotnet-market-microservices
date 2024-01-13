@@ -8,6 +8,7 @@ namespace Market.Domain.Models
         [Key, Column(Order = 0)]
         public new Guid CreatedBy { get; set; } = Guid.NewGuid();
         [Key, Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long CartHeaderId { get; set; }
         public long CouponId { get; set; }
         [NotMapped]
