@@ -19,6 +19,8 @@ namespace Market.Services.CartAPI.Migrations
                     CartHeaderId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CouponId = table.Column<long>(type: "bigint", nullable: false),
+                    CouponCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CouponDisccountAmount = table.Column<double>(type: "float", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<int>(type: "int", nullable: false),
@@ -40,6 +42,7 @@ namespace Market.Services.CartAPI.Migrations
                     CartDetailId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductPrice = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),

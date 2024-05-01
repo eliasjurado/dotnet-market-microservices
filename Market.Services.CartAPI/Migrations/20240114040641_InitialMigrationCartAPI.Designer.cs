@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Services.CartAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240113114259_InitialMigrationCartAPI")]
+    [Migration("20240114040641_InitialMigrationCartAPI")]
     partial class InitialMigrationCartAPI
     {
         /// <inheritdoc />
@@ -60,6 +60,9 @@ namespace Market.Services.CartAPI.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
+                    b.Property<double>("ProductPrice")
+                        .HasColumnType("float");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -86,6 +89,12 @@ namespace Market.Services.CartAPI.Migrations
                         .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CartHeaderId"));
+
+                    b.Property<string>("CouponCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("CouponDisccountAmount")
+                        .HasColumnType("float");
 
                     b.Property<long>("CouponId")
                         .HasColumnType("bigint");

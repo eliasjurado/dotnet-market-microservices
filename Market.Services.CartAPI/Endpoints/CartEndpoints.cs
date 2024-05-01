@@ -124,37 +124,49 @@ namespace Market.Services.CartAPI.Endpoints
         {
             var userName = string.Empty;
             Guid userId;
+            CartHeader header = new();
+            ICollection<CartDetail> details = new List<CartDetail>();
             ResponseDto<CartDto> response = new();
             response.Message = "Get Cart Failed";
             try
             {
+                int output = 0;
                 var user = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Select(c => c.Value).SingleOrDefault();
 
                 if (string.IsNullOrWhiteSpace(user))
                 {
                     userId = Guid.NewGuid();
                     userName = Base.AnonymousUser;
+
+                    if (!int.TryParse(id, out output))
+                    {
+                        response.Metadata.Add("Invalid Id was received");
+                        return Results.BadRequest(response);
+                    }
+
+                    header = await _headerRepository.GetAsync(output);
+                    details = await _detailRepository.GetAsync(output);
                 }
                 else
                 {
                     userId = new Guid(user);
                     userName = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Email)).Select(c => c.Value).SingleOrDefault();
+
+                    header = await _headerRepository.GetAsync(userId);
+                    details = await _detailRepository.GetAsync(userId);
                 }
 
-                int output;
-                if (!int.TryParse(id, out output))
-                {
-                    response.Metadata.Add("Invalid Id was received");
-                    return Results.BadRequest(response);
-                }
-
-                var header = await _headerRepository.GetAsync(output);
-                var details = await _detailRepository.GetAsync(output);
-
-                response.Message = "Delete Cart Detail Succeeded";
-                response.Data.CartHeader = _mapper.Map<CartHeaderDto>(header);
+                response.Message = "Get Cart Succeeded";
                 response.Data.CartDetails = _mapper.Map<List<CartDetailDto>>(details);
-                response.Metadata.Add($"Cart was deleted by user \"{userName}\" successfully");
+                response.Data.CartHeader = _mapper.Map<CartHeaderDto>(header);
+                foreach (var item in response.Data.CartDetails)
+                {
+                    response.Data.CartHeader.CartTotal += (item.Quantity * item.ProductPrice);
+                }
+                response.Data.CartHeader.CartTotalDisccount = response.Data.CartHeader.CartTotal * (response.Data.CartHeader.CouponDisccountAmount * 0.01);
+                response.Data.CartHeader.CartTotal = response.Data.CartHeader.CartTotal - response.Data.CartHeader.CartTotalDisccount;
+                response.IsSuccess = true;
+                response.Metadata.Add(userName.Equals(Base.AnonymousUser) ? $"Cart retrieved by CartID \"{output}\" successfully" : $"Cart retrieved for user \"{userName}\" successfully");
                 response.StatusCode = HttpStatusCode.OK;
                 response.Status = nameof(HttpStatusCode.OK);
                 return Results.Ok(response);

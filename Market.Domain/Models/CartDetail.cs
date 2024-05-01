@@ -17,6 +17,7 @@ namespace Market.Domain.Models
         [ForeignKey("CreatedBy,CartHeaderId")]
         public CartHeader CartHeader { get; set; }
         public long ProductId { get; set; }
+        public double ProductPrice { get; set; }
         [NotMapped]
         public ProductDto Product { get; set; }
         public int Quantity { get; set; }

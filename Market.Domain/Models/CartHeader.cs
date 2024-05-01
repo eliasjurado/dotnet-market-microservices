@@ -11,9 +11,7 @@ namespace Market.Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long CartHeaderId { get; set; }
         public long CouponId { get; set; }
-        [NotMapped]
         public string CouponCode { get; set; }
-        [NotMapped]
         public double CouponDisccountAmount { get; set; }
         [NotMapped]
         public double CouponMinAmmount { get; set; }
